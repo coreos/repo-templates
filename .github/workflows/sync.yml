@@ -1,0 +1,98 @@
+name: Sync to downstream repos
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  init:
+    name: Render
+    runs-on: ubuntu-latest
+    container: registry.fedoraproject.org/fedora:latest
+    outputs:
+      matrix: ${{ steps.get.outputs.matrix }}
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v2
+      - name: Install dependencies
+        run: dnf install -y cargo
+      - name: Build tmpl8 binary
+        run: cd tmpl8 && cargo build
+      - name: Render templates
+        run: tmpl8/target/debug/tmpl8 render output
+      - name: Get matrix
+        id: get
+        run: tmpl8/target/debug/tmpl8 github-matrix
+      - name: Upload rendered output
+        uses: actions/upload-artifact@v2
+        with:
+          name: rendered
+          path: output
+
+  sync:
+    name: Sync repo
+    needs: init
+    runs-on: ubuntu-latest
+    container: registry.fedoraproject.org/fedora:latest
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.init.outputs.matrix) }}
+    steps:
+      - name: Fork target repo
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.COREOSBOT_RELENG_TOKEN }}
+          script: |
+            // unconditionally try to fork the repo; it's a no-op if the
+            // fork exists
+            const repo = "${{ matrix.repo }}".split("/")
+            await github.rest.repos.createFork({
+              owner: repo[0],
+              repo: repo[1]
+            })
+      - name: Install dependencies
+        run: dnf install -y git-core
+      - name: Check out target repo
+        uses: actions/checkout@v2
+        with:
+          repository: ${{ matrix.repo }}
+          path: dest
+          # We need an unbroken commit chain when pushing to the fork.  Don't
+          # make assumptions about which commits are already available there.
+          fetch-depth: 0
+      - name: Move repo into place
+        env:
+          TARGET: ${{ matrix.repo }}
+        run: |
+          set -x
+          reponame="${TARGET#*/}"
+          echo "REPO_NAME=$reponame" >> $GITHUB_ENV
+          mkdir output
+          mv dest "output/$reponame"
+      - name: Download rendered output
+        uses: actions/download-artifact@v2
+        with:
+          name: rendered
+          path: output
+      - name: Open pull request
+        uses: peter-evans/create-pull-request@v4.0.4
+        with:
+          token: ${{ secrets.COREOSBOT_RELENG_TOKEN }}
+          path: output/${{ env.REPO_NAME }}
+          # XXX
+          push-to-fork: bgilbert/${{ env.REPO_NAME }}
+          branch: repo-templates
+          commit-message: |
+            Sync repo templates ⚙
+
+            Sync with ${{ github.repository }}@${{ github.sha }}.
+          title: Sync repo templates ⚙
+          body: |
+            Created by [GitHub workflow](${{ github.server_url }}/${{ github.repository }}/actions/workflows/sync.yml) ([source](${{ github.server_url }}/${{ github.repository }}/blob/main/.github/workflows/sync.yml)).
+
+            Sync with ${{ github.repository }}@${{ github.sha }}.
+          committer: "CoreOS Bot <coreosbot@fedoraproject.org>"
+          author: "CoreOS Bot <coreosbot@fedoraproject.org>"

@@ -57,12 +57,18 @@ pub(super) fn diff(args: DiffArgs) -> Result<()> {
     }
     for (path, new_contents) in &rendered {
         let cache_path = cache_dir.join(path);
-        let old_contents = fs::read_to_string(&cache_path)
-            .with_context(|| format!("reading {}", cache_path.display()))?;
-        let path_str = path.to_string_lossy();
+        let (old_path, old_contents) = match fs::read_to_string(&cache_path) {
+            Ok(c) => (path.to_string_lossy().into_owned(), c),
+            Err(e) if e.kind() == io::ErrorKind::NotFound => {
+                ("/dev/null".to_string(), "".to_string())
+            }
+            Err(e) => {
+                return Err(e).with_context(|| format!("reading {}", cache_path.display()))?
+            }
+        };
         let diff = TextDiff::from_lines(&old_contents, new_contents)
             .unified_diff()
-            .header(&path_str, &path_str)
+            .header(&old_path, &path.to_string_lossy())
             .to_string();
         for (i, line) in diff.trim_end_matches('\n').split('\n').enumerate() {
             let painted = match line.chars().next() {

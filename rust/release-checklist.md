@@ -20,6 +20,9 @@ This guide requires:
  * [GPG setup][GPG setup] and personal key for signing
  * `cargo` (suggested: latest stable toolchain from [rustup][rustup])
  * `cargo-release` (suggested: `cargo install -f cargo-release`)
+{%- if do_vendor_filter %}
+ * `cargo vendor-filterer` (suggested: `cargo install -f cargo-vendor-filterer`)
+{%- endif %}
  * Write access to this GitHub project
  * A verified account on crates.io
 {%- if quay_repo %}
@@ -62,9 +65,13 @@ Push access to the upstream repository is required in order to publish the new t
 
 {% if do_vendor_tarball %}
 - assemble vendor archive:
+{%- if do_vendor_filter %}
+  - [ ] `cargo vendor-filterer --format=tar.gz target/{{ crate }}-${RELEASE_VER}-vendor.tar.gz`
+{%- else %}
   - [ ] `cargo vendor target/vendor`
   - [ ] `find target/vendor -name '*.a' -delete`
   - [ ] `tar -czf target/{{ crate }}-${RELEASE_VER}-vendor.tar.gz -C target vendor`
+{% endif %}
 {% endif %}
 
 - publish this release on GitHub:

@@ -24,6 +24,7 @@ files:
       fedora_package: rust-coreos-installer
       rhel_package: coreos-installer
       c9s_package: rust-coreos-installer
+      do_vendor_filter: true
       do_ocp_mirror: true
 
   - repo: ignition-config-rs

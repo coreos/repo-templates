@@ -64,7 +64,7 @@ pub(super) fn diff(args: DiffArgs) -> Result<()> {
             .unified_diff()
             .header(&path_str, &path_str)
             .to_string();
-        for (i, line) in diff.split('\n').enumerate() {
+        for (i, line) in diff.trim_end_matches('\n').split('\n').enumerate() {
             let painted = match line.chars().next() {
                 _ if i < 2 => Paint::new(line).bold(),
                 Some('-') => Paint::red(line),

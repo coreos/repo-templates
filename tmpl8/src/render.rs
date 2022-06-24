@@ -141,7 +141,7 @@ fn do_update_cache(cfg: &Config, cache_dir: &Path, force: bool) -> Result<()> {
                 if force || !(0..3600).contains(&age) {
                     run_command(
                         Command::new("git")
-                            .args(["pull", "--depth=1"])
+                            .arg("pull")
                             .stdout(stderr)
                             .current_dir(&path),
                     )?;

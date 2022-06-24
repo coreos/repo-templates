@@ -73,7 +73,7 @@ RHCOS packaging for the current RHCOS development release:
    - Remove any patches obsoleted by the new release
    - Run `go-mods-to-bundled-provides.py | sort` while inside of the `{{ git_repo }}` directory you ran `./tag_release` from & copy output into spec file in `# Main package provides` section
    - Update changelog
- - [ ] Run `spectool -g -S {{ rhel_package }}.spec`
+ - [ ] Run `spectool -g -S {{ rhel8_package }}.spec`
  - [ ] Run `kinit your_account@REDHAT.COM`
  - [ ] Run `rhpkg new-sources tarball-name`
  - [ ] PR the changes

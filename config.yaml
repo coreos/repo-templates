@@ -8,8 +8,8 @@ repos:
       git_repo: afterburn
       crate: afterburn
       fedora_package: rust-afterburn
-      rhel_package: rust-afterburn
-      c9s_package: rust-afterburn
+      rhel8_package: rust-afterburn
+      rhel9_package: rust-afterburn
 
   butane:
     url: https://github.com/coreos/butane
@@ -18,7 +18,7 @@ repos:
       quay_repo: coreos/butane
       quay_legacy_repos: [coreos/fcct]
       fedora_package: butane
-      rhel_package: butane
+      rhel8_package: butane
       macports_package: sysutils/butane
 
   coreos-installer:
@@ -28,8 +28,8 @@ repos:
       crate: coreos-installer
       quay_repo: coreos/coreos-installer
       fedora_package: rust-coreos-installer
-      rhel_package: coreos-installer
-      c9s_package: rust-coreos-installer
+      rhel8_package: coreos-installer
+      rhel9_package: rust-coreos-installer
 
   fedora-coreos-streams:
     url: https://github.com/coreos/fedora-coreos-streams
@@ -40,7 +40,7 @@ repos:
       git_repo: ignition
       quay_repo: coreos/ignition-validate
       fedora_package: ignition
-      rhel_package: ignition
+      rhel8_package: ignition
 
   ignition-config-rs:
     url: https://github.com/coreos/ignition-config-rs
@@ -62,7 +62,7 @@ repos:
       git_repo: ssh-key-dir
       crate: ssh-key-dir
       fedora_package: rust-ssh-key-dir
-      c9s_package: rust-ssh-key-dir
+      rhel9_package: rust-ssh-key-dir
 
   zincati:
     url: https://github.com/coreos/zincati

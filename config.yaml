@@ -1,5 +1,7 @@
 vars:
   current_fedora: 36
+  # Key ID from https://getfedora.org/security/
+  current_fedora_signing_key: 38ab71f4
 
 repos:
   afterburn:
@@ -74,4 +76,5 @@ repos:
 templates:
   - fcos/release-checklist.md
   - go/release-checklist.md
+  - go/signing-ticket.sh
   - rust/release-checklist.md

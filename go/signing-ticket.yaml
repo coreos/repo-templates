@@ -1,0 +1,28 @@
+files:
+  - repo: butane
+    path: signing-ticket.sh
+    vars:
+      signing_base: butane
+      signing_variants:
+        aarch64-unknown-linux-gnu-static: aarch64-unknown-linux-gnu
+        ppc64le-unknown-linux-gnu-static: ppc64le-unknown-linux-gnu
+        s390x-unknown-linux-gnu-static: s390x-unknown-linux-gnu
+        x86_64-unknown-linux-gnu-static: x86_64-unknown-linux-gnu
+
+        x86_64-apple-darwin: x86_64-apple-darwin
+
+        "x86_64-pc-windows-gnu.exe": "x86_64-pc-windows-gnu.exe"
+
+  - repo: ignition
+    path: signing-ticket.sh
+    vars:
+      signing_base: ignition-validate
+      signing_variants:
+        aarch64-unknown-linux-gnu-static: aarch64-linux
+        ppc64le-unknown-linux-gnu-static: ppc64le-linux
+        s390x-unknown-linux-gnu-static: s390x-linux
+        x86_64-unknown-linux-gnu-static: x86_64-linux
+
+        x86_64-apple-darwin: x86_64-apple-darwin
+
+        "x86_64-pc-windows-gnu.exe": "x86_64-pc-windows-gnu.exe"

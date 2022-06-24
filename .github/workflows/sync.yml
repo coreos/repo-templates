@@ -82,8 +82,7 @@ jobs:
         with:
           token: ${{ secrets.COREOSBOT_RELENG_TOKEN }}
           path: output/${{ env.REPO_NAME }}
-          # XXX
-          push-to-fork: bgilbert/${{ env.REPO_NAME }}
+          push-to-fork: coreosbot-releng/${{ env.REPO_NAME }}
           branch: repo-templates
           commit-message: |
             Sync repo templates ⚙

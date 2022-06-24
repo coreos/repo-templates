@@ -31,7 +31,19 @@ use super::*;
 
 pub(super) fn render(args: RenderArgs) -> Result<()> {
     let cfg = Config::parse(&args.config)?;
-    for (path, data) in do_render(&args.config, &cfg)? {
+    if let Some(repo) = &args.repo {
+        if !cfg.repos.contains_key(repo) {
+            bail!("no such repo: {}", repo);
+        }
+    }
+
+    for (mut path, data) in do_render(&args.config, &cfg)? {
+        if let Some(repo) = &args.repo {
+            path = match path.strip_prefix(repo) {
+                Ok(p) => p.into(),
+                Err(_) => continue,  // file in another repo
+            }
+        }
         let path = args.output.join(path);
         let dir = path
             .parent()

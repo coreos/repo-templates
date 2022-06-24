@@ -44,6 +44,9 @@ struct RenderArgs {
     /// Config file
     #[clap(short = 'c', long, value_name = "file", default_value = "config.yaml")]
     config: PathBuf,
+    /// Render only one repository
+    #[clap(short = 'r', long, value_name = "repo-name")]
+    repo: Option<String>,
 }
 
 #[derive(Debug, Parser)]

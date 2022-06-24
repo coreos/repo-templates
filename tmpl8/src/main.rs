@@ -31,6 +31,8 @@ enum Cmd {
     Render(RenderArgs),
     /// Print diff from current repo contents
     Diff(DiffArgs),
+    /// Update cache for diff command (usually unnecessary)
+    UpdateCache(UpdateCacheArgs),
     /// Render GitHub Actions job matrix
     GithubMatrix(GithubMatrixArgs),
 }
@@ -55,6 +57,13 @@ struct DiffArgs {
 }
 
 #[derive(Debug, Parser)]
+struct UpdateCacheArgs {
+    /// Config file
+    #[clap(short = 'c', long, value_name = "file", default_value = "config.yaml")]
+    config: PathBuf,
+}
+
+#[derive(Debug, Parser)]
 struct GithubMatrixArgs {
     /// Config file
     #[clap(short = 'c', long, value_name = "file", default_value = "config.yaml")]
@@ -68,6 +77,7 @@ fn main() -> Result<()> {
     match Cmd::parse() {
         Cmd::Render(c) => render::render(c),
         Cmd::Diff(c) => render::diff(c),
+        Cmd::UpdateCache(c) => render::update_cache(c),
         Cmd::GithubMatrix(c) => github::get_matrix(c),
     }
 }

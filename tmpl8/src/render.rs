@@ -49,42 +49,8 @@ pub(super) fn diff(args: DiffArgs) -> Result<()> {
     let rendered = do_render(&args.config, &cfg)?;
 
     // update Git cache
-    let cache_dir = args
-        .config
-        .parent()
-        .with_context(|| format!("getting parent of {}", args.config.display()))?
-        .join(".cache");
-    for (name, repo) in cfg.repos {
-        let path = cache_dir.join(name);
-        let stderr_fd = nix::unistd::dup(2_i32.as_raw_fd()).context("duplicating stderr")?;
-        let stderr = unsafe { Stdio::from_raw_fd(stderr_fd) };
-        match fs::metadata(&path) {
-            Ok(meta) => {
-                // Update the cache at most once per hour
-                let age = FileTime::now().seconds()
-                    - FileTime::from_last_modification_time(&meta).seconds();
-                if !(0..3600).contains(&age) {
-                    run_command(
-                        Command::new("git")
-                            .args(["pull", "--depth=1"])
-                            .stdout(stderr)
-                            .current_dir(&path),
-                    )?;
-                    filetime::set_file_mtime(&path, FileTime::now())
-                        .with_context(|| format!("updating timestamp of {}", path.display()))?;
-                }
-            }
-            Err(e) if e.kind() == io::ErrorKind::NotFound => {
-                run_command(
-                    Command::new("git")
-                        .args(["clone", "--depth=1", &repo.url])
-                        .arg(&path)
-                        .stdout(stderr),
-                )?;
-            }
-            Err(e) => return Err(e).with_context(|| format!("querying {}", path.display())),
-        }
-    }
+    let cache_dir = cache_dir(&args.config)?;
+    do_update_cache(&cfg, &cache_dir, false)?;
 
     if args.no_color {
         Paint::disable();
@@ -111,6 +77,11 @@ pub(super) fn diff(args: DiffArgs) -> Result<()> {
     }
 
     Ok(())
+}
+
+pub(super) fn update_cache(args: UpdateCacheArgs) -> Result<()> {
+    let cfg = Config::parse(&args.config)?;
+    do_update_cache(&cfg, &cache_dir(&args.config)?, true)
 }
 
 fn do_render(config_path: &Path, cfg: &Config) -> Result<BTreeMap<PathBuf, String>> {
@@ -149,6 +120,48 @@ fn do_render(config_path: &Path, cfg: &Config) -> Result<BTreeMap<PathBuf, Strin
         }
     }
     Ok(rendered)
+}
+
+fn do_update_cache(cfg: &Config, cache_dir: &Path, force: bool) -> Result<()> {
+    for (name, repo) in &cfg.repos {
+        let path = cache_dir.join(name);
+        let stderr_fd = nix::unistd::dup(2_i32.as_raw_fd()).context("duplicating stderr")?;
+        let stderr = unsafe { Stdio::from_raw_fd(stderr_fd) };
+        match fs::metadata(&path) {
+            Ok(meta) => {
+                // Update the cache at most once per hour, unless forced
+                let age = FileTime::now().seconds()
+                    - FileTime::from_last_modification_time(&meta).seconds();
+                if force || !(0..3600).contains(&age) {
+                    run_command(
+                        Command::new("git")
+                            .args(["pull", "--depth=1"])
+                            .stdout(stderr)
+                            .current_dir(&path),
+                    )?;
+                    filetime::set_file_mtime(&path, FileTime::now())
+                        .with_context(|| format!("updating timestamp of {}", path.display()))?;
+                }
+            }
+            Err(e) if e.kind() == io::ErrorKind::NotFound => {
+                run_command(
+                    Command::new("git")
+                        .args(["clone", "--depth=1", &repo.url])
+                        .arg(&path)
+                        .stdout(stderr),
+                )?;
+            }
+            Err(e) => return Err(e).with_context(|| format!("querying {}", path.display())),
+        }
+    }
+    Ok(())
+}
+
+fn cache_dir(config_path: &Path) -> Result<PathBuf> {
+    Ok(config_path
+        .parent()
+        .with_context(|| format!("getting parent of {}", config_path.display()))?
+        .join(".cache"))
 }
 
 fn template_path(config_path: &Path, template: &str) -> Result<PathBuf> {

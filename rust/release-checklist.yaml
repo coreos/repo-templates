@@ -1,0 +1,62 @@
+vars:
+  do_fast_track: true
+  do_release_digests: true
+  do_vendor_tarball: true
+
+files:
+  - repo: afterburn
+    path: .github/ISSUE_TEMPLATE/release-checklist.md
+    vars:
+      crate: afterburn
+      git_repo: afterburn
+      rpm_extra_sources: [vendor-tarball-name]
+      fedora_package: rust-afterburn
+      rhel_package: rust-afterburn
+      c9s_package: rust-afterburn
+
+  - repo: coreos-installer
+    path: .github/ISSUE_TEMPLATE/release-checklist.md
+    vars:
+      crate: coreos-installer
+      git_repo: coreos-installer
+      quay_repo: coreos/coreos-installer
+      rpm_extra_sources: [vendor-tarball-name, coreos-installer-dracut-tarball-name]
+      fedora_package: rust-coreos-installer
+      rhel_package: coreos-installer
+      c9s_package: rust-coreos-installer
+      do_ocp_mirror: true
+
+  - repo: ignition-config-rs
+    path: .github/ISSUE_TEMPLATE/release-checklist.md
+    vars:
+      crate: ignition-config
+      git_repo: ignition-config-rs
+      fedora_package: rust-ignition-config
+      do_fast_track: false
+      do_vendor_tarball: false
+
+  - repo: openssh-keys
+    path: .github/ISSUE_TEMPLATE/release-checklist.md
+    vars:
+      crate: openssh-keys
+      git_repo: openssh-keys
+      fedora_package: rust-openssh-keys
+      do_fast_track: false
+      do_release_digests: false
+      do_vendor_tarball: false
+
+  - repo: ssh-key-dir
+    path: .github/ISSUE_TEMPLATE/release-checklist.md
+    vars:
+      crate: ssh-key-dir
+      git_repo: ssh-key-dir
+      fedora_package: rust-ssh-key-dir
+      c9s_package: rust-ssh-key-dir
+
+  - repo: zincati
+    path: .github/ISSUE_TEMPLATE/release-checklist.md
+    vars:
+      crate: zincati
+      git_repo: zincati
+      rpm_extra_sources: [vendor-tarball-name]
+      fedora_package: rust-zincati

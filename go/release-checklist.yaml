@@ -1,0 +1,25 @@
+vars:
+  do_fast_track: true
+
+files:
+  - repo: butane
+    path: .github/ISSUE_TEMPLATE/release-checklist.md
+    vars:
+      git_repo: butane
+      sample_signing_ticket: https://pagure.io/releng/issue/10599
+      sample_signing_key_update_tag: v0.12.0
+      quay_repo: coreos/butane
+      quay_legacy_repos: [coreos/fcct]
+      rpm_package: butane
+      macports_package: sysutils/butane
+      do_fast_track: false
+      do_ocp_mirror: true
+
+  - repo: ignition
+    path: .github/ISSUE_TEMPLATE/release-checklist.md
+    vars:
+      git_repo: ignition
+      sample_signing_ticket: https://pagure.io/releng/issue/10799
+      sample_signing_key_update_tag: v2.10.1
+      quay_repo: coreos/ignition-validate
+      rpm_package: ignition

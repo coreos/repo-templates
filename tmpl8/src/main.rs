@@ -49,6 +49,9 @@ struct DiffArgs {
     /// Config file
     #[clap(short = 'c', long, value_name = "file", default_value = "config.yaml")]
     config: PathBuf,
+    /// Disable color output
+    #[clap(short = 'n', long)]
+    no_color: bool,
 }
 
 #[derive(Debug, Parser)]

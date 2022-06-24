@@ -24,6 +24,7 @@ use filetime::{self, FileTime};
 use regex::Regex;
 use similar::TextDiff;
 use tera::Tera;
+use yansi::Paint;
 
 use super::schema::*;
 use super::*;
@@ -85,17 +86,28 @@ pub(super) fn diff(args: DiffArgs) -> Result<()> {
         }
     }
 
-    let mut stdout = io::stdout().lock();
+    if args.no_color {
+        Paint::disable();
+    }
     for (path, new_contents) in &rendered {
         let cache_path = cache_dir.join(path);
         let old_contents = fs::read_to_string(&cache_path)
             .with_context(|| format!("reading {}", cache_path.display()))?;
         let path_str = path.to_string_lossy();
-        TextDiff::from_lines(&old_contents, new_contents)
+        let diff = TextDiff::from_lines(&old_contents, new_contents)
             .unified_diff()
             .header(&path_str, &path_str)
-            .to_writer(&mut stdout)
-            .context("writing to stdout")?;
+            .to_string();
+        for (i, line) in diff.split('\n').enumerate() {
+            let painted = match line.chars().next() {
+                _ if i < 2 => Paint::new(line).bold(),
+                Some('-') => Paint::red(line),
+                Some('+') => Paint::green(line),
+                Some('@') => Paint::cyan(line),
+                _ => Paint::new(line),
+            };
+            println!("{}", painted);
+        }
     }
 
     Ok(())

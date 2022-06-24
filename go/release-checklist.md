@@ -14,16 +14,16 @@ Tagging:
  - [ ] Push that tag to GitHub
 
 Fedora packaging:
- - [ ] Update the spec file in [Fedora](https://src.fedoraproject.org/rpms/{{ rpm_package }}):
+ - [ ] Update the spec file in [Fedora](https://src.fedoraproject.org/rpms/{{ fedora_package }}):
    - Bump the `Version`
    - Switch the `Release` back to `1%{?dist}`
    - Remove any patches obsoleted by the new release
    - Run `go-mods-to-bundled-provides.py | sort` while inside of the `{{ git_repo }}` directory you ran `./tag_release` from & copy output into spec file in `# Main package provides` section
    - Update changelog
- - [ ] Run `spectool -g -S {{ rpm_package }}.spec`
+ - [ ] Run `spectool -g -S {{ fedora_package }}.spec`
  - [ ] Run `kinit your_fas_account@FEDORAPROJECT.ORG`
  - [ ] Run `fedpkg new-sources tarball-name`
- - [ ] PR the changes in [Fedora](https://src.fedoraproject.org/rpms/{{ rpm_package }})
+ - [ ] PR the changes in [Fedora](https://src.fedoraproject.org/rpms/{{ fedora_package }})
  - [ ] Once the PR merges to rawhide, merge rawhide into the other relevant branches (e.g. f{{ current_fedora }}) then push those, for example:
    ```bash
    git checkout rawhide
@@ -34,7 +34,7 @@ Fedora packaging:
    ```
  - [ ] On each of those branches run `fedpkg build` including rawhide.
  - [ ] Once the builds have finished, submit them to [bodhi](https://bodhi.fedoraproject.org/updates/new), filling in:
-   - `{{ rpm_package }}` for `Packages`
+   - `{{ fedora_package }}` for `Packages`
    - Selecting the build(s) that just completed, except for the rawhide one (which gets submitted automatically)
    - Writing brief release notes like "New upstream release; see release notes at `link to docs/release-notes.md on GH tag`"
    - Leave `Update name` blank
@@ -73,7 +73,7 @@ RHCOS packaging for the current RHCOS development release:
    - Remove any patches obsoleted by the new release
    - Run `go-mods-to-bundled-provides.py | sort` while inside of the `{{ git_repo }}` directory you ran `./tag_release` from & copy output into spec file in `# Main package provides` section
    - Update changelog
- - [ ] Run `spectool -g -S {{ rpm_package }}.spec`
+ - [ ] Run `spectool -g -S {{ rhel_package }}.spec`
  - [ ] Run `kinit your_account@REDHAT.COM`
  - [ ] Run `rhpkg new-sources tarball-name`
  - [ ] PR the changes

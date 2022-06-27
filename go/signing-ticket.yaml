@@ -9,6 +9,7 @@ files:
         s390x-unknown-linux-gnu-static: s390x-unknown-linux-gnu
         x86_64-unknown-linux-gnu-static: x86_64-unknown-linux-gnu
 
+        aarch64-apple-darwin: aarch64-apple-darwin
         x86_64-apple-darwin: x86_64-apple-darwin
 
         "x86_64-pc-windows-gnu.exe": "x86_64-pc-windows-gnu.exe"
@@ -23,6 +24,7 @@ files:
         s390x-unknown-linux-gnu-static: s390x-linux
         x86_64-unknown-linux-gnu-static: x86_64-linux
 
+        aarch64-apple-darwin: aarch64-apple-darwin
         x86_64-apple-darwin: x86_64-apple-darwin
 
         "x86_64-pc-windows-gnu.exe": "x86_64-pc-windows-gnu.exe"

@@ -82,6 +82,9 @@ pub(super) fn diff(args: DiffArgs) -> Result<()> {
             .unified_diff()
             .header(&old_path, &path.to_string_lossy())
             .to_string();
+        if diff.is_empty() {
+            continue;
+        }
         for (i, line) in diff.trim_end_matches('\n').split('\n').enumerate() {
             let painted = match line.chars().next() {
                 _ if i < 2 => Paint::new(line).bold(),

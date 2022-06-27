@@ -41,7 +41,7 @@ pub(super) fn render(args: RenderArgs) -> Result<()> {
         if let Some(repo) = &args.repo {
             path = match path.strip_prefix(repo) {
                 Ok(p) => p.into(),
-                Err(_) => continue,  // file in another repo
+                Err(_) => continue, // file in another repo
             }
         }
         let path = args.output.join(path);
@@ -82,6 +82,9 @@ pub(super) fn diff(args: DiffArgs) -> Result<()> {
             .unified_diff()
             .header(&old_path, &path.to_string_lossy())
             .to_string();
+        if diff.is_empty() {
+            continue;
+        }
         for (i, line) in diff.trim_end_matches('\n').split('\n').enumerate() {
             let painted = match line.chars().next() {
                 _ if i < 2 => Paint::new(line).bold(),
@@ -112,9 +115,6 @@ fn do_render(config_path: &Path, cfg: &Config) -> Result<BTreeMap<PathBuf, Strin
     )
     .context("parsing templates")?;
 
-    // collapse 3 or more consecutive newlines to ease template writing
-    let cleaner = Regex::new("\n{3,}").unwrap();
-
     let ctx = cfg.vars.to_context()?;
     let mut rendered = BTreeMap::new();
     for template in &cfg.templates {
@@ -131,13 +131,22 @@ fn do_render(config_path: &Path, cfg: &Config) -> Result<BTreeMap<PathBuf, Strin
             let result = tera
                 .render(template, &ctx)
                 .with_context(|| format!("rendering {}", file.path().display()))?;
-            let result = cleaner.replace_all(&result, "\n\n").into_owned();
+            let result = clean_rendered_output(&result);
             if rendered.insert(file.path(), result).is_some() {
                 bail!("multiple attempts to write to {}", file.path().display());
             }
         }
     }
     Ok(rendered)
+}
+
+/// Clean up some common rendering artifacts to ease template writing
+fn clean_rendered_output(output: &str) -> String {
+    // collapse 3 or more consecutive newlines into 2
+    let output = Regex::new("\n{3,}").unwrap().replace_all(output, "\n\n");
+    // collapse 2 or more trailing newlines into 1
+    let output = Regex::new("\n{2,}$").unwrap().replace_all(&output, "\n");
+    output.to_string()
 }
 
 fn do_update_cache(cfg: &Config, cache_dir: &Path, force: bool) -> Result<()> {

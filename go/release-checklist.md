@@ -84,7 +84,7 @@ RHCOS packaging for the current RHCOS development release:
 {%- endif %}
 
 CentOS Stream 9 packaging:
-  - [ ] To be written
+  - [ ] Create a `rebase-c9s-{{ git_repo }}` issue in the internal team-operations repo and follow the steps there
 
 {% if macports_package -%}
 Housekeeping:

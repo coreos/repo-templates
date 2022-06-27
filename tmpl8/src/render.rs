@@ -41,7 +41,7 @@ pub(super) fn render(args: RenderArgs) -> Result<()> {
         if let Some(repo) = &args.repo {
             path = match path.strip_prefix(repo) {
                 Ok(p) => p.into(),
-                Err(_) => continue,  // file in another repo
+                Err(_) => continue, // file in another repo
             }
         }
         let path = args.output.join(path);

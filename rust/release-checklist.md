@@ -110,7 +110,7 @@ Push access to the upstream repository is required in order to publish the new t
     - update changelog
   - [ ] run `spectool -g -S {{ fedora_package }}.spec`
   - [ ] run `kinit your_fas_account@FEDORAPROJECT.ORG`
-  - [ ] run `fedpkg new-sources <crate-name>{% for src in rpm_extra_sources|default(value=[]) %} <{{ src }}>{% endfor %}`
+  - [ ] run `fedpkg new-sources $(spectool -S {{ fedora_package }}.spec | sed 's:.*/::')`
   - [ ] PR the changes in [Fedora](https://src.fedoraproject.org/rpms/{{ fedora_package }})
   - [ ] once the PR merges to rawhide, merge rawhide into the other relevant branches (e.g. f35) then push those, for example:
     ```bash
@@ -142,7 +142,7 @@ Push access to the upstream repository is required in order to publish the new t
     - update changelog
   - [ ] run `spectool -g -S {{ rhel8_package }}.spec`
   - [ ] run `kinit your_account@REDHAT.COM`
-  - [ ] run `rhpkg new-sources <crate-name>{% for src in rpm_extra_sources %} <{{ src }}>{% endfor %}`
+  - [ ] run `rhpkg new-sources $(spectool -S {{ rhel8_package }}.spec | sed 's:.*/::')`
   - [ ] PR the changes
   - [ ] get the PR reviewed and merge it
   - [ ] update your local repo and run `rhpkg build`

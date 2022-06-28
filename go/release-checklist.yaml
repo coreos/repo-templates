@@ -5,7 +5,6 @@ files:
   - repo: butane
     path: .github/ISSUE_TEMPLATE/release-checklist.md
     vars:
-      sample_signing_ticket: https://pagure.io/releng/issue/10599
       sample_signing_key_update_tag: v0.12.0
       do_fast_track: false
       do_ocp_mirror: true
@@ -13,5 +12,4 @@ files:
   - repo: ignition
     path: .github/ISSUE_TEMPLATE/release-checklist.md
     vars:
-      sample_signing_ticket: https://pagure.io/releng/issue/10799
       sample_signing_key_update_tag: v2.10.1

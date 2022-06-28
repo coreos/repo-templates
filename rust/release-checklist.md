@@ -153,7 +153,7 @@ Push access to the upstream repository is required in order to publish the new t
 
 {% if rhel9_package %}
 CentOS Stream 9 packaging:
-  - [ ] to be written
+  - [ ] Create a `rebase-c9s-{{ git_repo }}` issue in the internal team-operations repo and follow the steps there
 {% endif %}
 
 [cargo-release]: https://github.com/sunng87/cargo-release

@@ -152,8 +152,6 @@ fn clean_rendered_output(output: &str) -> String {
 fn do_update_cache(cfg: &Config, cache_dir: &Path, force: bool) -> Result<()> {
     for (name, repo) in &cfg.repos {
         let path = cache_dir.join(name);
-        let stderr_fd = nix::unistd::dup(2_i32.as_raw_fd()).context("duplicating stderr")?;
-        let stderr = unsafe { Stdio::from_raw_fd(stderr_fd) };
         match fs::metadata(&path) {
             Ok(meta) => {
                 // Update the cache at most once per hour, unless forced
@@ -163,7 +161,7 @@ fn do_update_cache(cfg: &Config, cache_dir: &Path, force: bool) -> Result<()> {
                     run_command(
                         Command::new("git")
                             .arg("pull")
-                            .stdout(stderr)
+                            .stdout(stderr()?)
                             .current_dir(&path),
                     )?;
                     filetime::set_file_mtime(&path, FileTime::now())
@@ -175,7 +173,7 @@ fn do_update_cache(cfg: &Config, cache_dir: &Path, force: bool) -> Result<()> {
                     Command::new("git")
                         .args(["clone", "--depth=1", &repo.url])
                         .arg(&path)
-                        .stdout(stderr),
+                        .stdout(stderr()?),
                 )?;
             }
             Err(e) => return Err(e).with_context(|| format!("querying {}", path.display())),
@@ -227,4 +225,9 @@ fn run_command(cmd: &mut Command) -> Result<()> {
         bail!("command failed: '{}'", desc);
     }
     Ok(())
+}
+
+fn stderr() -> Result<Stdio> {
+    let stderr_fd = nix::unistd::dup(2_i32.as_raw_fd()).context("duplicating stderr")?;
+    Ok(unsafe { Stdio::from_raw_fd(stderr_fd) })
 }

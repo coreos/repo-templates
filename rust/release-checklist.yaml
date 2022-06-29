@@ -6,13 +6,10 @@ vars:
 files:
   - repo: afterburn
     path: .github/ISSUE_TEMPLATE/release-checklist.md
-    vars:
-      rpm_extra_sources: [vendor-tarball-name]
 
   - repo: coreos-installer
     path: .github/ISSUE_TEMPLATE/release-checklist.md
     vars:
-      rpm_extra_sources: [vendor-tarball-name, coreos-installer-dracut-tarball-name]
       do_vendor_filter: true
       do_ocp_mirror: true
 
@@ -34,5 +31,3 @@ files:
 
   - repo: zincati
     path: .github/ISSUE_TEMPLATE/release-checklist.md
-    vars:
-      rpm_extra_sources: [vendor-tarball-name]

@@ -23,7 +23,7 @@ Fedora packaging:
    - Update changelog
  - [ ] Run `spectool -g -S {{ fedora_package }}.spec`
  - [ ] Run `kinit your_fas_account@FEDORAPROJECT.ORG`
- - [ ] Run `fedpkg new-sources tarball-name`
+ - [ ] Run `fedpkg new-sources $(spectool -S {{ fedora_package }}.spec | sed 's:.*/::')`
  - [ ] PR the changes in [Fedora](https://src.fedoraproject.org/rpms/{{ fedora_package }})
  - [ ] Once the PR merges to rawhide, merge rawhide into the other relevant branches (e.g. f{{ current_fedora }}) then push those, for example:
    ```bash
@@ -74,7 +74,7 @@ RHCOS packaging for the current RHCOS development release:
    - Update changelog
  - [ ] Run `spectool -g -S {{ rhel8_package }}.spec`
  - [ ] Run `kinit your_account@REDHAT.COM`
- - [ ] Run `rhpkg new-sources tarball-name`
+ - [ ] Run `rhpkg new-sources $(spectool -S {{ rhel8_package }}.spec | sed 's:.*/::')`
  - [ ] PR the changes
  - [ ] Get the PR reviewed and merge it
  - [ ] Update your local repo and run `rhpkg build`

@@ -6,10 +6,13 @@ vars:
 files:
   - repo: afterburn
     path: .github/ISSUE_TEMPLATE/release-checklist.md
+    vars:
+      do_release_notes_doc: true
 
   - repo: coreos-installer
     path: .github/ISSUE_TEMPLATE/release-checklist.md
     vars:
+      do_release_notes_doc: true
       do_vendor_filter: true
       do_ocp_mirror: true
 

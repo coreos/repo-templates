@@ -16,6 +16,7 @@ use std::path::PathBuf;
 
 use anyhow::Result;
 use clap::Parser;
+use regex::Regex;
 
 mod github;
 mod render;
@@ -54,6 +55,8 @@ struct DiffArgs {
     /// Config file
     #[clap(short = 'c', long, value_name = "file", default_value = "config.yaml")]
     config: PathBuf,
+    #[clap(flatten)]
+    fork: ForkArgs,
     /// Disable color output
     #[clap(short = 'n', long)]
     no_color: bool,
@@ -64,6 +67,24 @@ struct UpdateCacheArgs {
     /// Config file
     #[clap(short = 'c', long, value_name = "file", default_value = "config.yaml")]
     config: PathBuf,
+    #[clap(flatten)]
+    fork: ForkArgs,
+}
+
+#[derive(Debug, Parser)]
+struct ForkArgs {
+    /// Regex for the upstream part of repo URL
+    #[clap(long = "fork-regex", value_name = "regex")]
+    #[clap(requires_all = &["replacement", "branch"])]
+    regex: Option<Regex>,
+    /// Replacement for upstream part of repo URL
+    #[clap(long = "fork-replacement", value_name = "string")]
+    #[clap(requires_all = &["regex", "branch"])]
+    replacement: Option<String>,
+    /// Fork branch
+    #[clap(long = "fork-branch", value_name = "branch")]
+    #[clap(requires_all = &["regex", "replacement"])]
+    branch: Option<String>,
 }
 
 #[derive(Debug, Parser)]

@@ -29,6 +29,8 @@ use yansi::Paint;
 use super::schema::*;
 use super::*;
 
+const DEFAULT_BRANCH: &str = "DEFAULT";
+
 pub(super) fn render(args: RenderArgs) -> Result<()> {
     let cfg = Config::parse(&args.config)?;
     if let Some(repo) = &args.repo {
@@ -62,7 +64,7 @@ pub(super) fn diff(args: DiffArgs) -> Result<()> {
 
     // update Git cache
     let cache_dir = cache_dir(&args.config)?;
-    do_update_cache(&cfg, &cache_dir, false)?;
+    do_update_cache(&cfg, &cache_dir, &args.fork, false)?;
 
     if args.no_color {
         Paint::disable();
@@ -102,7 +104,7 @@ pub(super) fn diff(args: DiffArgs) -> Result<()> {
 
 pub(super) fn update_cache(args: UpdateCacheArgs) -> Result<()> {
     let cfg = Config::parse(&args.config)?;
-    do_update_cache(&cfg, &cache_dir(&args.config)?, true)
+    do_update_cache(&cfg, &cache_dir(&args.config)?, &args.fork, true)
 }
 
 fn do_render(config_path: &Path, cfg: &Config) -> Result<BTreeMap<PathBuf, String>> {
@@ -149,35 +151,103 @@ fn clean_rendered_output(output: &str) -> String {
     output.to_string()
 }
 
-fn do_update_cache(cfg: &Config, cache_dir: &Path, force: bool) -> Result<()> {
+fn do_update_cache(cfg: &Config, cache_dir: &Path, fork: &ForkArgs, force: bool) -> Result<()> {
     for (name, repo) in &cfg.repos {
+        // clone repo if missing
         let path = cache_dir.join(name);
-        match fs::metadata(&path) {
-            Ok(meta) => {
+        if !path.exists() {
+            run_command(
+                Command::new("git")
+                    .args(["clone", "--depth=1", &repo.url])
+                    .arg(&path)
+                    .stdout(stderr()?),
+            )?;
+            // use consistent name for default branch
+            run_command(
+                Command::new("git")
+                    .args(["branch", "-m", DEFAULT_BRANCH])
+                    .stdout(stderr()?)
+                    .current_dir(&path),
+            )?;
+        }
+
+        // compute unique identifier of remote branch
+        let remote_url = fork
+            .regex
+            .as_ref()
+            .map(|re| re.replace(&repo.url, fork.replacement.as_ref().unwrap()));
+        let ident = if let Some(url) = &remote_url {
+            format!("{} {}\n", url, fork.branch.as_ref().unwrap())
+        } else {
+            DEFAULT_BRANCH.into()
+        };
+
+        // see if we need to update
+        let stamp_path = path.join(".git/tmpl8-stamp");
+        // need to switch branches if the stamp contents are different
+        match fs::read(&stamp_path) {
+            Ok(id) if id == ident.as_bytes() => {
+                // update anyway if stale or forced
+                let meta = fs::metadata(&stamp_path)
+                    .with_context(|| format!("statting {}", stamp_path.display()))?;
                 // Update the cache at most once per hour, unless forced
                 let age = FileTime::now().seconds()
                     - FileTime::from_last_modification_time(&meta).seconds();
-                if force || !(0..3600).contains(&age) {
-                    run_command(
-                        Command::new("git")
-                            .arg("pull")
-                            .stdout(stderr()?)
-                            .current_dir(&path),
-                    )?;
-                    filetime::set_file_mtime(&path, FileTime::now())
-                        .with_context(|| format!("updating timestamp of {}", path.display()))?;
+                if (0..3600).contains(&age) && !force {
+                    continue;
                 }
             }
-            Err(e) if e.kind() == io::ErrorKind::NotFound => {
+            Ok(_) => (),
+            Err(e) if e.kind() == io::ErrorKind::NotFound => (),
+            Err(e) => return Err(e).with_context(|| format!("reading {}", stamp_path.display())),
+        }
+
+        // update checkout
+        let mut updated = false;
+        // remote fork branch exists?
+        if let Some(remote_url) = &remote_url {
+            if Command::new("git")
+                .args(&[
+                    "fetch",
+                    "--depth",
+                    "1",
+                    remote_url,
+                    fork.branch.as_ref().unwrap(),
+                ])
+                .stdout(stderr()?)
+                .current_dir(&path)
+                .status()
+                .context("running git fetch")?
+                .success()
+            {
                 run_command(
                     Command::new("git")
-                        .args(["clone", "--depth=1", &repo.url])
-                        .arg(&path)
-                        .stdout(stderr()?),
+                        .args(&["-c", "advice.detachedHead=false", "checkout", "FETCH_HEAD"])
+                        .stdout(stderr()?)
+                        .current_dir(&path),
                 )?;
+                updated = true;
             }
-            Err(e) => return Err(e).with_context(|| format!("querying {}", path.display())),
         }
+        // fall back to default branch
+        if !updated {
+            run_command(
+                Command::new("git")
+                    .args(&["checkout", DEFAULT_BRANCH])
+                    .stdout(stderr()?)
+                    .current_dir(&path),
+            )?;
+            run_command(
+                Command::new("git")
+                    .arg("pull")
+                    .stdout(stderr()?)
+                    .current_dir(&path),
+            )?;
+        }
+
+        // update stamp
+        fs::write(&stamp_path, &ident)
+            .with_context(|| format!("writing {}", stamp_path.display()))?;
     }
     Ok(())
 }

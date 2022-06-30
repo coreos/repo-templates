@@ -84,3 +84,14 @@ fn main() -> Result<()> {
         Cmd::GithubMatrix(c) => github::get_matrix(c),
     }
 }
+
+#[cfg(test)]
+mod test {
+    use super::*;
+    use clap::IntoApp;
+
+    #[test]
+    fn clap_app() {
+        Cmd::command().debug_assert()
+    }
+}

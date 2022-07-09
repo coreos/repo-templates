@@ -38,6 +38,12 @@ Push access to the upstream repository is required in order to publish the new t
 
 :warning:: if `origin` is not the name of the locally configured remote that points to the upstream git repository (i.e. `git@github.com:coreos/{{ git_repo }}.git`), be sure to assign the correct remote name to the `UPSTREAM_REMOTE` variable.
 
+{% if do_release_notes_doc %}
+- write release notes
+  - [ ] write release notes in `docs/release-notes.md`; get them reviewed and merged
+  - [ ] if doing a branched release, also include a PR to merge the `docs/release-notes.md` changes into main
+{% endif %}
+
 - make sure the project is clean and prepare the environment:
   - [ ] Make sure `cargo-release` is up to date: `cargo install cargo-release`
   - [ ] `cargo test --all-features`
@@ -54,7 +60,9 @@ Push access to the upstream repository is required in order to publish the new t
   - [ ] `git push ${UPSTREAM_REMOTE} release-${RELEASE_VER}`
   - [ ] open a web browser and create a PR for the branch above
   - [ ] make sure the resulting PR contains exactly one commit
+{%- if not do_release_notes_doc %}
   - [ ] in the PR body, write a short changelog with relevant changes since last release
+{%- endif %}
   - [ ] get the PR reviewed, approved and merged
 
 - publish the artifacts (tag and crate):
@@ -76,7 +84,11 @@ Push access to the upstream repository is required in order to publish the new t
 
 - publish this release on GitHub:
   - [ ] find the new tag in the [GitHub tag list](https://github.com/coreos/{{ git_repo }}/tags), click the triple dots menu, and create a release for it
-  - [ ] write a short changelog (i.e. re-use the PR content)
+{%- if do_release_notes_doc %}
+  - [ ] copy in the changelog from the release notes doc
+{%- else %}
+  - [ ] copy in the changelog from the release PR
+{%- endif %}
 {%- if do_vendor_tarball %}
   - [ ] upload `target/{{ crate }}-${RELEASE_VER}-vendor.tar.gz`
 {%- endif %}

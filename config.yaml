@@ -73,6 +73,13 @@ repos:
       crate: zincati
       fedora_package: rust-zincati
 
+  console-login-helper-messages:
+    url: https://github.com/coreos/console-login-helper-messages
+    vars:
+      git_repo: console-login-helper-messages
+      fedora_package: console-login-helper-messages
+      rhel9_package: console-login-helper-messages
+
 templates:
   - fcos/release-checklist.md
   - go/release-checklist.md

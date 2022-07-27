@@ -78,3 +78,4 @@ templates:
   - go/release-checklist.md
   - go/signing-ticket.sh
   - rust/release-checklist.md
+  - generic/release-checklist.md

@@ -14,7 +14,7 @@ jobs:
     container: registry.fedoraproject.org/fedora:latest
     steps:
       - name: Check out repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Install dependencies
         run: dnf install -y cargo git-core
       - name: Build tmpl8 binary

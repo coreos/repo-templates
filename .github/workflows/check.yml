@@ -16,7 +16,19 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v3
       - name: Install dependencies
-        run: dnf install -y cargo git-core
+        run: dnf install -y cargo git-core python3-pyyaml
+      - name: Check for unreferenced templates
+        run: |
+          python3 -c 'import yaml; print("\n".join(yaml.safe_load(open("config.yaml"))["templates"]))' |
+              sed 's/\.[a-z0-9]*$/.yaml/' > expected
+          stray=$(find . -path ./config.yaml -prune -o -name '*.yaml' -print |
+              sed 's:^\./::' |
+              grep -Fvxf expected ||:)
+          if [ -n "${stray}" ]; then
+              echo "Found template configs not referenced in config.yaml:"
+              echo "${stray}"
+              exit 1
+          fi
       - name: Build tmpl8 binary
         run: cd tmpl8 && cargo build
       - name: Sync cache

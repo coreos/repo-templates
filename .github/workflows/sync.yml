@@ -19,7 +19,7 @@ jobs:
       matrix: ${{ steps.get.outputs.matrix }}
     steps:
       - name: Check out repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Install dependencies
         run: dnf install -y cargo
       - name: Build tmpl8 binary
@@ -59,7 +59,7 @@ jobs:
       - name: Install dependencies
         run: dnf install -y git-core
       - name: Check out target repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           repository: ${{ matrix.repo }}
           path: dest

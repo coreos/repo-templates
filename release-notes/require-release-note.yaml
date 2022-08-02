@@ -1,0 +1,16 @@
+vars:
+  release_notes_path: docs/release-notes.md
+  release_notes_skip_label: skip-notes
+
+files:
+  - repo: afterburn
+    path: .github/workflows/require-release-note.yml
+
+  - repo: butane
+    path: .github/workflows/require-release-note.yml
+
+  - repo: coreos-installer
+    path: .github/workflows/require-release-note.yml
+
+  - repo: ignition
+    path: .github/workflows/require-release-note.yml

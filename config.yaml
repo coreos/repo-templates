@@ -77,4 +77,5 @@ templates:
   - fcos/release-checklist.md
   - go/release-checklist.md
   - go/signing-ticket.sh
+  - release-notes/require-release-note.yml
   - rust/release-checklist.md

@@ -11,6 +11,10 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: {% raw %}release-note-${{ github.ref }}{% endraw %}
+  cancel-in-progress: true
+
 jobs:
   require-notes:
     name: Require release note

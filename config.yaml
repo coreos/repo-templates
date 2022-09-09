@@ -67,6 +67,22 @@ repos:
       crate: openssh-keys
       fedora_package: rust-openssh-keys
 
+  ostree:
+    url: https://github.com/ostreedev/ostree
+    vars:
+      git_repo: ostree
+      fedora_package: ostree
+      rhel8_package: ostree
+      rhel9_package: ostree
+
+  rpm-ostree:
+    url: https://github.com/coreos/rpm-ostree
+    vars:
+      git_repo: rpm-ostree
+      fedora_package: rpm-ostree
+      rhel8_package: rpm-ostree
+      rhel9_package: rpm-ostree
+
   ssh-key-dir:
     url: https://github.com/coreos/ssh-key-dir
     vars:

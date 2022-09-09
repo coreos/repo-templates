@@ -13,6 +13,15 @@ repos:
       rhel8_package: rust-afterburn
       rhel9_package: rust-afterburn
 
+  bootupd:
+    url: https://github.com/coreos/bootupd
+    vars:
+      git_repo: bootupd
+      crate: bootupd
+      fedora_package: rust-bootupd
+      rhel8_package: rust-bootupd
+      rhel9_package: rust-bootupd
+
   butane:
     url: https://github.com/coreos/butane
     vars:

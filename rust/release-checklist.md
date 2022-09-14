@@ -20,7 +20,7 @@ This guide requires:
  * [GPG setup][GPG setup] and personal key for signing
  * `cargo` (suggested: latest stable toolchain from [rustup][rustup])
  * `cargo-release` (suggested: `cargo install -f cargo-release`)
-{%- if do_vendor_filter %}
+{%- if do_vendor_tarball and do_vendor_filter %}
  * `cargo vendor-filterer` (suggested: `cargo install -f cargo-vendor-filterer`)
 {%- endif %}
  * Write access to this GitHub project

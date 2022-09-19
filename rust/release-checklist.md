@@ -74,7 +74,7 @@ Push access to the upstream repository is required in order to publish the new t
 {% if do_vendor_tarball %}
 - assemble vendor archive:
 {%- if do_vendor_filter %}
-  - [ ] `cargo vendor-filterer --format=tar.gz target/{{ crate }}-${RELEASE_VER}-vendor.tar.gz`
+  - [ ] `cargo vendor-filterer target/vendor && tar czf target/{{ crate }}-${RELEASE_VER}-vendor.tar.gz -C target vendor`
 {%- else %}
   - [ ] `cargo vendor target/vendor`
   - [ ] `find target/vendor -name '*.a' -delete`

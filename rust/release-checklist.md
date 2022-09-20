@@ -46,6 +46,9 @@ Push access to the upstream repository is required in order to publish the new t
 
 - make sure the project is clean and prepare the environment:
   - [ ] Make sure `cargo-release` is up to date: `cargo install cargo-release`
+{%- if do_vendor_tarball and do_vendor_filter %}
+  - [ ] Make sure `cargo-vendor-filterer` is up to date: `cargo install cargo-vendor-filterer`
+{%- endif %}
   - [ ] `cargo test --all-features`
   - [ ] `cargo clean`
   - [ ] `git clean -fd`
@@ -74,7 +77,7 @@ Push access to the upstream repository is required in order to publish the new t
 {% if do_vendor_tarball %}
 - assemble vendor archive:
 {%- if do_vendor_filter %}
-  - [ ] `cargo vendor-filterer target/vendor && tar czf target/{{ crate }}-${RELEASE_VER}-vendor.tar.gz -C target vendor`
+  - [ ] `cargo vendor-filterer --format=tar.gz --prefix=vendor target/{{ crate }}-${RELEASE_VER}-vendor.tar.gz`
 {%- else %}
   - [ ] `cargo vendor target/vendor`
   - [ ] `find target/vendor -name '*.a' -delete`

@@ -15,21 +15,18 @@
 use std::collections::BTreeMap;
 use std::fs;
 use std::io;
-use std::os::unix::io::{AsRawFd, FromRawFd};
-use std::path::Path;
-use std::process::{Command, Stdio};
+use std::os::unix::fs::PermissionsExt;
+use std::path::{Path, PathBuf};
 
 use anyhow::{bail, Context, Result};
-use filetime::{self, FileTime};
 use regex::Regex;
 use similar::TextDiff;
 use tera::Tera;
 use yansi::Paint;
 
+use super::cache::*;
 use super::schema::*;
 use super::*;
-
-const DEFAULT_BRANCH: &str = "DEFAULT";
 
 pub(super) fn render(args: RenderArgs) -> Result<()> {
     let cfg = Config::parse(&args.config)?;
@@ -46,13 +43,7 @@ pub(super) fn render(args: RenderArgs) -> Result<()> {
                 Err(_) => continue, // file in another repo
             }
         }
-        let path = args.output.join(path);
-        let dir = path
-            .parent()
-            .with_context(|| format!("getting parent of {}", path.display()))?;
-        fs::create_dir_all(dir).with_context(|| format!("creating directory {}", dir.display()))?;
-        fs::write(&path, &data.into_bytes())
-            .with_context(|| format!("writing file {}", path.display()))?;
+        data.write(&args.output.join(path))?;
     }
     Ok(())
 }
@@ -80,7 +71,7 @@ pub(super) fn diff(args: DiffArgs) -> Result<()> {
                 return Err(e).with_context(|| format!("reading {}", cache_path.display()))?
             }
         };
-        let diff = TextDiff::from_lines(&old_contents, new_contents)
+        let diff = TextDiff::from_lines(&old_contents, new_contents.as_ref())
             .unified_diff()
             .header(&old_path, &path.to_string_lossy())
             .to_string();
@@ -102,12 +93,7 @@ pub(super) fn diff(args: DiffArgs) -> Result<()> {
     Ok(())
 }
 
-pub(super) fn update_cache(args: UpdateCacheArgs) -> Result<()> {
-    let cfg = Config::parse(&args.config)?;
-    do_update_cache(&cfg, &cache_dir(&args.config)?, &args.fork, true)
-}
-
-fn do_render(config_path: &Path, cfg: &Config) -> Result<BTreeMap<PathBuf, String>> {
+fn do_render(config_path: &Path, cfg: &Config) -> Result<BTreeMap<PathBuf, RenderedTemplate>> {
     let mut tera = Tera::default();
     tera.add_template_files(
         cfg.templates
@@ -130,10 +116,8 @@ fn do_render(config_path: &Path, cfg: &Config) -> Result<BTreeMap<PathBuf, Strin
             ctx.extend(repo.vars.to_context()?);
             ctx.extend(file.vars.to_context()?);
 
-            let result = tera
-                .render(template, &ctx)
+            let result = RenderedTemplate::new(&tera, template, &ctx)
                 .with_context(|| format!("rendering {}", file.path().display()))?;
-            let result = clean_rendered_output(&result);
             if rendered.insert(file.path(), result).is_some() {
                 bail!("multiple attempts to write to {}", file.path().display());
             }
@@ -142,121 +126,66 @@ fn do_render(config_path: &Path, cfg: &Config) -> Result<BTreeMap<PathBuf, Strin
     Ok(rendered)
 }
 
-/// Clean up some common rendering artifacts to ease template writing
-fn clean_rendered_output(output: &str) -> String {
-    // collapse 3 or more consecutive newlines into 2
-    let output = Regex::new("\n{3,}").unwrap().replace_all(output, "\n\n");
-    // collapse 2 or more trailing newlines into 1
-    let output = Regex::new("\n{2,}$").unwrap().replace_all(&output, "\n");
-    output.to_string()
+struct RenderedTemplate {
+    contents: String,
+    executable: bool,
 }
 
-fn do_update_cache(cfg: &Config, cache_dir: &Path, fork: &ForkArgs, force: bool) -> Result<()> {
-    for (name, repo) in &cfg.repos {
-        // clone repo if missing
-        let path = cache_dir.join(name);
-        if !path.exists() {
-            run_command(
-                Command::new("git")
-                    .args(["clone", "--depth=1", &repo.url])
-                    .arg(&path)
-                    .stdout(stderr()?),
-            )?;
-            // use consistent name for default branch
-            run_command(
-                Command::new("git")
-                    .args(["branch", "-m", DEFAULT_BRANCH])
-                    .stdout(stderr()?)
-                    .current_dir(&path),
-            )?;
+impl RenderedTemplate {
+    fn new(tera: &Tera, template: &str, ctx: &tera::Context) -> Result<Self> {
+        let output = tera.render(template, ctx)?;
+
+        // clean up some common rendering artifacts to ease template writing
+        // collapse 3 or more consecutive newlines into 2
+        let output = Regex::new("\n{3,}").unwrap().replace_all(&output, "\n\n");
+        // collapse 2 or more trailing newlines into 1
+        let output = Regex::new("\n{2,}$").unwrap().replace_all(&output, "\n");
+
+        let meta = fs::metadata(template).with_context(|| format!("statting {}", template))?;
+
+        Ok(Self {
+            contents: output.to_string(),
+            executable: meta.permissions().mode() & 0o111 != 0,
+        })
+    }
+
+    fn write(&self, path: &Path) -> Result<()> {
+        let dir = path
+            .parent()
+            .with_context(|| format!("getting parent of {}", path.display()))?;
+        fs::create_dir_all(dir).with_context(|| format!("creating directory {}", dir.display()))?;
+        // don't reuse existing file permissions
+        match fs::remove_file(&path) {
+            Ok(()) => (),
+            Err(e) if e.kind() == io::ErrorKind::NotFound => (),
+            Err(e) => {
+                return Err(e).with_context(|| format!("removing existing file {}", path.display()))
+            }
         }
-
-        // compute unique identifier of remote branch
-        let remote_url = fork
-            .regex
-            .as_ref()
-            .map(|re| re.replace(&repo.url, fork.replacement.as_ref().unwrap()));
-        let ident = if let Some(url) = &remote_url {
-            format!("{} {}\n", url, fork.branch.as_ref().unwrap())
-        } else {
-            DEFAULT_BRANCH.into()
-        };
-
-        // see if we need to update
-        let stamp_path = path.join(".git/tmpl8-stamp");
-        // need to switch branches if the stamp contents are different
-        match fs::read(&stamp_path) {
-            Ok(id) if id == ident.as_bytes() => {
-                // update anyway if stale or forced
-                let meta = fs::metadata(&stamp_path)
-                    .with_context(|| format!("statting {}", stamp_path.display()))?;
-                // Update the cache at most once per hour, unless forced
-                let age = FileTime::now().seconds()
-                    - FileTime::from_last_modification_time(&meta).seconds();
-                if (0..3600).contains(&age) && !force {
-                    continue;
+        fs::write(&path, &self.contents.as_bytes())
+            .with_context(|| format!("writing file {}", path.display()))?;
+        if self.executable {
+            let mut mode = fs::metadata(&path)
+                .with_context(|| format!("statting file {}", path.display()))?
+                .permissions()
+                .mode();
+            // only set +x if the umask allowed r or w
+            for shift in [0, 3, 6] {
+                if mode & (6 << shift) != 0 {
+                    mode |= 1 << shift;
                 }
             }
-            Ok(_) => (),
-            Err(e) if e.kind() == io::ErrorKind::NotFound => (),
-            Err(e) => return Err(e).with_context(|| format!("reading {}", stamp_path.display())),
+            fs::set_permissions(&path, fs::Permissions::from_mode(mode))
+                .with_context(|| format!("setting {} executable", path.display()))?;
         }
-
-        // update checkout
-        let mut updated = false;
-        // remote fork branch exists?
-        if let Some(remote_url) = &remote_url {
-            if Command::new("git")
-                .args(&[
-                    "fetch",
-                    "--depth",
-                    "1",
-                    remote_url,
-                    fork.branch.as_ref().unwrap(),
-                ])
-                .stdout(stderr()?)
-                .current_dir(&path)
-                .status()
-                .context("running git fetch")?
-                .success()
-            {
-                run_command(
-                    Command::new("git")
-                        .args(&["-c", "advice.detachedHead=false", "checkout", "FETCH_HEAD"])
-                        .stdout(stderr()?)
-                        .current_dir(&path),
-                )?;
-                updated = true;
-            }
-        }
-        // fall back to default branch
-        if !updated {
-            run_command(
-                Command::new("git")
-                    .args(&["checkout", DEFAULT_BRANCH])
-                    .stdout(stderr()?)
-                    .current_dir(&path),
-            )?;
-            run_command(
-                Command::new("git")
-                    .arg("pull")
-                    .stdout(stderr()?)
-                    .current_dir(&path),
-            )?;
-        }
-
-        // update stamp
-        fs::write(&stamp_path, &ident)
-            .with_context(|| format!("writing {}", stamp_path.display()))?;
+        Ok(())
     }
-    Ok(())
 }
 
-fn cache_dir(config_path: &Path) -> Result<PathBuf> {
-    Ok(config_path
-        .parent()
-        .with_context(|| format!("getting parent of {}", config_path.display()))?
-        .join(".cache"))
+impl AsRef<String> for RenderedTemplate {
+    fn as_ref(&self) -> &String {
+        &self.contents
+    }
 }
 
 fn template_path(config_path: &Path, template: &str) -> Result<PathBuf> {
@@ -277,27 +206,4 @@ fn template_config_path(config_path: &Path, template: &str) -> Result<PathBuf> {
         .to_owned();
     filename.push(".yaml");
     Ok(parent.join(filename))
-}
-
-fn run_command(cmd: &mut Command) -> Result<()> {
-    let desc = format!(
-        "{} {}",
-        cmd.get_program().to_string_lossy(),
-        cmd.get_args()
-            .map(|v| v.to_string_lossy())
-            .collect::<Vec<_>>()
-            .join(" ")
-    );
-    let status = cmd
-        .status()
-        .with_context(|| format!("running '{}'", desc))?;
-    if !status.success() {
-        bail!("command failed: '{}'", desc);
-    }
-    Ok(())
-}
-
-fn stderr() -> Result<Stdio> {
-    let stderr_fd = nix::unistd::dup(2_i32.as_raw_fd()).context("duplicating stderr")?;
-    Ok(unsafe { Stdio::from_raw_fd(stderr_fd) })
 }

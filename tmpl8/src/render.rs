@@ -15,7 +15,7 @@
 use std::collections::BTreeMap;
 use std::fs;
 use std::io;
-use std::path::Path;
+use std::path::{Path, PathBuf};
 
 use anyhow::{bail, Context, Result};
 use regex::Regex;
@@ -42,13 +42,7 @@ pub(super) fn render(args: RenderArgs) -> Result<()> {
                 Err(_) => continue, // file in another repo
             }
         }
-        let path = args.output.join(path);
-        let dir = path
-            .parent()
-            .with_context(|| format!("getting parent of {}", path.display()))?;
-        fs::create_dir_all(dir).with_context(|| format!("creating directory {}", dir.display()))?;
-        fs::write(&path, &data.into_bytes())
-            .with_context(|| format!("writing file {}", path.display()))?;
+        data.write(&args.output.join(path))?;
     }
     Ok(())
 }
@@ -76,7 +70,7 @@ pub(super) fn diff(args: DiffArgs) -> Result<()> {
                 return Err(e).with_context(|| format!("reading {}", cache_path.display()))?
             }
         };
-        let diff = TextDiff::from_lines(&old_contents, new_contents)
+        let diff = TextDiff::from_lines(&old_contents, new_contents.as_ref())
             .unified_diff()
             .header(&old_path, &path.to_string_lossy())
             .to_string();
@@ -98,7 +92,7 @@ pub(super) fn diff(args: DiffArgs) -> Result<()> {
     Ok(())
 }
 
-fn do_render(config_path: &Path, cfg: &Config) -> Result<BTreeMap<PathBuf, String>> {
+fn do_render(config_path: &Path, cfg: &Config) -> Result<BTreeMap<PathBuf, RenderedTemplate>> {
     let mut tera = Tera::default();
     tera.add_template_files(
         cfg.templates
@@ -121,10 +115,8 @@ fn do_render(config_path: &Path, cfg: &Config) -> Result<BTreeMap<PathBuf, Strin
             ctx.extend(repo.vars.to_context()?);
             ctx.extend(file.vars.to_context()?);
 
-            let result = tera
-                .render(template, &ctx)
+            let result = RenderedTemplate::new(&tera, template, &ctx)
                 .with_context(|| format!("rendering {}", file.path().display()))?;
-            let result = clean_rendered_output(&result);
             if rendered.insert(file.path(), result).is_some() {
                 bail!("multiple attempts to write to {}", file.path().display());
             }
@@ -133,13 +125,39 @@ fn do_render(config_path: &Path, cfg: &Config) -> Result<BTreeMap<PathBuf, Strin
     Ok(rendered)
 }
 
-/// Clean up some common rendering artifacts to ease template writing
-fn clean_rendered_output(output: &str) -> String {
-    // collapse 3 or more consecutive newlines into 2
-    let output = Regex::new("\n{3,}").unwrap().replace_all(output, "\n\n");
-    // collapse 2 or more trailing newlines into 1
-    let output = Regex::new("\n{2,}$").unwrap().replace_all(&output, "\n");
-    output.to_string()
+struct RenderedTemplate {
+    contents: String,
+}
+
+impl RenderedTemplate {
+    fn new(tera: &Tera, template: &str, ctx: &tera::Context) -> Result<Self> {
+        let output = tera.render(template, ctx)?;
+
+        // clean up some common rendering artifacts to ease template writing
+        // collapse 3 or more consecutive newlines into 2
+        let output = Regex::new("\n{3,}").unwrap().replace_all(&output, "\n\n");
+        // collapse 2 or more trailing newlines into 1
+        let output = Regex::new("\n{2,}$").unwrap().replace_all(&output, "\n");
+
+        Ok(Self {
+            contents: output.to_string(),
+        })
+    }
+
+    fn write(&self, path: &Path) -> Result<()> {
+        let dir = path
+            .parent()
+            .with_context(|| format!("getting parent of {}", path.display()))?;
+        fs::create_dir_all(dir).with_context(|| format!("creating directory {}", dir.display()))?;
+        fs::write(&path, &self.contents.as_bytes())
+            .with_context(|| format!("writing file {}", path.display()))
+    }
+}
+
+impl AsRef<String> for RenderedTemplate {
+    fn as_ref(&self) -> &String {
+        &self.contents
+    }
 }
 
 fn template_path(config_path: &Path, template: &str) -> Result<PathBuf> {

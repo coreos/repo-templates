@@ -18,6 +18,7 @@ use anyhow::Result;
 use clap::Parser;
 use regex::Regex;
 
+mod cache;
 mod github;
 mod render;
 mod schema;
@@ -101,7 +102,7 @@ fn main() -> Result<()> {
     match Cmd::parse() {
         Cmd::Render(c) => render::render(c),
         Cmd::Diff(c) => render::diff(c),
-        Cmd::UpdateCache(c) => render::update_cache(c),
+        Cmd::UpdateCache(c) => cache::update_cache(c),
         Cmd::GithubMatrix(c) => github::get_matrix(c),
     }
 }

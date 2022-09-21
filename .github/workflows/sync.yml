@@ -25,7 +25,9 @@ jobs:
       - name: Build tmpl8 binary
         run: cd tmpl8 && cargo build
       - name: Render templates
-        run: tmpl8/target/debug/tmpl8 render output
+        run: |
+          tmpl8/target/debug/tmpl8 render output
+          tar cf output.tar output
       - name: Get matrix
         id: get
         run: tmpl8/target/debug/tmpl8 github-matrix
@@ -33,7 +35,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: rendered
-          path: output
+          path: output.tar
 
   sync:
     name: Sync repo
@@ -79,7 +81,8 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: rendered
-          path: output
+      - name: Unpack rendered output
+        run: tar xf output.tar
       - name: Open pull request
         uses: peter-evans/create-pull-request@v4.0.4
         with:

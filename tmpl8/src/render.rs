@@ -15,6 +15,7 @@
 use std::collections::BTreeMap;
 use std::fs;
 use std::io;
+use std::os::unix::fs::PermissionsExt;
 use std::path::{Path, PathBuf};
 
 use anyhow::{bail, Context, Result};
@@ -127,6 +128,7 @@ fn do_render(config_path: &Path, cfg: &Config) -> Result<BTreeMap<PathBuf, Rende
 
 struct RenderedTemplate {
     contents: String,
+    executable: bool,
 }
 
 impl RenderedTemplate {
@@ -139,8 +141,11 @@ impl RenderedTemplate {
         // collapse 2 or more trailing newlines into 1
         let output = Regex::new("\n{2,}$").unwrap().replace_all(&output, "\n");
 
+        let meta = fs::metadata(template).with_context(|| format!("statting {}", template))?;
+
         Ok(Self {
             contents: output.to_string(),
+            executable: meta.permissions().mode() & 0o111 != 0,
         })
     }
 
@@ -149,8 +154,31 @@ impl RenderedTemplate {
             .parent()
             .with_context(|| format!("getting parent of {}", path.display()))?;
         fs::create_dir_all(dir).with_context(|| format!("creating directory {}", dir.display()))?;
+        // don't reuse existing file permissions
+        match fs::remove_file(&path) {
+            Ok(()) => (),
+            Err(e) if e.kind() == io::ErrorKind::NotFound => (),
+            Err(e) => {
+                return Err(e).with_context(|| format!("removing existing file {}", path.display()))
+            }
+        }
         fs::write(&path, &self.contents.as_bytes())
-            .with_context(|| format!("writing file {}", path.display()))
+            .with_context(|| format!("writing file {}", path.display()))?;
+        if self.executable {
+            let mut mode = fs::metadata(&path)
+                .with_context(|| format!("statting file {}", path.display()))?
+                .permissions()
+                .mode();
+            // only set +x if the umask allowed r or w
+            for shift in [0, 3, 6] {
+                if mode & (6 << shift) != 0 {
+                    mode |= 1 << shift;
+                }
+            }
+            fs::set_permissions(&path, fs::Permissions::from_mode(mode))
+                .with_context(|| format!("setting {} executable", path.display()))?;
+        }
+        Ok(())
     }
 }
 

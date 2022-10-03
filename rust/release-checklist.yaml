@@ -9,6 +9,9 @@ files:
     vars:
       do_release_notes_doc: true
 
+  - repo: bootupd
+    path: .github/ISSUE_TEMPLATE/release-checklist.md
+
   - repo: coreos-installer
     path: .github/ISSUE_TEMPLATE/release-checklist.md
     vars:

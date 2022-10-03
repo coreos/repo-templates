@@ -13,6 +13,15 @@ repos:
       rhel8_package: rust-afterburn
       rhel9_package: rust-afterburn
 
+  bootupd:
+    url: https://github.com/coreos/bootupd
+    vars:
+      git_repo: bootupd
+      crate: bootupd
+      fedora_package: rust-bootupd
+      rhel8_package: rust-bootupd
+      rhel9_package: rust-bootupd
+
   butane:
     url: https://github.com/coreos/butane
     vars:
@@ -57,6 +66,22 @@ repos:
       git_repo: openssh-keys
       crate: openssh-keys
       fedora_package: rust-openssh-keys
+
+  ostree:
+    url: https://github.com/ostreedev/ostree
+    vars:
+      git_repo: ostree
+      fedora_package: ostree
+      rhel8_package: ostree
+      rhel9_package: ostree
+
+  rpm-ostree:
+    url: https://github.com/coreos/rpm-ostree
+    vars:
+      git_repo: rpm-ostree
+      fedora_package: rpm-ostree
+      rhel8_package: rpm-ostree
+      rhel9_package: rpm-ostree
 
   ssh-key-dir:
     url: https://github.com/coreos/ssh-key-dir

@@ -1,0 +1,6 @@
+vars:
+  do_fast_track: true
+
+files:
+  - repo: console-login-helper-messages
+    path: .github/ISSUE_TEMPLATE/release-checklist.md

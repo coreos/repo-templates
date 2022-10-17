@@ -15,6 +15,7 @@
 use std::path::PathBuf;
 
 use anyhow::Result;
+use clap::builder::ArgPredicate;
 use clap::Parser;
 use regex::Regex;
 
@@ -25,9 +26,9 @@ mod schema;
 
 /// Renderer for Git repo boilerplate
 #[derive(Debug, Parser)]
-#[clap(args_conflicts_with_subcommands = true)]
-#[clap(disable_help_subcommand = true)]
-#[clap(help_expected = true)]
+#[command(args_conflicts_with_subcommands = true)]
+#[command(disable_help_subcommand = true)]
+#[command(help_expected = true)]
 enum Cmd {
     /// Render templates
     Render(RenderArgs),
@@ -44,57 +45,66 @@ struct RenderArgs {
     /// Output directory
     output: PathBuf,
     /// Config file
-    #[clap(short = 'c', long, value_name = "file", default_value = "config.yaml")]
+    #[arg(short = 'c', long, value_name = "file", default_value = "config.yaml")]
     config: PathBuf,
     /// Render only one repository
-    #[clap(short = 'r', long, value_name = "repo-name")]
+    #[arg(short = 'r', long, value_name = "repo-name")]
     repo: Option<String>,
 }
 
 #[derive(Debug, Parser)]
 struct DiffArgs {
     /// Config file
-    #[clap(short = 'c', long, value_name = "file", default_value = "config.yaml")]
+    #[arg(short = 'c', long, value_name = "file", default_value = "config.yaml")]
     config: PathBuf,
-    #[clap(flatten)]
+    #[command(flatten)]
     fork: ForkArgs,
     /// Disable color output
-    #[clap(short = 'n', long)]
+    #[arg(short = 'n', long)]
     no_color: bool,
 }
 
 #[derive(Debug, Parser)]
 struct UpdateCacheArgs {
     /// Config file
-    #[clap(short = 'c', long, value_name = "file", default_value = "config.yaml")]
+    #[arg(short = 'c', long, value_name = "file", default_value = "config.yaml")]
     config: PathBuf,
-    #[clap(flatten)]
+    #[command(flatten)]
     fork: ForkArgs,
 }
 
 #[derive(Debug, Parser)]
 struct ForkArgs {
     /// Regex for the upstream part of repo URL
-    #[clap(long = "fork-regex", value_name = "regex")]
-    #[clap(requires_all = &["replacement", "branch"])]
+    #[arg(long = "fork-regex", value_name = "regex")]
+    #[arg(requires_ifs = [
+        (ArgPredicate::IsPresent, "replacement"),
+        (ArgPredicate::IsPresent, "branch")
+    ])]
     regex: Option<Regex>,
     /// Replacement for upstream part of repo URL
-    #[clap(long = "fork-replacement", value_name = "string")]
-    #[clap(requires_all = &["regex", "branch"])]
+    #[arg(long = "fork-replacement", value_name = "string")]
+    #[arg(requires_ifs = [
+        (ArgPredicate::IsPresent, "regex"),
+        (ArgPredicate::IsPresent, "branch")
+    ])]
     replacement: Option<String>,
     /// Fork branch
-    #[clap(long = "fork-branch", value_name = "branch")]
-    #[clap(requires_all = &["regex", "replacement"])]
+    #[arg(long = "fork-branch", value_name = "branch")]
+    #[arg(requires_ifs = [
+        (ArgPredicate::IsPresent, "regex"),
+        (ArgPredicate::IsPresent, "replacement")
+    ])]
     branch: Option<String>,
 }
 
 #[derive(Debug, Parser)]
 struct GithubMatrixArgs {
     /// Config file
-    #[clap(short = 'c', long, value_name = "file", default_value = "config.yaml")]
+    #[arg(short = 'c', long, value_name = "file", default_value = "config.yaml")]
     config: PathBuf,
     /// Print human-readable JSON
-    #[clap(short = 'p', long)]
+    #[arg(short = 'p', long)]
     pretty: bool,
 }
 
@@ -110,7 +120,7 @@ fn main() -> Result<()> {
 #[cfg(test)]
 mod test {
     use super::*;
-    use clap::IntoApp;
+    use clap::CommandFactory;
 
     #[test]
     fn clap_app() {

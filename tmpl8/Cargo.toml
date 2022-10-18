@@ -11,7 +11,7 @@ publish = false
 
 [dependencies]
 anyhow = "1"
-clap = { version = "3.2", default-features = false, features = ["std", "derive"] }
+clap = { version = "4", default-features = false, features = ["std", "derive", "error-context", "help", "usage"] }
 filetime = "0.2"
 nix = { version = "0.25", default-features = false, features = ["fs"] }
 regex = "1.6"

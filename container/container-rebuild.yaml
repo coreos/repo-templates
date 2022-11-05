@@ -1,0 +1,17 @@
+# This workflow is specifically for repos that maintain a versioned Docker
+# tag per Git tag, plus a 'release' tag that's aliased to the latest
+# versioned tag.  If there's a security update for the container base image,
+# we need to be able to update 'release' and create a new versioned tag
+# (e.g. 'v1.2.3-1') without creating a corresponding Git tag.
+#
+# Don't list repos that solely ship the main branch, since those can force a
+# rebuild by just pushing a commit.
+files:
+  - repo: butane
+    path: .github/workflows/container-rebuild.yml
+
+  - repo: coreos-installer
+    path: .github/workflows/container-rebuild.yml
+
+  - repo: ignition
+    path: .github/workflows/container-rebuild.yml

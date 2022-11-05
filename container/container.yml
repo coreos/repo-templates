@@ -1,0 +1,47 @@
+# Maintained in https://github.com/coreos/repo-templates
+# Do not edit downstream.
+
+{# Keep in sync with container-rebuild.yml. #}
+
+name: Container
+
+on:
+  push:
+    branches: [{{ branches | join(sep=", ") }}]
+    tags: ["v*"]
+  pull_request:
+    branches: [{{ branches | join(sep=", ") }}]
+
+permissions:
+  contents: read
+
+# avoid races when pushing containers built from main
+concurrency:
+  group: {% raw %}${{ github.workflow }}-${{ github.ref }}{% endraw %}
+
+jobs:
+  build-container:
+    name: Build container image
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v3
+{%- if container_needs_git_tags %}
+        with:
+          # fetch tags so the compiled-in version number is useful
+          fetch-depth: 0
+{%- endif %}
+      - name: Build and push container
+        uses: coreos/actions-lib/build-container@main
+        with:
+          credentials: {% raw %}${{ secrets.QUAY_AUTH }}{% endraw %}
+{%-if container_file %}
+          file: {{ container_file }}
+{%- endif %}
+          push: {{ containers | join(sep=" ") }}
+          arches: {{ container_arches | join(sep=" ") }}
+{#- check whether container_arches != ['amd64'] (Tera can't compare arrays) #}
+{%-if container_arches.0 != 'amd64' or container_arches.1 %}
+          # Speed up PR CI by skipping non-amd64
+          pr-arches: amd64
+{%- endif %}

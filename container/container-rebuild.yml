@@ -1,0 +1,47 @@
+# Maintained in https://github.com/coreos/repo-templates
+# Do not edit downstream.
+
+{# Keep in sync with container.yml. #}
+
+name: Rebuild release container
+
+on:
+  workflow_dispatch:
+    inputs:
+      git-tag:
+        description: Existing Git tag
+        default: vX.Y.Z
+      docker-tag:
+        description: New Docker versioned tag
+        default: vX.Y.Z-1
+
+permissions:
+  contents: read
+
+# avoid races when pushing containers built from main
+concurrency:
+  group: {% raw %}${{ github.workflow }}-${{ github.ref }}{% endraw %}
+
+jobs:
+  build-container:
+    name: Build container image
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v3
+        with:
+          ref: {% raw %}${{ github.event.inputs.git-tag }}{% endraw %}
+{%- if container_needs_git_tags %}
+          # fetch tags so the compiled-in version number is useful
+          fetch-depth: 0
+{%- endif %}
+      - name: Build and push container
+        uses: coreos/actions-lib/build-container@main
+        with:
+          credentials: {% raw %}${{ secrets.QUAY_AUTH }}{% endraw %}
+{%-if container_file %}
+          file: {{ container_file }}
+{%- endif %}
+          push: {{ containers | join(sep=" ") }}
+          arches: {{ container_arches | join(sep=" ") }}
+          tags: {% raw %}${{ github.event.inputs.docker-tag }}{% endraw %} release

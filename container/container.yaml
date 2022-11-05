@@ -1,0 +1,27 @@
+vars:
+  branches: [main]
+
+files:
+  - repo: 11bot
+    path: .github/workflows/container.yml
+
+  - repo: airlock
+    path: .github/workflows/container.yml
+
+  - repo: butane
+    path: .github/workflows/container.yml
+
+  - repo: coreos-installer
+    # legacy path
+    path: .github/workflows/containers.yml
+
+  - repo: ignition
+    path: .github/workflows/container.yml
+
+  - repo: rhcosbot
+    path: .github/workflows/container.yml
+
+  - repo: triagebot
+    path: .github/workflows/container.yml
+    vars:
+      branches: [main, bugzilla]

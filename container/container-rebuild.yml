@@ -1,16 +1,19 @@
 # Maintained in https://github.com/coreos/repo-templates
 # Do not edit downstream.
 
-{# Keep in sync with container-rebuild.yml. #}
+{# Keep in sync with container.yml. #}
 
-name: Container
+name: Rebuild release container
 
 on:
-  push:
-    branches: [{{ branches | join(sep=", ") }}]
-    tags: ["v*"]
-  pull_request:
-    branches: [{{ branches | join(sep=", ") }}]
+  workflow_dispatch:
+    inputs:
+      git-tag:
+        description: Existing Git tag
+        default: vX.Y.Z
+      docker-tag:
+        description: New Docker versioned tag
+        default: vX.Y.Z-1
 
 permissions:
   contents: read
@@ -26,8 +29,9 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v3
-{%- if container_needs_git_tags %}
         with:
+          ref: {% raw %}${{ github.event.inputs.git-tag }}{% endraw %}
+{%- if container_needs_git_tags %}
           # fetch tags so the compiled-in version number is useful
           fetch-depth: 0
 {%- endif %}
@@ -40,8 +44,4 @@ jobs:
 {%- endif %}
           push: {{ containers | join(sep=" ") }}
           arches: {{ container_arches | join(sep=" ") }}
-{#- check whether container_arches != ['amd64'] (Tera can't compare arrays) #}
-{%-if container_arches.0 != 'amd64' or container_arches.1 %}
-          # Speed up PR CI by skipping non-amd64
-          pr-arches: amd64
-{%- endif %}
+          tags: {% raw %}${{ github.event.inputs.docker-tag }}{% endraw %} release

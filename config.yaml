@@ -107,6 +107,7 @@ repos:
 
 templates:
   - container/container.yml
+  - container/container-rebuild.yml
   - fcos/release-checklist.md
   - go/release-checklist.md
   - go/signing-ticket.sh

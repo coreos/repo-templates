@@ -123,3 +123,5 @@ templates:
   - go/signing-ticket.sh
   - release-notes/require-release-note.yml
   - rust/release-checklist.md
+  - shellcheck/script.sh
+  - shellcheck/workflow.yml

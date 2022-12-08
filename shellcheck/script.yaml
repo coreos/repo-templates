@@ -1,0 +1,6 @@
+files:
+  - repo: console-login-helper-messages
+    path: ci/shellcheck
+
+  - repo: fedora-coreos-config
+    path: ci/shellcheck

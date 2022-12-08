@@ -55,6 +55,11 @@ repos:
       rhel8_package: coreos-installer
       rhel9_package: rust-coreos-installer
 
+  fedora-coreos-config:
+    url: https://github.com/coreos/fedora-coreos-config
+    vars:
+      git_repo: fedora-coreos-config
+
   fedora-coreos-streams:
     url: https://github.com/coreos/fedora-coreos-streams
 

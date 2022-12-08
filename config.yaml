@@ -55,6 +55,11 @@ repos:
       rhel8_package: coreos-installer
       rhel9_package: rust-coreos-installer
 
+  coreos-installer-dracut:
+    url: https://github.com/coreos/coreos-installer-dracut
+    vars:
+      git_repo: coreos-installer-dracut
+
   fedora-coreos-config:
     url: https://github.com/coreos/fedora-coreos-config
     vars:

@@ -39,6 +39,11 @@ repos:
       rhel8_package: butane
       macports_package: sysutils/butane
 
+  console-login-helper-messages:
+    url: https://github.com/coreos/console-login-helper-messages
+    vars:
+      git_repo: console-login-helper-messages
+
   coreos-installer:
     url: https://github.com/coreos/coreos-installer
     vars:

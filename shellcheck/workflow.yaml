@@ -1,0 +1,12 @@
+files:
+  - repo: console-login-helper-messages
+    path: .github/workflows/shellcheck.yml
+    vars:
+      branches:
+        - main
+
+  - repo: fedora-coreos-config
+    path: .github/workflows/shellcheck.yml
+    vars:
+      branches:
+        - testing-devel

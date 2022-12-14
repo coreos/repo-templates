@@ -39,6 +39,11 @@ repos:
       rhel8_package: butane
       macports_package: sysutils/butane
 
+  console-login-helper-messages:
+    url: https://github.com/coreos/console-login-helper-messages
+    vars:
+      git_repo: console-login-helper-messages
+
   coreos-installer:
     url: https://github.com/coreos/coreos-installer
     vars:
@@ -49,6 +54,11 @@ repos:
       fedora_package: rust-coreos-installer
       rhel8_package: coreos-installer
       rhel9_package: rust-coreos-installer
+
+  fedora-coreos-config:
+    url: https://github.com/coreos/fedora-coreos-config
+    vars:
+      git_repo: fedora-coreos-config
 
   fedora-coreos-streams:
     url: https://github.com/coreos/fedora-coreos-streams
@@ -113,3 +123,5 @@ templates:
   - go/signing-ticket.sh
   - release-notes/require-release-note.yml
   - rust/release-checklist.md
+  - shellcheck/script.sh
+  - shellcheck/workflow.yml

@@ -30,7 +30,7 @@ jobs:
           tar cf output.tar output
       - name: Get matrix
         id: get
-        run: tmpl8/target/debug/tmpl8 github-matrix
+        run: tmpl8/target/debug/tmpl8 github-matrix >> $GITHUB_OUTPUT
       - name: Upload rendered output
         uses: actions/upload-artifact@v2
         with:

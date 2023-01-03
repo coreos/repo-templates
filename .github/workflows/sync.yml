@@ -84,7 +84,7 @@ jobs:
       - name: Unpack rendered output
         run: tar xf output.tar
       - name: Open pull request
-        uses: peter-evans/create-pull-request@v4.0.4
+        uses: peter-evans/create-pull-request@v4.2.3
         with:
           token: ${{ secrets.COREOSBOT_RELENG_TOKEN }}
           path: output/${{ env.REPO_NAME }}

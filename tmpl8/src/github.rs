@@ -43,7 +43,7 @@ pub(super) fn get_matrix(args: GithubMatrixArgs) -> Result<()> {
         serde_json::to_writer_pretty(&mut io::stdout().lock(), &matrix)
             .context("writing to stdout")?;
     } else {
-        print!("::set-output name=matrix::");
+        print!("matrix=");
         serde_json::to_writer(&mut io::stdout().lock(), &matrix).context("writing to stdout")?;
     }
     println!();

@@ -30,9 +30,9 @@ jobs:
           tar cf output.tar output
       - name: Get matrix
         id: get
-        run: tmpl8/target/debug/tmpl8 github-matrix
+        run: tmpl8/target/debug/tmpl8 github-matrix >> $GITHUB_OUTPUT
       - name: Upload rendered output
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: rendered
           path: output.tar
@@ -78,13 +78,13 @@ jobs:
           mkdir output
           mv dest "output/$reponame"
       - name: Download rendered output
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: rendered
       - name: Unpack rendered output
         run: tar xf output.tar
       - name: Open pull request
-        uses: peter-evans/create-pull-request@v4.0.4
+        uses: peter-evans/create-pull-request@v4.2.3
         with:
           token: ${{ secrets.COREOSBOT_RELENG_TOKEN }}
           path: output/${{ env.REPO_NAME }}

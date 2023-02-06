@@ -20,7 +20,7 @@ This guide requires:
  * [GPG setup][GPG setup] and personal key for signing
  * `cargo` (suggested: latest stable toolchain from [rustup][rustup])
  * `cargo-release` (suggested: `cargo install -f cargo-release`)
-{%- if do_vendor_tarball and do_vendor_filter %}
+{%- if do_vendor_tarball %}
  * `cargo vendor-filterer` (suggested: `cargo install -f cargo-vendor-filterer`)
 {%- endif %}
  * Write access to this GitHub project
@@ -46,7 +46,7 @@ Push access to the upstream repository is required in order to publish the new t
 
 - make sure the project is clean and prepare the environment:
   - [ ] Make sure `cargo-release` is up to date: `cargo install cargo-release`
-{%- if do_vendor_tarball and do_vendor_filter %}
+{%- if do_vendor_tarball %}
   - [ ] Make sure `cargo-vendor-filterer` is up to date: `cargo install cargo-vendor-filterer`
 {%- endif %}
   - [ ] `cargo test --all-features`
@@ -76,13 +76,7 @@ Push access to the upstream repository is required in order to publish the new t
 
 {% if do_vendor_tarball %}
 - assemble vendor archive:
-{%- if do_vendor_filter %}
   - [ ] `cargo vendor-filterer --format=tar.gz --prefix=vendor target/{{ crate }}-${RELEASE_VER}-vendor.tar.gz`
-{%- else %}
-  - [ ] `cargo vendor target/vendor`
-  - [ ] `find target/vendor -name '*.a' -delete`
-  - [ ] `tar -czf target/{{ crate }}-${RELEASE_VER}-vendor.tar.gz -C target vendor`
-{% endif %}
 {% endif %}
 
 - publish this release on GitHub:

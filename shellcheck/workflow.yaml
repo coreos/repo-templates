@@ -5,6 +5,12 @@ files:
       branches:
         - main
 
+  - repo: coreos-installer
+    path: .github/workflows/shellcheck.yml
+    vars:
+      branches:
+        - main
+
   - repo: fedora-coreos-config
     path: .github/workflows/shellcheck.yml
     vars:

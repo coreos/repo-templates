@@ -10,3 +10,9 @@ files:
     vars:
       branches:
         - testing-devel
+
+  - repo: ignition
+    path: .github/workflows/shellcheck.yml
+    vars:
+      branches:
+        - main

@@ -14,3 +14,6 @@ files:
 
   - repo: ignition
     path: .github/workflows/require-release-note.yml
+
+  - repo: ignition-config-rs
+    path: .github/workflows/require-release-note.yml

@@ -7,3 +7,6 @@ files:
 
   - repo: fedora-coreos-config
     path: ci/shellcheck
+
+  - repo: ignition
+    path: ci/shellcheck

@@ -23,5 +23,3 @@ files:
 
   - repo: triagebot
     path: .github/workflows/container.yml
-    vars:
-      branches: [main, bugzilla]

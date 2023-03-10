@@ -45,10 +45,7 @@ Push access to the upstream repository is required in order to publish the new t
 {% endif %}
 
 - make sure the project is clean and prepare the environment:
-  - [ ] Make sure `cargo-release` is up to date: `cargo install cargo-release`
-{%- if do_vendor_tarball %}
-  - [ ] Make sure `cargo-vendor-filterer` is up to date: `cargo install cargo-vendor-filterer`
-{%- endif %}
+  - [ ] Make sure `cargo-release` {% if do_vendor_tarball %}and `cargo-vendor-filterer` are{% else %}is{% endif %} up to date: `cargo install cargo-release{% if do_vendor_tarball %} cargo-vendor-filterer{% endif %}`
   - [ ] `cargo test --all-features`
   - [ ] `cargo clean`
   - [ ] `git clean -fd`

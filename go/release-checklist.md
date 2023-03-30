@@ -66,7 +66,7 @@ Quay release:
 {%- endfor %}
 
 RHCOS packaging for the current RHCOS development release:
- - [ ] Update the spec file
+ - [ ] Update the [spec file](https://gitlab.com/redhat/rhel/rpms/{{ rhel8_package }})
    - Bump the `Version`
    - Switch the `Release` back to `1%{?dist}`
    - Remove any patches obsoleted by the new release

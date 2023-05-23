@@ -141,7 +141,7 @@ Push access to the upstream repository is required in order to publish the new t
 
 {% if rhel8_package %}
 - RHCOS packaging:
-  - [ ] update the `{{ rhel8_package }}` spec file
+  - [ ] update the [spec file](https://gitlab.com/redhat/rhel/rpms/{{ rhel8_package }})
     - bump the `Version`
     - switch the `Release` back to `1%{?dist}`
     - remove any patches obsoleted by the new release

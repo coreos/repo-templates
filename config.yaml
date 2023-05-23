@@ -37,7 +37,6 @@ repos:
       quay_legacy_repos: [coreos/fcct]
       fedora_package: butane
       rhel8_package: butane
-      macports_package: sysutils/butane
 
   console-login-helper-messages:
     url: https://github.com/coreos/console-login-helper-messages

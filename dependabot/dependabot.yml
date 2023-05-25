@@ -1,0 +1,19 @@
+version: 2
+updates:
+- package-ecosystem: {% if dependabot_ecosystem != "auto" -%}
+{{ dependabot_ecosystem }}
+{%- elif crate -%}
+cargo
+{%- else -%}
+gomod
+{%- endif %}
+  directory: {{ dependabot_directory }}
+  schedule:
+    interval: {{ dependabot_interval }}
+  open-pull-requests-limit: 10
+{%- if dependabot_labels %}
+  labels:
+{%- for label in dependabot_labels %}
+  - {{ label }}
+{%- endfor %}
+{% endif %}

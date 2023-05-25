@@ -1,7 +1,7 @@
 version: 2
 updates:
 - package-ecosystem: cargo
-  directory: "/tmpl8"
+  directory: /tmpl8
   schedule:
     interval: monthly
   open-pull-requests-limit: 10

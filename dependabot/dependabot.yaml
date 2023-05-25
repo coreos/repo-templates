@@ -1,0 +1,91 @@
+vars:
+  dependabot_directory: /
+  dependabot_ecosystem: auto
+  dependabot_interval: weekly
+  dependabot_labels: [dependency]
+
+files:
+  - repo: afterburn
+    path: .github/dependabot.yml
+    vars:
+      dependabot_labels: [dependency, skip-notes]
+
+  - repo: airlock
+    path: .github/dependabot.yml
+    vars:
+      dependabot_labels: [kind/dependency]
+
+  - repo: bootupd
+    path: .github/dependabot.yml
+    vars:
+      dependabot_labels: [area/dependencies]
+
+  - repo: butane
+    path: .github/dependabot.yml
+    vars:
+      dependabot_labels: [dependency, skip-notes]
+
+  # coreos-assembler has some extra rules that aren't yet supported by the
+  # template
+
+  - repo: coreos-installer
+    path: .github/dependabot.yml
+    vars:
+      dependabot_labels: [dependency, skip-notes]
+
+  - repo: fedora-coreos-stream-generator
+    path: .github/dependabot.yml
+    vars:
+      dependabot_labels: []
+      dependabot_interval: daily
+
+  - repo: ign-converter
+    path: .github/dependabot.yml
+
+  - repo: ignition
+    path: .github/dependabot.yml
+    vars:
+      dependabot_labels: [dependency, skip-notes]
+
+  - repo: ignition-config-rs
+    path: .github/dependabot.yml
+    vars:
+      dependabot_labels: [dependency, skip-notes]
+
+  - repo: liboverdrop-rs
+    path: .github/dependabot.yml
+
+  - repo: openat-ext
+    path: .github/dependabot.yml
+    vars:
+      dependabot_interval: daily
+
+  - repo: openssh-keys
+    path: .github/dependabot.yml
+    vars:
+      dependabot_labels: []
+
+  - repo: repo-templates
+    path: .github/dependabot.yml
+    vars:
+      dependabot_directory: /tmpl8
+      dependabot_ecosystem: cargo
+      dependabot_interval: monthly
+
+  # rpm-ostree has some extra rules that aren't yet supported by the
+  # template
+
+  - repo: ssh-key-dir
+    path: .github/dependabot.yml
+
+  - repo: stream-metadata-go
+    path: .github/dependabot.yml
+
+  - repo: stream-metadata-rust
+    path: .github/dependabot.yml
+
+  - repo: zincati
+    path: .github/dependabot.yml
+    vars:
+      dependabot_labels: [area/dependencies]
+      dependabot_interval: daily

@@ -27,6 +27,15 @@ repos:
       rhel8_package: rust-afterburn
       rhel9_package: rust-afterburn
 
+  bootupd:
+    url: https://github.com/coreos/bootupd
+    vars:
+      git_repo: bootupd
+      crate: bootupd
+      fedora_package: rust-bootupd
+      rhel8_package: rust-bootupd
+      rhel9_package: rust-bootupd
+
   butane:
     url: https://github.com/coreos/butane
     vars:
@@ -64,8 +73,18 @@ repos:
     vars:
       git_repo: fedora-coreos-config
 
+  fedora-coreos-stream-generator:
+    url: https://github.com/coreos/fedora-coreos-stream-generator
+    vars:
+      git_repo: fedora-coreos-stream-generator
+
   fedora-coreos-streams:
     url: https://github.com/coreos/fedora-coreos-streams
+
+  ign-converter:
+    url: https://github.com/coreos/ign-converter
+    vars:
+      git_repo: ign-converter
 
   ignition:
     url: https://github.com/coreos/ignition
@@ -85,12 +104,31 @@ repos:
       crate: ignition-config
       fedora_package: rust-ignition-config
 
+  liboverdrop-rs:
+    url: https://github.com/coreos/liboverdrop-rs
+    vars:
+      git_repo: liboverdrop-rs
+      crate: liboverdrop
+      fedora_package: rust-liboverdrop
+
+  openat-ext:
+    url: https://github.com/coreos/openat-ext
+    vars:
+      git_repo: openat-ext
+      crate: openat-ext
+      fedora_package: rust-openat-ext
+
   openssh-keys:
     url: https://github.com/coreos/openssh-keys
     vars:
       git_repo: openssh-keys
       crate: openssh-keys
       fedora_package: rust-openssh-keys
+
+  repo-templates:
+    url: https://github.com/coreos/repo-templates
+    vars:
+      git_repo: repo-templates
 
   rhcosbot:
     url: https://github.com/coreos/rhcosbot
@@ -105,6 +143,17 @@ repos:
       crate: ssh-key-dir
       fedora_package: rust-ssh-key-dir
       rhel9_package: rust-ssh-key-dir
+
+  stream-metadata-go:
+    url: https://github.com/coreos/stream-metadata-go
+    vars:
+      git_repo: stream-metadata-go
+
+  stream-metadata-rust:
+    url: https://github.com/coreos/stream-metadata-rust
+    vars:
+      git_repo: stream-metadata-rust
+      crate: coreos-stream-metadata
 
   triagebot:
     url: https://github.com/coreos/triagebot
@@ -122,6 +171,7 @@ repos:
 templates:
   - container/container.yml
   - container/container-rebuild.yml
+  - dependabot/dependabot.yml
   - fcos/release-checklist.md
   - go/release-checklist.md
   - go/signing-ticket.sh

@@ -38,13 +38,34 @@ Push access to the upstream repository is required in order to publish the new t
 
 :warning:: if `origin` is not the name of the locally configured remote that points to the upstream git repository (i.e. `git@github.com:coreos/{{ git_repo }}.git`), be sure to assign the correct remote name to the `UPSTREAM_REMOTE` variable.
 
-{% if do_release_notes_doc %}
-- write release notes
-  - [ ] write release notes in `docs/release-notes.md`; get them reviewed and merged
-  - [ ] if doing a branched release, also include a PR to merge the `docs/release-notes.md` changes into main
+- prepare environment:
+  - [ ] `RELEASE_VER=x.y.z`
+  - [ ] `UPSTREAM_REMOTE=origin`
+{%- if not library_crate or do_release_notes_doc %}
+  - [ ] `git checkout -b pre-release-${RELEASE_VER}`
+{%- endif %}
+
+{% if not library_crate %}
+- update all dependencies:
+  - [ ] `cargo update`
+  - [ ] `git add Cargo.lock && git commit -m "cargo: update dependencies"`
 {% endif %}
 
-- make sure the project is clean and prepare the environment:
+{% if do_release_notes_doc %}
+- write release notes:
+  - [ ] write release notes in `docs/release-notes.md`
+  - [ ] `git add docs/release-notes.md && git commit -m "docs/release-notes: update for release ${RELEASE_VER}"`
+{% endif %}
+
+{% if not library_crate or do_release_notes_doc %}
+- land the changes:
+  - [ ] PR the changes, get them reviewed, approved and merged
+{%- if do_release_notes_doc %}
+  - [ ] if doing a branched release, also include a PR to merge the `docs/release-notes.md` changes into main
+{%- endif %}
+{% endif %}
+
+- make sure the project is clean:
   - [ ] Make sure `cargo-release` {% if library_crate %}is{% else %}and `cargo-vendor-filterer` are{% endif %} up to date: `cargo install cargo-release{% if not library_crate %} cargo-vendor-filterer{% endif %}`
 {%- if library_crate %}
   - [ ] `cargo test --all-features`
@@ -54,8 +75,6 @@ Push access to the upstream repository is required in order to publish the new t
 {%- endif %}
   - [ ] `cargo clean`
   - [ ] `git clean -fd`
-  - [ ] `RELEASE_VER=x.y.z`
-  - [ ] `UPSTREAM_REMOTE=origin`
 
 - create release commit on a dedicated branch and tag it (the commit and tag will be signed with the GPG signing key you configured):
   - [ ] `git checkout -b release-${RELEASE_VER}`

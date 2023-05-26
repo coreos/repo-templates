@@ -1,0 +1,8 @@
+# Test build in Copr to make sure all dependencies are available in Fedora.
+
+files:
+  - repo: afterburn
+    path: .github/workflows/rpm.yml
+
+  - repo: coreos-installer
+    path: .github/workflows/rpm.yml

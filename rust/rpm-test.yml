@@ -1,0 +1,47 @@
+# Maintained in https://github.com/coreos/repo-templates
+# Do not edit downstream.
+
+name: RPMs
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+permissions:
+  contents: read
+
+# don't waste job slots on superseded code
+concurrency:
+  group: {% raw %}${{ github.workflow }}-${{ github.ref }}{% endraw %}
+  cancel-in-progress: true
+
+jobs:
+  test-rpm-build:
+    name: "Build (Fedora)"
+    runs-on: ubuntu-latest
+    container:
+      image: registry.fedoraproject.org/fedora:latest
+      options: --privileged
+    steps:
+      # need to install git before checkout to get a git repo
+      - name: Install packages
+        run: dnf install -y git make mock
+      - name: Check out repository
+        uses: actions/checkout@v3
+        # fetch tags for versioning
+        with:
+          fetch-depth: 0
+      # https://github.com/actions/checkout/issues/766
+      - name: Mark git checkout as safe
+        run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
+      - name: Build RPMs
+        run: |
+          mkdir rpms
+          make -f .copr/Makefile srpm outdir=rpms
+          mock --rebuild rpms/*.src.rpm
+          find /var/lib/mock -wholename '*/result/*.rpm' | xargs mv -t rpms
+      - name: Archive RPMs
+        uses: actions/upload-artifact@v3
+        with:
+          name: rpms
+          path: rpms/

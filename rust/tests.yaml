@@ -1,0 +1,52 @@
+vars:
+  lint_toolchain: 1.69.0
+  msrv: auto
+
+files:
+  - repo: afterburn
+    path: .github/workflows/rust.yml
+
+  - repo: bootupd
+    path: .github/workflows/rust.yml
+    vars:
+      # https://github.com/rust-lang/rust-clippy/issues/10421
+      lint_toolchain: 1.66.0
+
+  # coreos-installer is custom
+
+  - repo: envsubst-rs
+    path: .github/workflows/rust.yml
+
+  - repo: fedora-coreos-cincinnati
+    path: .github/workflows/rust.yml
+    vars:
+      # not in Cargo.toml
+      msrv: 1.61.0
+
+  # ignition-config-rs is custom
+
+  - repo: liboverdrop-rs
+    path: .github/workflows/rust.yml
+
+  - repo: openat-ext
+    path: .github/workflows/rust.yml
+    vars:
+      # MSRV in Cargo.toml requires >= 1.56.0
+      msrv: 1.49.0
+
+  - repo: openssh-keys
+    path: .github/workflows/rust.yml
+
+  - repo: ssh-key-dir
+    path: .github/workflows/rust.yml
+
+  - repo: stream-metadata-rust
+    path: .github/workflows/rust.yml
+
+  - repo: vmw_backdoor-rs
+    path: .github/workflows/rust.yml
+
+  - repo: zincati
+    path: .github/workflows/rust.yml
+    vars:
+      extended_test_features: [failpoints]

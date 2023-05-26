@@ -75,6 +75,11 @@ repos:
       crate: envsubst
       fedora_package: rust-envsubst
 
+  fedora-coreos-cincinnati:
+    url: https://github.com/coreos/fedora-coreos-cincinnati
+    vars:
+      git_repo: fedora-coreos-cincinnati
+
   fedora-coreos-config:
     url: https://github.com/coreos/fedora-coreos-config
     vars:
@@ -202,5 +207,6 @@ templates:
   - release-notes/require-release-note.yml
   - rust/release-checklist.md
   - rust/rpm-test.yml
+  - rust/tests.yml
   - shellcheck/script.sh
   - shellcheck/workflow.yml

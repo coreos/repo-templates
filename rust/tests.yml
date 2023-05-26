@@ -1,0 +1,114 @@
+# Maintained in https://github.com/coreos/repo-templates
+# Do not edit downstream.
+
+name: Rust
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+permissions:
+  contents: read
+
+# don't waste job slots on superseded code
+concurrency:
+  group: {% raw %}${{ github.workflow }}-${{ github.ref }}{% endraw %}
+  cancel-in-progress: true
+
+env:
+  CARGO_TERM_COLOR: always
+{%- if msrv != "auto" %}
+  # Minimum supported Rust version (MSRV)
+  MSRV: {{ msrv }}
+{%- endif %}
+  # Pinned toolchain for linting
+  ACTIONS_LINTS_TOOLCHAIN: {{ lint_toolchain }}
+
+jobs:
+  tests-stable:
+    name: Tests, stable toolchain
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v3
+      - name: Install toolchain
+        uses: dtolnay/rust-toolchain@v1
+        with:
+          toolchain: stable
+      - name: cargo build
+        run: cargo build
+      - name: cargo test
+        run: cargo test
+{%- for feature in extended_test_features|default(value=[]) %}
+      - name: cargo test ({{ feature }})
+        run: cargo test --features {{ feature }}
+{%- endfor %}
+  tests-release-stable:
+    name: Tests (release), stable toolchain
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v3
+      - name: Install toolchain
+        uses: dtolnay/rust-toolchain@v1
+        with:
+          toolchain: stable
+      - name: cargo build (release)
+        run: cargo build --release
+      - name: cargo test (release)
+        run: cargo test --release
+  tests-release-msrv:
+    name: Tests (release), minimum supported toolchain
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v3
+{%- if msrv == "auto" %}
+      - name: Detect crate MSRV
+        run: |
+          msrv=$(cargo metadata --format-version 1 --no-deps | \
+              jq -r '.packages[0].rust_version')
+          echo "Crate MSRV: $msrv"
+          echo "MSRV=$msrv" >> $GITHUB_ENV
+{%- endif %}
+      - name: Install toolchain
+        uses: dtolnay/rust-toolchain@v1
+        with:
+          toolchain: {% raw %}${{ env.MSRV }}{% endraw %}
+      - name: cargo build (release)
+        run: cargo build --release
+      - name: cargo test (release)
+        run: cargo test --release
+  linting:
+    name: Lints, pinned toolchain
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v3
+      - name: Install toolchain
+        uses: dtolnay/rust-toolchain@v1
+        with:
+          toolchain: {% raw %}${{ env.ACTIONS_LINTS_TOOLCHAIN }}{% endraw %}
+          components: rustfmt, clippy
+      - name: cargo fmt (check)
+        run: cargo fmt -- --check -l
+      - name: cargo clippy (warnings)
+        run: cargo clippy -- -D warnings
+  tests-other-channels:
+    name: Tests, unstable toolchain
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    strategy:
+      matrix:
+        channel: [beta, nightly]
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v3
+      - name: Install toolchain
+        uses: dtolnay/rust-toolchain@v1
+        with:
+          toolchain: {% raw %}${{ matrix.channel }}{% endraw %}
+      - name: cargo build
+        run: cargo build
+      - name: cargo test
+        run: cargo test

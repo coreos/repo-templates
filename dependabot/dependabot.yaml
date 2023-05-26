@@ -104,6 +104,9 @@ files:
     vars:
       dependabot_labels: [dependency, skip-notes]
 
+  - repo: vcontext
+    path: .github/dependabot.yml
+
   - repo: vmw_backdoor-rs
     path: .github/dependabot.yml
     vars:

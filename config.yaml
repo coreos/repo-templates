@@ -189,6 +189,11 @@ repos:
       container_arches: [amd64]
       containers: [quay.io/coreos/triagebot]
 
+  vcontext:
+    url: https://github.com/coreos/vcontext
+    vars:
+      git_repo: vcontext
+
   vmw_backdoor-rs:
     url: https://github.com/coreos/vmw_backdoor-rs
     vars:

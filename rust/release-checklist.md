@@ -46,7 +46,12 @@ Push access to the upstream repository is required in order to publish the new t
 
 - make sure the project is clean and prepare the environment:
   - [ ] Make sure `cargo-release` {% if do_vendor_tarball %}and `cargo-vendor-filterer` are{% else %}is{% endif %} up to date: `cargo install cargo-release{% if do_vendor_tarball %} cargo-vendor-filterer{% endif %}`
+{%- if do_vendor_tarball %}
+  - [ ] `cargo vendor-filterer target/vendor`
+  - [ ] `cargo test --all-features --config 'source.crates-io.replace-with="vv"' --config 'source.vv.directory="target/vendor"'`
+{%- else %}
   - [ ] `cargo test --all-features`
+{%- endif %}
   - [ ] `cargo clean`
   - [ ] `git clean -fd`
   - [ ] `RELEASE_VER=x.y.z`

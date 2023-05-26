@@ -1,0 +1,14 @@
+# Makefile used by Copr builds.
+
+files:
+  - repo: afterburn
+    path: .copr/Makefile
+
+  - repo: butane
+    path: .copr/Makefile
+
+  - repo: coreos-installer
+    path: .copr/Makefile
+
+  - repo: ignition
+    path: .copr/Makefile

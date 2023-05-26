@@ -211,6 +211,7 @@ repos:
 templates:
   - container/container.yml
   - container/container-rebuild.yml
+  - copr/Makefile
   - dependabot/dependabot.yml
   - fcos/release-checklist.md
   - go/release-checklist.md

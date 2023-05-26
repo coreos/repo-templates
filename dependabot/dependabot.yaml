@@ -33,6 +33,11 @@ files:
     vars:
       dependabot_labels: [dependency, skip-notes]
 
+  - repo: envsubst-rs
+    path: .github/dependabot.yml
+    vars:
+      dependabot_labels: [dependency, skip-notes]
+
   - repo: fedora-coreos-stream-generator
     path: .github/dependabot.yml
     vars:

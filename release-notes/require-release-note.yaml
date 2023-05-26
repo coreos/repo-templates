@@ -12,6 +12,9 @@ files:
   - repo: coreos-installer
     path: .github/workflows/require-release-note.yml
 
+  - repo: envsubst-rs
+    path: .github/workflows/require-release-note.yml
+
   - repo: ignition
     path: .github/workflows/require-release-note.yml
 

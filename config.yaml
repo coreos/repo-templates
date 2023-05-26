@@ -68,6 +68,13 @@ repos:
     vars:
       git_repo: coreos-installer-dracut
 
+  envsubst-rs:
+    url: https://github.com/coreos/envsubst-rs
+    vars:
+      git_repo: envsubst-rs
+      crate: envsubst
+      fedora_package: rust-envsubst
+
   fedora-coreos-config:
     url: https://github.com/coreos/fedora-coreos-config
     vars:

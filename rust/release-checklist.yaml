@@ -43,6 +43,7 @@ files:
     vars:
       do_fast_track: false
       do_release_digests: false
+      do_release_notes_doc: true
       do_vendor_tarball: false
 
   - repo: ssh-key-dir

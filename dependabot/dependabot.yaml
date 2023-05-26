@@ -25,6 +25,9 @@ files:
     vars:
       dependabot_labels: [dependency, skip-notes]
 
+  - repo: cap-std-ext
+    path: .github/dependabot.yml
+
   # coreos-assembler has some extra rules that aren't yet supported by the
   # template
 

@@ -47,6 +47,12 @@ repos:
       fedora_package: butane
       rhel8_package: butane
 
+  cap-std-ext:
+    url: https://github.com/coreos/cap-std-ext
+    vars:
+      git_repo: cap-std-ext
+      crate: cap-std-ext
+
   console-login-helper-messages:
     url: https://github.com/coreos/console-login-helper-messages
     vars:

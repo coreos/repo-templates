@@ -44,6 +44,14 @@ files:
       dependabot_labels: []
       dependabot_interval: daily
 
+  - repo: go-semver
+    path: .github/dependabot.yml
+
+  - repo: go-systemd
+    path: .github/dependabot.yml
+    vars:
+      dependabot_labels: [area/dependencies]
+
   - repo: ign-converter
     path: .github/dependabot.yml
 

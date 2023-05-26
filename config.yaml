@@ -88,6 +88,16 @@ repos:
   fedora-coreos-streams:
     url: https://github.com/coreos/fedora-coreos-streams
 
+  go-semver:
+    url: https://github.com/coreos/go-semver
+    vars:
+      git_repo: go-semver
+
+  go-systemd:
+    url: https://github.com/coreos/go-systemd
+    vars:
+      git_repo: go-systemd
+
   ign-converter:
     url: https://github.com/coreos/ign-converter
     vars:

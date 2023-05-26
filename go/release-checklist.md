@@ -6,7 +6,9 @@ Release checklist:
 
 Tagging:
  - [ ] Write release notes in `docs/release-notes.md`. Get them reviewed and merged
+{%- if sample_signing_key_update_tag %}
    - [ ] If the release signing key has changed because a new Fedora release has gone stable, note the change as done [here](https://github.com/coreos/{{ git_repo }}/releases/tag/{{ sample_signing_key_update_tag }}).
+{%- endif %}
    - [ ] If doing a branched release, also include a PR to merge the `docs/release-notes.md` changes into main
  - [ ] Ensure your local copy is up to date with the upstream main branch (`git@github.com:coreos/{{ git_repo }}.git`)
  - [ ] Ensure your working directory is clean (`git clean -fdx`)
@@ -14,6 +16,7 @@ Tagging:
  - [ ] Run `./tag_release.sh <vX.Y.z> <git commit hash>`
  - [ ] Push that tag to GitHub
 
+{% if fedora_package %}
 Fedora packaging:
  - [ ] Update the spec file in [Fedora](https://src.fedoraproject.org/rpms/{{ fedora_package }}):
    - Bump the `Version`
@@ -45,18 +48,25 @@ Fedora packaging:
  - [ ] [Submit a fast-track](https://github.com/coreos/fedora-coreos-config/actions/workflows/add-override.yml) for FCOS testing-devel
  - [ ] [Submit a fast-track](https://github.com/coreos/fedora-coreos-config/actions/workflows/add-override.yml) for FCOS next-devel if it is [open](https://github.com/coreos/fedora-coreos-pipeline/blob/main/next-devel/README.md)
 {%- endif %}
+{% endif %}
 
 GitHub release:
+{%- if sample_signing_key_update_tag %}
  - [ ] Wait until the Bodhi update shows "Signed :heavy_check_mark:" in the Metadata box.
  - [ ] Verify that the signing script can fetch the release binaries by running `./signing-ticket.sh test <x.y.z-r> <output-dir>`, where `r` is the Release of the Fedora package without the dist tag (probably `1`)
  - [ ] Run `./signing-ticket.sh ticket <x.y.z-r>` and paste the output into a [releng ticket](https://pagure.io/releng/new_issue).
  - [ ] Wait for the ticket to be closed
  - [ ] Download the artifacts and signatures
  - [ ] Verify the signatures
+{%- endif %}
  - [ ] Find the new tag in the [GitHub tag list](https://github.com/coreos/{{ git_repo }}/tags) and click the triple dots menu, and create a draft release for it.
- - [ ] Upload all the release artifacts and their signatures. Copy and paste the release notes from `docs/release-notes.md` here as well.
+ - [ ] Copy and paste the release notes from `docs/release-notes.md`
+{%- if sample_signing_key_update_tag %}
+ - [ ] Upload all the release artifacts and their signatures
+{%- endif %}
  - [ ] Publish the release
 
+{% if quay_repo %}
 Quay release:
  - [ ] Visit the [Quay tags page](https://quay.io/repository/{{ quay_repo }}?tab=tags) and wait for a versioned tag to appear
  - [ ] Click the gear next to the tag, select "Add New Tag", enter `release`, and confirm
@@ -64,7 +74,9 @@ Quay release:
  - [ ] Visit the [Quay tags page](https://quay.io/repository/{{ repo }}?tab=tags) for the legacy `{{ repo }}` repo and wait for a versioned tag to appear
  - [ ] Click the gear next to the tag, select "Add New Tag", enter `release`, and confirm
 {%- endfor %}
+{% endif %}
 
+{% if rhel8_package %}
 RHCOS packaging for the current RHCOS development release:
  - [ ] Update the [spec file](https://gitlab.com/redhat/rhel/rpms/{{ rhel8_package }})
    - Bump the `Version`
@@ -81,6 +93,9 @@ RHCOS packaging for the current RHCOS development release:
 {%- if do_ocp_mirror %}
  - [ ] File ticket similar to [this one](https://issues.redhat.com/browse/ART-3711) to sync the new version to mirror.openshift.com
 {%- endif %}
+{% endif %}
 
+{% if rhel9_package %}
 CentOS Stream 9 packaging:
   - [ ] Create a `rebase-c9s-{{ git_repo }}` issue in the internal team-operations repo and follow the steps there
+{% endif %}

@@ -201,5 +201,6 @@ templates:
   - go/signing-ticket.sh
   - release-notes/require-release-note.yml
   - rust/release-checklist.md
+  - rust/rpm-test.yml
   - shellcheck/script.sh
   - shellcheck/workflow.yml

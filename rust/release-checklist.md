@@ -118,13 +118,13 @@ Push access to the upstream repository is required in order to publish the new t
   - [ ] run `kinit your_fas_account@FEDORAPROJECT.ORG`
   - [ ] run `fedpkg new-sources $(spectool -S {{ fedora_package }}.spec | sed 's:.*/::')`
   - [ ] PR the changes in [Fedora](https://src.fedoraproject.org/rpms/{{ fedora_package }})
-  - [ ] once the PR merges to rawhide, merge rawhide into the other relevant branches (e.g. f35) then push those, for example:
+  - [ ] once the PR merges to rawhide, merge rawhide into the other relevant branches (e.g. f{{ current_fedora }}) then push those, for example:
     ```bash
     git checkout rawhide
     git pull --ff-only
-    git checkout f35
+    git checkout f{{ current_fedora }}
     git merge --ff-only rawhide
-    git push origin f35
+    git push origin f{{ current_fedora }}
     ```
   - [ ] on each of those branches run `fedpkg build`
   - [ ] once the builds have finished, submit them to [bodhi](https://bodhi.fedoraproject.org/updates/new), filling in:

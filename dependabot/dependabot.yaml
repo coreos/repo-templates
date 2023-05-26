@@ -100,6 +100,8 @@ files:
 
   - repo: stream-metadata-go
     path: .github/dependabot.yml
+    vars:
+      dependabot_labels: [dependency, skip-notes]
 
   - repo: stream-metadata-rust
     path: .github/dependabot.yml

@@ -10,3 +10,6 @@ files:
     path: tag_release.sh
     vars:
       tag_project_name: Ignition
+
+  - repo: stream-metadata-go
+    path: tag_release.sh

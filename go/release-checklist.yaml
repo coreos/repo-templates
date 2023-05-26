@@ -13,3 +13,6 @@ files:
     path: .github/ISSUE_TEMPLATE/release-checklist.md
     vars:
       sample_signing_key_update_tag: v2.10.1
+
+  - repo: stream-metadata-go
+    path: .github/ISSUE_TEMPLATE/release-checklist.md

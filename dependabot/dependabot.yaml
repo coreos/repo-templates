@@ -33,11 +33,24 @@ files:
     vars:
       dependabot_labels: [dependency, skip-notes]
 
+  - repo: envsubst-rs
+    path: .github/dependabot.yml
+    vars:
+      dependabot_labels: [dependency, skip-notes]
+
   - repo: fedora-coreos-stream-generator
     path: .github/dependabot.yml
     vars:
       dependabot_labels: []
       dependabot_interval: daily
+
+  - repo: go-semver
+    path: .github/dependabot.yml
+
+  - repo: go-systemd
+    path: .github/dependabot.yml
+    vars:
+      dependabot_labels: [area/dependencies]
 
   - repo: ign-converter
     path: .github/dependabot.yml
@@ -54,6 +67,8 @@ files:
 
   - repo: liboverdrop-rs
     path: .github/dependabot.yml
+    vars:
+      dependabot_labels: [dependency, skip-notes]
 
   - repo: openat-ext
     path: .github/dependabot.yml
@@ -63,7 +78,7 @@ files:
   - repo: openssh-keys
     path: .github/dependabot.yml
     vars:
-      dependabot_labels: []
+      dependabot_labels: [dependency, skip-notes]
 
   - repo: repo-templates
     path: .github/dependabot.yml
@@ -83,6 +98,13 @@ files:
 
   - repo: stream-metadata-rust
     path: .github/dependabot.yml
+    vars:
+      dependabot_labels: [dependency, skip-notes]
+
+  - repo: vmw_backdoor-rs
+    path: .github/dependabot.yml
+    vars:
+      dependabot_labels: [dependency, skip-notes]
 
   - repo: zincati
     path: .github/dependabot.yml

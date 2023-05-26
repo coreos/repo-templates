@@ -68,6 +68,13 @@ repos:
     vars:
       git_repo: coreos-installer-dracut
 
+  envsubst-rs:
+    url: https://github.com/coreos/envsubst-rs
+    vars:
+      git_repo: envsubst-rs
+      crate: envsubst
+      fedora_package: rust-envsubst
+
   fedora-coreos-config:
     url: https://github.com/coreos/fedora-coreos-config
     vars:
@@ -80,6 +87,16 @@ repos:
 
   fedora-coreos-streams:
     url: https://github.com/coreos/fedora-coreos-streams
+
+  go-semver:
+    url: https://github.com/coreos/go-semver
+    vars:
+      git_repo: go-semver
+
+  go-systemd:
+    url: https://github.com/coreos/go-systemd
+    vars:
+      git_repo: go-systemd
 
   ign-converter:
     url: https://github.com/coreos/ign-converter
@@ -160,6 +177,13 @@ repos:
     vars:
       container_arches: [amd64]
       containers: [quay.io/coreos/triagebot]
+
+  vmw_backdoor-rs:
+    url: https://github.com/coreos/vmw_backdoor-rs
+    vars:
+      git_repo: vmw_backdoor-rs
+      crate: vmw_backdoor
+      fedora_package: rust-vmw_backdoor
 
   zincati:
     url: https://github.com/coreos/zincati

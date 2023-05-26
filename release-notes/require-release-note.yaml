@@ -12,8 +12,23 @@ files:
   - repo: coreos-installer
     path: .github/workflows/require-release-note.yml
 
+  - repo: envsubst-rs
+    path: .github/workflows/require-release-note.yml
+
   - repo: ignition
     path: .github/workflows/require-release-note.yml
 
   - repo: ignition-config-rs
+    path: .github/workflows/require-release-note.yml
+
+  - repo: liboverdrop-rs
+    path: .github/workflows/require-release-note.yml
+
+  - repo: openssh-keys
+    path: .github/workflows/require-release-note.yml
+
+  - repo: stream-metadata-rust
+    path: .github/workflows/require-release-note.yml
+
+  - repo: vmw_backdoor-rs
     path: .github/workflows/require-release-note.yml

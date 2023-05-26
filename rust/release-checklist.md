@@ -108,6 +108,7 @@ Push access to the upstream repository is required in order to publish the new t
   - [ ] `git push ${UPSTREAM_REMOTE} :release-${RELEASE_VER}`
   - [ ] `git branch -d release-${RELEASE_VER}`
 
+{% if fedora_package %}
 - Fedora packaging:
   - [ ] update the `{{ fedora_package }}` spec file in [Fedora](https://src.fedoraproject.org/rpms/{{ fedora_package }})
     - bump the `Version`
@@ -137,6 +138,7 @@ Push access to the upstream repository is required in order to publish the new t
 {%- if do_fast_track %}
   - [ ] [submit a fast-track](https://github.com/coreos/fedora-coreos-config/actions/workflows/add-override.yml) for FCOS testing-devel
   - [ ] [submit a fast-track](https://github.com/coreos/fedora-coreos-config/actions/workflows/add-override.yml) for FCOS next-devel if it is [open](https://github.com/coreos/fedora-coreos-pipeline/blob/main/next-devel/README.md)
+{% endif %}
 {% endif %}
 
 {% if rhel8_package %}

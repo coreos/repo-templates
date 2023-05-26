@@ -48,6 +48,8 @@ files:
 
   - repo: ssh-key-dir
     path: .github/ISSUE_TEMPLATE/release-checklist.md
+    vars:
+      do_release_notes_doc: true
 
   - repo: stream-metadata-rust
     path: .github/ISSUE_TEMPLATE/release-checklist.md

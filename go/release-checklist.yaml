@@ -1,5 +1,7 @@
 vars:
   do_fast_track: true
+  do_github_release: true
+  do_release_notes_doc: true
 
 files:
   - repo: butane
@@ -8,6 +10,12 @@ files:
       sample_signing_key_update_tag: v0.12.0
       do_fast_track: false
       do_ocp_mirror: true
+
+  - repo: fedora-coreos-stream-generator
+    path: .github/ISSUE_TEMPLATE/release-checklist.md
+    vars:
+      do_github_release: false
+      do_release_notes_doc: false
 
   - repo: ignition
     path: .github/ISSUE_TEMPLATE/release-checklist.md

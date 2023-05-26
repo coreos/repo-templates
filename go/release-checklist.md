@@ -5,11 +5,13 @@
 Release checklist:
 
 Tagging:
+{%- if do_release_notes_doc %}
  - [ ] Write release notes in `docs/release-notes.md`. Get them reviewed and merged
 {%- if sample_signing_key_update_tag %}
    - [ ] If the release signing key has changed because a new Fedora release has gone stable, note the change as done [here](https://github.com/coreos/{{ git_repo }}/releases/tag/{{ sample_signing_key_update_tag }}).
 {%- endif %}
    - [ ] If doing a branched release, also include a PR to merge the `docs/release-notes.md` changes into main
+{%- endif %}
  - [ ] Ensure your local copy is up to date with the upstream main branch (`git@github.com:coreos/{{ git_repo }}.git`)
  - [ ] Ensure your working directory is clean (`git clean -fdx`)
  - [ ] Ensure you can sign commits and any yubikeys/smartcards are plugged in
@@ -50,6 +52,7 @@ Fedora packaging:
 {%- endif %}
 {% endif %}
 
+{% if do_github_release %}
 GitHub release:
 {%- if sample_signing_key_update_tag %}
  - [ ] Wait until the Bodhi update shows "Signed :heavy_check_mark:" in the Metadata box.
@@ -60,11 +63,16 @@ GitHub release:
  - [ ] Verify the signatures
 {%- endif %}
  - [ ] Find the new tag in the [GitHub tag list](https://github.com/coreos/{{ git_repo }}/tags) and click the triple dots menu, and create a draft release for it.
+{%- if do_release_notes_doc %}
  - [ ] Copy and paste the release notes from `docs/release-notes.md`
+{%- else %}
+ - [ ] Write release notes
+{%- endif %}
 {%- if sample_signing_key_update_tag %}
  - [ ] Upload all the release artifacts and their signatures
 {%- endif %}
  - [ ] Publish the release
+{% endif %}
 
 {% if quay_repo %}
 Quay release:

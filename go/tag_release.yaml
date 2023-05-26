@@ -6,6 +6,9 @@ files:
     vars:
       tag_project_name: Butane
 
+  - repo: fedora-coreos-stream-generator
+    path: tag_release.sh
+
   - repo: ignition
     path: tag_release.sh
     vars:

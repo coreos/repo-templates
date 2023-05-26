@@ -30,6 +30,14 @@ files:
       do_release_notes_doc: true
       do_vendor_tarball: false
 
+  - repo: liboverdrop-rs
+    path: .github/ISSUE_TEMPLATE/release-checklist.md
+    vars:
+      do_fast_track: false
+      do_release_digests: false
+      do_release_notes_doc: true
+      do_vendor_tarball: false
+
   - repo: openssh-keys
     path: .github/ISSUE_TEMPLATE/release-checklist.md
     vars:

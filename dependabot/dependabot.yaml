@@ -59,6 +59,8 @@ files:
 
   - repo: liboverdrop-rs
     path: .github/dependabot.yml
+    vars:
+      dependabot_labels: [dependency, skip-notes]
 
   - repo: openat-ext
     path: .github/dependabot.yml

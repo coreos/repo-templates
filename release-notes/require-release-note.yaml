@@ -21,5 +21,8 @@ files:
   - repo: ignition-config-rs
     path: .github/workflows/require-release-note.yml
 
+  - repo: liboverdrop-rs
+    path: .github/workflows/require-release-note.yml
+
   - repo: vmw_backdoor-rs
     path: .github/workflows/require-release-note.yml

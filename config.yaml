@@ -232,6 +232,7 @@ templates:
   - fcos/release-checklist.md
   - go/release-checklist.md
   - go/signing-ticket.sh
+  - go/tag_release.sh
   - go/tests.yml
   - go/tests-ignition.yml
   - release-notes/require-release-note.yml

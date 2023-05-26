@@ -1,0 +1,12 @@
+# Script for tagging a release in Git
+
+files:
+  - repo: butane
+    path: tag_release.sh
+    vars:
+      tag_project_name: Butane
+
+  - repo: ignition
+    path: tag_release.sh
+    vars:
+      tag_project_name: Ignition

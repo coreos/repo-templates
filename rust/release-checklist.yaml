@@ -32,5 +32,13 @@ files:
   - repo: ssh-key-dir
     path: .github/ISSUE_TEMPLATE/release-checklist.md
 
+  - repo: vmw_backdoor-rs
+    path: .github/ISSUE_TEMPLATE/release-checklist.md
+    vars:
+      do_fast_track: false
+      do_release_digests: false
+      do_release_notes_doc: true
+      do_vendor_tarball: false
+
   - repo: zincati
     path: .github/ISSUE_TEMPLATE/release-checklist.md

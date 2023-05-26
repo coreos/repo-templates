@@ -161,6 +161,13 @@ repos:
       container_arches: [amd64]
       containers: [quay.io/coreos/triagebot]
 
+  vmw_backdoor-rs:
+    url: https://github.com/coreos/vmw_backdoor-rs
+    vars:
+      git_repo: vmw_backdoor-rs
+      crate: vmw_backdoor
+      fedora_package: rust-vmw_backdoor
+
   zincati:
     url: https://github.com/coreos/zincati
     vars:

@@ -4,6 +4,7 @@ vars:
   current_fedora: 38
   # Key ID from https://fedoraproject.org/security/
   current_fedora_signing_key: eb10b464
+  go_versions: [1.18.x, 1.19.x, 1.20.x]
 
 repos:
   11bot:
@@ -99,6 +100,16 @@ repos:
   fedora-coreos-streams:
     url: https://github.com/coreos/fedora-coreos-streams
 
+  go-iptables:
+    url: https://github.com/coreos/go-iptables
+    vars:
+      git_repo: go-iptables
+
+  go-json:
+    url: https://github.com/coreos/go-json
+    vars:
+      git_repo: go-json
+
   go-semver:
     url: https://github.com/coreos/go-semver
     vars:
@@ -152,6 +163,11 @@ repos:
       git_repo: openssh-keys
       crate: openssh-keys
       fedora_package: rust-openssh-keys
+
+  pkg:
+    url: https://github.com/coreos/pkg
+    vars:
+      git_repo: pkg
 
   repo-templates:
     url: https://github.com/coreos/repo-templates
@@ -215,6 +231,8 @@ templates:
   - fcos/release-checklist.md
   - go/release-checklist.md
   - go/signing-ticket.sh
+  - go/tests.yml
+  - go/tests-ignition.yml
   - release-notes/require-release-note.yml
   - rust/release-checklist.md
   - rust/rpm-test.yml

@@ -1,0 +1,114 @@
+# Maintained in https://github.com/coreos/repo-templates
+# Do not edit downstream.
+
+name: Go
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+permissions:
+  contents: read
+
+# don't waste job slots on superseded code
+concurrency:
+  group: {% raw %}${{ github.workflow }}-${{ github.ref }}{% endraw %}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    name: Test
+    strategy:
+      matrix:
+        go-version: {{ go_versions }}
+{%- if do_multi_os %}
+        os: [ubuntu-latest]
+        include:
+          - go-version: {{ go_versions | last }}
+            os: macos-latest
+          - go-version: {{ go_versions | last }}
+            os: windows-latest
+    runs-on: {% raw %}${{ matrix.os }}{% endraw %}
+{%- else %}
+    runs-on: ubuntu-latest
+{%- endif %}
+    steps:
+    - name: Set up Go 1.x
+      uses: actions/setup-go@v4
+      with:
+        go-version: {% raw %}${{ matrix.go-version }}{% endraw %}
+    - name: Check out repository
+      uses: actions/checkout@v3
+{%- if go_dependencies %}
+    - name: Install Go dependencies
+      run: go get {{ go_dependencies | join(sep=" ") }}
+{%- endif %}
+{%- if apt_dependencies %}
+    - name: Install Linux dependencies
+      if: runner.os == 'Linux'
+      run: |
+        sudo apt-get update
+        sudo apt-get install {{ apt_dependencies | join(sep=" ") }}
+{%- endif %}
+{%- if brew_dependencies %}
+    - name: Install macOS dependencies
+      if: runner.os == 'macOS'
+      shell: bash
+      run: brew install {{ brew_dependencies | join(sep=" ") }}
+{%- endif %}
+    - name: Check modules
+      run: go mod verify
+{%- if go_build_cmd %}
+    - name: Build
+{%- if do_multi_os %}
+      shell: bash
+{%- endif %}
+      run: {{ go_build_cmd }}
+{%- endif %}
+    - name: Test
+{%- if do_multi_os %}
+      shell: bash
+{%- endif %}
+      run: {{ go_test_cmd }}
+    - name: Run linter
+      uses: golangci/golangci-lint-action@v3
+{%- if do_multi_os %}
+      if: runner.os == 'Linux'
+{%- endif %}
+      with:
+        version: {{ golangci_lint_version }}
+        args: -E=gofmt --timeout=30m0s
+
+{%- if go_generated_dirs %}
+  regenerate:
+    name: Regenerate
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check out repository
+      uses: actions/checkout@v3
+    - name: Set up Go 1.x
+      uses: actions/setup-go@v4
+      with:
+        go-version: {{ go_versions | last }}
+{%- if go_generate_with_schematyper %}
+    - name: Install schematyper
+      run: |
+        # "go install github.com/idubinskiy/schematyper:latest" fails with
+        # current Go.  Use fix from fork.  We can't "go install" directly from
+        # the fork; it complains about mismatched package paths.
+        # https://github.com/idubinskiy/schematyper/pull/22
+        git clone -b gomod https://github.com/bgilbert/schematyper
+        cd schematyper
+        go install .
+{%- endif %}
+    - name: Regenerate
+      run: ./generate
+    - name: Check whether generated output is current
+      run: |
+        if [ -n "$(git status --porcelain {{ go_generated_dirs | join(sep=" ") }})" ]; then
+          echo "Found local changes after regenerating:"
+          git --no-pager diff --color=always {{ go_generated_dirs | join(sep=" ") }}
+          echo "Rerun './generate'."
+          exit 1
+        fi
+{% endif %}

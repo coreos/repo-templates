@@ -1,0 +1,76 @@
+vars:
+  # go_versions defined in ../config.yaml
+  golangci_lint_version: v1.52.2
+  go_build_cmd: go build
+  go_test_cmd: go test -v ./...
+
+files:
+  - repo: airlock
+    path: .github/workflows/go.yml
+
+  - repo: butane
+    path: .github/workflows/go.yml
+    vars:
+      do_multi_os: true
+      brew_dependencies: [coreutils]
+      go_build_cmd: ~
+      go_test_cmd: ./test
+      go_generated_dirs: [docs]
+
+  - repo: fedora-coreos-stream-generator
+    path: .github/workflows/go.yml
+    vars:
+      go_build_cmd: make
+      go_test_cmd: make test
+
+  - repo: go-iptables
+    path: .github/workflows/go.yml
+    vars:
+      go_versions: [1.16.x, 1.17.x, 1.18.x, 1.19.x, 1.20.x]
+      go_dependencies: [golang.org/x/tools/cmd/cover]
+      go_build_cmd: ./build
+      go_test_cmd: SUDO_PERMITTED=1 ./test
+
+  - repo: go-json
+    path: .github/workflows/go.yml
+
+  - repo: go-semver
+    path: .github/workflows/go.yml
+    vars:
+      go_versions: [1.14.x, 1.15.x, 1.16.x, 1.17.x, 1.18.x, 1.19.x, 1.20.x]
+
+  # go-systemd is custom
+
+  - repo: ign-converter
+    path: .github/workflows/go.yml
+    vars:
+      go_build_cmd: ~
+
+  - repo: ignition
+    path: .github/workflows/go.yml
+    vars:
+      apt_dependencies: [libblkid-dev]
+      go_build_cmd: ./build
+      go_test_cmd: ./test
+      go_generated_dirs: [config, docs]
+      go_generate_with_schematyper: true
+
+  - repo: pkg
+    path: .github/workflows/go.yml
+    vars:
+      go_versions: [1.15.x, 1.16.x, 1.17.x, 1.18.x, 1.19.x, 1.20.x]
+      go_build_cmd: ./build.sh
+      go_test_cmd: ./test.sh
+
+  - repo: stream-metadata-go
+    path: .github/workflows/go.yml
+    vars:
+      do_multi_os: true
+      go_build_cmd: make
+      go_test_cmd: make test
+
+  - repo: vcontext
+    path: .github/workflows/go.yml
+    vars:
+      go_build_cmd: ~
+      go_test_cmd: ./test

@@ -72,6 +72,7 @@ jobs:
       shell: bash
 {%- endif %}
       run: {{ go_test_cmd }}
+{%- if do_go_lint %}
     - name: Run linter
       uses: golangci/golangci-lint-action@v3
 {%- if do_multi_os %}
@@ -80,6 +81,7 @@ jobs:
       with:
         version: {{ golangci_lint_version }}
         args: -E=gofmt --timeout=30m0s
+{%- endif %}
 
 {%- if go_generated_dirs %}
   regenerate:

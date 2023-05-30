@@ -56,8 +56,10 @@ jobs:
       shell: bash
       run: brew install {{ brew_dependencies | join(sep=" ") }}
 {%- endif %}
+{%- if do_go_mod %}
     - name: Check modules
       run: go mod verify
+{%- endif %}
 {%- if go_build_cmd %}
     - name: Build
 {%- if do_multi_os %}

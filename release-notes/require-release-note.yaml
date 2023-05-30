@@ -30,6 +30,9 @@ files:
   - repo: ssh-key-dir
     path: .github/workflows/require-release-note.yml
 
+  - repo: stream-metadata-go
+    path: .github/workflows/require-release-note.yml
+
   - repo: stream-metadata-rust
     path: .github/workflows/require-release-note.yml
 

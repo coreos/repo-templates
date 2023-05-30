@@ -47,6 +47,7 @@ repos:
       quay_legacy_repos: [coreos/fcct]
       fedora_package: butane
       rhel8_package: butane
+      rhel9_package: butane
 
   cap-std-ext:
     url: https://github.com/coreos/cap-std-ext
@@ -135,6 +136,7 @@ repos:
       quay_repo: coreos/ignition-validate
       fedora_package: ignition
       rhel8_package: ignition
+      rhel9_package: ignition
 
   ignition-config-rs:
     url: https://github.com/coreos/ignition-config-rs
@@ -232,6 +234,7 @@ templates:
   - fcos/release-checklist.md
   - go/release-checklist.md
   - go/signing-ticket.sh
+  - go/tag_release.sh
   - go/tests.yml
   - go/tests-ignition.yml
   - release-notes/require-release-note.yml

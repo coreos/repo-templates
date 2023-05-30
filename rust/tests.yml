@@ -35,6 +35,8 @@ jobs:
         uses: dtolnay/rust-toolchain@v1
         with:
           toolchain: stable
+      - name: Cache build artifacts
+        uses: Swatinem/rust-cache@v2
       - name: cargo build
         run: cargo build
       - name: cargo test
@@ -53,6 +55,8 @@ jobs:
         uses: dtolnay/rust-toolchain@v1
         with:
           toolchain: stable
+      - name: Cache build artifacts
+        uses: Swatinem/rust-cache@v2
       - name: cargo build (release)
         run: cargo build --release
       - name: cargo test (release)
@@ -75,6 +79,8 @@ jobs:
         uses: dtolnay/rust-toolchain@v1
         with:
           toolchain: {% raw %}${{ env.MSRV }}{% endraw %}
+      - name: Cache build artifacts
+        uses: Swatinem/rust-cache@v2
       - name: cargo build (release)
         run: cargo build --release
       - name: cargo test (release)
@@ -90,6 +96,8 @@ jobs:
         with:
           toolchain: {% raw %}${{ env.ACTIONS_LINTS_TOOLCHAIN }}{% endraw %}
           components: rustfmt, clippy
+      - name: Cache build artifacts
+        uses: Swatinem/rust-cache@v2
       - name: cargo fmt (check)
         run: cargo fmt -- --check -l
       - name: cargo clippy (warnings)
@@ -108,6 +116,8 @@ jobs:
         uses: dtolnay/rust-toolchain@v1
         with:
           toolchain: {% raw %}${{ matrix.channel }}{% endraw %}
+      - name: Cache build artifacts
+        uses: Swatinem/rust-cache@v2
       - name: cargo build
         run: cargo build
       - name: cargo test

@@ -1,18 +1,16 @@
 vars:
   do_fast_track: true
   do_release_digests: true
+  do_release_notes_doc: true
   do_vendor_tarball: true
 
 files:
   - repo: afterburn
     path: .github/ISSUE_TEMPLATE/release-checklist.md
-    vars:
-      do_release_notes_doc: true
 
   - repo: coreos-installer
     path: .github/ISSUE_TEMPLATE/release-checklist.md
     vars:
-      do_release_notes_doc: true
       do_ocp_mirror: true
 
   - repo: envsubst-rs
@@ -20,14 +18,12 @@ files:
     vars:
       do_fast_track: false
       do_release_digests: false
-      do_release_notes_doc: true
       do_vendor_tarball: false
 
   - repo: ignition-config-rs
     path: .github/ISSUE_TEMPLATE/release-checklist.md
     vars:
       do_fast_track: false
-      do_release_notes_doc: true
       do_vendor_tarball: false
 
   - repo: liboverdrop-rs
@@ -35,7 +31,6 @@ files:
     vars:
       do_fast_track: false
       do_release_digests: false
-      do_release_notes_doc: true
       do_vendor_tarball: false
 
   - repo: openssh-keys
@@ -43,7 +38,6 @@ files:
     vars:
       do_fast_track: false
       do_release_digests: false
-      do_release_notes_doc: true
       do_vendor_tarball: false
 
   - repo: ssh-key-dir
@@ -54,7 +48,6 @@ files:
     vars:
       do_fast_track: false
       do_release_digests: false
-      do_release_notes_doc: true
       do_vendor_tarball: false
 
   - repo: vmw_backdoor-rs
@@ -62,8 +55,9 @@ files:
     vars:
       do_fast_track: false
       do_release_digests: false
-      do_release_notes_doc: true
       do_vendor_tarball: false
 
   - repo: zincati
     path: .github/ISSUE_TEMPLATE/release-checklist.md
+    vars:
+      do_release_notes_doc: false

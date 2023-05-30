@@ -95,6 +95,8 @@ files:
 
   - repo: ssh-key-dir
     path: .github/dependabot.yml
+    vars:
+      dependabot_labels: [dependency, skip-notes]
 
   - repo: stream-metadata-go
     path: .github/dependabot.yml

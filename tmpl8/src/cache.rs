@@ -99,6 +99,9 @@ pub(super) fn do_update_cache(
                     remote_url,
                     fork.branch.as_ref().unwrap(),
                 ])
+                // disable password prompts so we don't block if the repo is
+                // missing
+                .env("GIT_ASKPASS", "/bin/true")
                 .stdout(stderr()?)
                 .current_dir(&path)
                 .status()

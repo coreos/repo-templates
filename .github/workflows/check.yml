@@ -7,6 +7,13 @@ on:
 permissions:
   contents: read
 
+env:
+  # Generate diffs relative to our downstream PR branch, not to downstream Git
+  # main.  This omits changes that have merged in repo-templates but haven't
+  # merged downstream yet, making review easier.  The Makefile does the same
+  # when generating diffs for interactive development.
+  FORK_ARGS: --fork-regex /coreos/ --fork-replacement /coreosbot-releng/ --fork-branch repo-templates
+
 jobs:
   render:
     name: Render
@@ -32,6 +39,6 @@ jobs:
       - name: Build tmpl8 binary
         run: cd tmpl8 && cargo build
       - name: Sync cache
-        run: tmpl8/target/debug/tmpl8 update-cache
+        run: tmpl8/target/debug/tmpl8 update-cache $FORK_ARGS
       - name: Render diffs
-        run: tmpl8/target/debug/tmpl8 diff
+        run: tmpl8/target/debug/tmpl8 diff $FORK_ARGS

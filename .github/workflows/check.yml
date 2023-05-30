@@ -20,7 +20,7 @@ jobs:
       - name: Check for unreferenced templates
         run: |
           python3 -c 'import yaml; print("\n".join(yaml.safe_load(open("config.yaml"))["templates"]))' |
-              sed 's/\.[a-z0-9]*$/.yaml/' > expected
+              sed -e 's/\.[a-z0-9]*$/.yaml/' -e '/^[^.]*$/ s/$/.yaml/' > expected
           stray=$(find . -path ./config.yaml -prune -o -name '*.yaml' -print |
               sed 's:^\./::' |
               grep -Fvxf expected ||:)

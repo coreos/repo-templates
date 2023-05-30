@@ -36,6 +36,8 @@ jobs:
               echo "${stray}"
               exit 1
           fi
+      - name: Cache build artifacts
+        uses: Swatinem/rust-cache@v2
       - name: Build tmpl8 binary
         run: cd tmpl8 && cargo build
       - name: Sync cache

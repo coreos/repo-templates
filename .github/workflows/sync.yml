@@ -24,6 +24,8 @@ jobs:
         run: dnf install -y cargo
       - name: Cache build artifacts
         uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: tmpl8
       - name: Build tmpl8 binary
         run: cd tmpl8 && cargo build
       - name: Render templates

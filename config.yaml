@@ -81,6 +81,7 @@ repos:
     vars:
       git_repo: envsubst-rs
       crate: envsubst
+      library_crate: true
       fedora_package: rust-envsubst
 
   fedora-coreos-cincinnati:
@@ -143,6 +144,7 @@ repos:
     vars:
       git_repo: ignition-config-rs
       crate: ignition-config
+      library_crate: true
       fedora_package: rust-ignition-config
 
   liboverdrop-rs:
@@ -150,6 +152,7 @@ repos:
     vars:
       git_repo: liboverdrop-rs
       crate: liboverdrop
+      library_crate: true
       fedora_package: rust-liboverdrop
 
   openat-ext:
@@ -164,6 +167,7 @@ repos:
     vars:
       git_repo: openssh-keys
       crate: openssh-keys
+      library_crate: true
       fedora_package: rust-openssh-keys
 
   pkg:
@@ -200,6 +204,7 @@ repos:
     vars:
       git_repo: stream-metadata-rust
       crate: coreos-stream-metadata
+      library_crate: true
 
   triagebot:
     url: https://github.com/coreos/triagebot
@@ -217,6 +222,7 @@ repos:
     vars:
       git_repo: vmw_backdoor-rs
       crate: vmw_backdoor
+      library_crate: true
       fedora_package: rust-vmw_backdoor
 
   zincati:

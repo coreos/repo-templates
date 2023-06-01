@@ -2,7 +2,6 @@ vars:
   do_fast_track: true
   do_release_digests: true
   do_release_notes_doc: true
-  do_vendor_tarball: true
 
 files:
   - repo: afterburn
@@ -18,27 +17,23 @@ files:
     vars:
       do_fast_track: false
       do_release_digests: false
-      do_vendor_tarball: false
 
   - repo: ignition-config-rs
     path: .github/ISSUE_TEMPLATE/release-checklist.md
     vars:
       do_fast_track: false
-      do_vendor_tarball: false
 
   - repo: liboverdrop-rs
     path: .github/ISSUE_TEMPLATE/release-checklist.md
     vars:
       do_fast_track: false
       do_release_digests: false
-      do_vendor_tarball: false
 
   - repo: openssh-keys
     path: .github/ISSUE_TEMPLATE/release-checklist.md
     vars:
       do_fast_track: false
       do_release_digests: false
-      do_vendor_tarball: false
 
   - repo: ssh-key-dir
     path: .github/ISSUE_TEMPLATE/release-checklist.md
@@ -48,14 +43,12 @@ files:
     vars:
       do_fast_track: false
       do_release_digests: false
-      do_vendor_tarball: false
 
   - repo: vmw_backdoor-rs
     path: .github/ISSUE_TEMPLATE/release-checklist.md
     vars:
       do_fast_track: false
       do_release_digests: false
-      do_vendor_tarball: false
 
   - repo: zincati
     path: .github/ISSUE_TEMPLATE/release-checklist.md

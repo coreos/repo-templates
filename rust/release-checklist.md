@@ -7,7 +7,7 @@
 This project uses [cargo-release][cargo-release] in order to prepare new releases, tag and sign the relevant git commit, and publish the resulting artifacts to [crates.io][crates-io].
 The release process follows the usual PR-and-review flow, allowing an external reviewer to have a final check before publishing.
 
-{% if do_vendor_tarball %}
+{% if not library_crate %}
 In order to ease downstream packaging of Rust binaries, an archive of vendored dependencies is also provided (only relevant for offline builds).
 {% endif %}
 
@@ -20,7 +20,7 @@ This guide requires:
  * [GPG setup][GPG setup] and personal key for signing
  * `cargo` (suggested: latest stable toolchain from [rustup][rustup])
  * `cargo-release` (suggested: `cargo install -f cargo-release`)
-{%- if do_vendor_tarball %}
+{%- if not library_crate %}
  * `cargo vendor-filterer` (suggested: `cargo install -f cargo-vendor-filterer`)
 {%- endif %}
  * Write access to this GitHub project
@@ -45,12 +45,12 @@ Push access to the upstream repository is required in order to publish the new t
 {% endif %}
 
 - make sure the project is clean and prepare the environment:
-  - [ ] Make sure `cargo-release` {% if do_vendor_tarball %}and `cargo-vendor-filterer` are{% else %}is{% endif %} up to date: `cargo install cargo-release{% if do_vendor_tarball %} cargo-vendor-filterer{% endif %}`
-{%- if do_vendor_tarball %}
+  - [ ] Make sure `cargo-release` {% if library_crate %}is{% else %}and `cargo-vendor-filterer` are{% endif %} up to date: `cargo install cargo-release{% if not library_crate %} cargo-vendor-filterer{% endif %}`
+{%- if library_crate %}
+  - [ ] `cargo test --all-features`
+{%- else %}
   - [ ] `cargo vendor-filterer target/vendor`
   - [ ] `cargo test --all-features --config 'source.crates-io.replace-with="vv"' --config 'source.vv.directory="target/vendor"'`
-{%- else %}
-  - [ ] `cargo test --all-features`
 {%- endif %}
   - [ ] `cargo clean`
   - [ ] `git clean -fd`
@@ -76,7 +76,7 @@ Push access to the upstream repository is required in order to publish the new t
   - [ ] `git push ${UPSTREAM_REMOTE} v${RELEASE_VER}`
   - [ ] `cargo publish`
 
-{% if do_vendor_tarball %}
+{% if not library_crate %}
 - assemble vendor archive:
   - [ ] `cargo vendor-filterer --format=tar.gz --prefix=vendor target/{{ crate }}-${RELEASE_VER}-vendor.tar.gz`
 {% endif %}
@@ -88,13 +88,13 @@ Push access to the upstream repository is required in order to publish the new t
 {%- else %}
   - [ ] copy in the changelog from the release PR
 {%- endif %}
-{%- if do_vendor_tarball %}
+{%- if not library_crate %}
   - [ ] upload `target/{{ crate }}-${RELEASE_VER}-vendor.tar.gz`
 {%- endif %}
 {%- if do_release_digests %}
   - [ ] record digests of local artifacts:
     - `sha256sum target/package/{{ crate }}-${RELEASE_VER}.crate`
-{%- if do_vendor_tarball %}
+{%- if not library_crate %}
     - `sha256sum target/{{ crate }}-${RELEASE_VER}-vendor.tar.gz`
 {%- endif %}
 {%- endif %}

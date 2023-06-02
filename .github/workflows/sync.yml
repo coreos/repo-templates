@@ -3,6 +3,7 @@ name: Sync to downstream repos
 on:
   push:
     branches: [main]
+  workflow_dispatch:
 
 # Prevent multiple workflow runs from racing
 concurrency: ${{ github.workflow }}

@@ -132,8 +132,8 @@ Push access to the upstream repository is required in order to publish the new t
   - [ ] `cargo clean`
   - [ ] `git checkout main`
   - [ ] `git pull ${UPSTREAM_REMOTE} main`
-  - [ ] `git push ${UPSTREAM_REMOTE} :release-${RELEASE_VER}`
-  - [ ] `git branch -d release-${RELEASE_VER}`
+  - [ ] `git push ${UPSTREAM_REMOTE} {% if do_pre_release %}:pre-release-${RELEASE_VER} {% endif %}:release-${RELEASE_VER}`
+  - [ ] `git branch -d {% if do_pre_release %}pre-release-${RELEASE_VER} {% endif %}release-${RELEASE_VER}`
 
 {% if fedora_package %}
 - Fedora packaging:

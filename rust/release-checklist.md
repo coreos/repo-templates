@@ -67,6 +67,7 @@ Push access to the upstream repository is required in order to publish the new t
 
 - make sure the project is clean:
   - [ ] Make sure `cargo-release` {% if library_crate %}is{% else %}and `cargo-vendor-filterer` are{% endif %} up to date: `cargo install cargo-release{% if not library_crate %} cargo-vendor-filterer{% endif %}`
+  - [ ] `git checkout main && git pull ${UPSTREAM_REMOTE} main`
 {%- if library_crate %}
   - [ ] `cargo test --all-features`
 {%- else %}

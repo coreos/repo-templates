@@ -1,5 +1,5 @@
 vars:
-  lint_toolchain: 1.69.0
+  lint_toolchain: 1.70.0
   msrv: auto
 
 files:
@@ -8,9 +8,6 @@ files:
 
   - repo: bootupd
     path: .github/workflows/rust.yml
-    vars:
-      # https://github.com/rust-lang/rust-clippy/issues/10421
-      lint_toolchain: 1.66.0
 
   # coreos-installer is custom
 

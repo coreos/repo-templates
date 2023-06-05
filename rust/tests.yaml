@@ -9,6 +9,9 @@ files:
   - repo: bootupd
     path: .github/workflows/rust.yml
 
+  - repo: cap-std-ext
+    path: .github/workflows/rust.yml
+
   # coreos-installer is custom
 
   - repo: envsubst-rs

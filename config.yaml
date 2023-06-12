@@ -60,6 +60,11 @@ repos:
     vars:
       git_repo: console-login-helper-messages
 
+  coreos-assembler:
+    url: https://github.com/coreos/coreos-assembler
+    vars:
+      git_repo: coreos-assembler
+
   coreos-installer:
     url: https://github.com/coreos/coreos-installer
     vars:
@@ -185,6 +190,11 @@ repos:
     vars:
       container_arches: [amd64]
       containers: [quay.io/coreos/rhcosbot]
+
+  rpm-ostree:
+    url: https://github.com/coreos/rpm-ostree
+    vars:
+      git_repo: rpm-ostree
 
   ssh-key-dir:
     url: https://github.com/coreos/ssh-key-dir

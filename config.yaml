@@ -27,6 +27,7 @@ repos:
       fedora_package: rust-afterburn
       rhel8_package: rust-afterburn
       rhel9_package: rust-afterburn
+      pretty_name: Afterburn
 
   bootupd:
     url: https://github.com/coreos/bootupd
@@ -48,6 +49,7 @@ repos:
       fedora_package: butane
       rhel8_package: butane
       rhel9_package: butane
+      pretty_name: Butane
 
   cap-std-ext:
     url: https://github.com/coreos/cap-std-ext
@@ -60,6 +62,12 @@ repos:
     vars:
       git_repo: console-login-helper-messages
 
+  coreos-assembler:
+    url: https://github.com/coreos/coreos-assembler
+    vars:
+      git_repo: coreos-assembler
+      pretty_name: CoreOS Assembler
+
   coreos-installer:
     url: https://github.com/coreos/coreos-installer
     vars:
@@ -70,6 +78,7 @@ repos:
       fedora_package: rust-coreos-installer
       rhel8_package: coreos-installer
       rhel9_package: rust-coreos-installer
+      pretty_name: CoreOS Installer
 
   coreos-installer-dracut:
     url: https://github.com/coreos/coreos-installer-dracut
@@ -138,6 +147,7 @@ repos:
       fedora_package: ignition
       rhel8_package: ignition
       rhel9_package: ignition
+      pretty_name: Ignition
 
   ignition-config-rs:
     url: https://github.com/coreos/ignition-config-rs
@@ -186,6 +196,12 @@ repos:
       container_arches: [amd64]
       containers: [quay.io/coreos/rhcosbot]
 
+  rpm-ostree:
+    url: https://github.com/coreos/rpm-ostree
+    vars:
+      git_repo: rpm-ostree
+      pretty_name: rpm-ostree
+
   ssh-key-dir:
     url: https://github.com/coreos/ssh-key-dir
     vars:
@@ -231,12 +247,15 @@ repos:
       git_repo: zincati
       crate: zincati
       fedora_package: rust-zincati
+      pretty_name: Zincati
 
 templates:
   - container/container.yml
   - container/container-rebuild.yml
   - copr/Makefile
   - dependabot/dependabot.yml
+  - docs/_config.yml
+  - docs/coreos.scss
   - fcos/release-checklist.md
   - go/release-checklist.md
   - go/signing-ticket.sh

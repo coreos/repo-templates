@@ -1,0 +1,21 @@
+files:
+  - repo: afterburn
+    path: docs/_sass/color_schemes/coreos.scss
+
+  - repo: butane
+    path: docs/_sass/color_schemes/coreos.scss
+
+  - repo: coreos-assembler
+    path: docs/_sass/color_schemes/coreos.scss
+
+  - repo: coreos-installer
+    path: docs/_sass/color_schemes/coreos.scss
+
+  - repo: ignition
+    path: docs/_sass/color_schemes/coreos.scss
+
+  - repo: rpm-ostree
+    path: docs/_sass/color_schemes/coreos.scss
+
+  - repo: zincati
+    path: docs/_sass/color_schemes/coreos.scss

@@ -222,6 +222,11 @@ repos:
       crate: coreos-stream-metadata
       library_crate: true
 
+  toolbox:
+    url: https://github.com/coreos/toolbox
+    vars:
+      git_repo: toolbox
+
   triagebot:
     url: https://github.com/coreos/triagebot
     vars:

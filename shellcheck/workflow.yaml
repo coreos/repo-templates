@@ -28,3 +28,9 @@ files:
     vars:
       branches:
         - main
+
+  - repo: toolbox
+    path: .github/workflows/shellcheck.yml
+    vars:
+      branches:
+        - main

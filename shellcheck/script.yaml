@@ -13,3 +13,6 @@ files:
 
   - repo: ignition
     path: ci/shellcheck
+
+  - repo: toolbox
+    path: ci/shellcheck

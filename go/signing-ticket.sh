@@ -69,9 +69,15 @@ EOF
 
 After running this you should end up with a directory with files in it like:
 
+{# create array of map values for sorting #}
+{% set_global variant_values = [] %}
+{% for _, variant in signing_variants %}
+{% set_global variant_values = variant_values | concat(with=variant) %}
+{% endfor %}
+
 ```
 $ ls -1
-{%- for _, variant in signing_variants %}
+{%- for variant in variant_values | sort %}
 {{ signing_base }}-{{ variant }}
 {{ signing_base }}-{{ variant }}.asc
 {%- endfor %}

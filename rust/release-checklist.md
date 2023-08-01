@@ -47,6 +47,9 @@ Push access to the upstream repository is required in order to publish the new t
   - [ ] `git checkout -b pre-release-${RELEASE_VER}`
 {%- endif %}
 
+- check `Cargo.toml` for unintended de-supporting of older dependency versions:
+  - [ ] `git diff $(git describe --abbrev=0) Cargo.toml`
+
 {% if not library_crate %}
 - update all dependencies:
   - [ ] `cargo update`

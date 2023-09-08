@@ -9,11 +9,13 @@ files:
     path: .github/dependabot.yml
     vars:
       dependabot_labels: [dependency, skip-notes]
+      dependabot_interval: monthly
 
   - repo: airlock
     path: .github/dependabot.yml
     vars:
       dependabot_labels: [kind/dependency]
+      dependabot_interval: monthly
 
   - repo: bootupd
     path: .github/dependabot.yml
@@ -40,6 +42,7 @@ files:
     path: .github/dependabot.yml
     vars:
       dependabot_labels: [dependency, skip-notes]
+      dependabot_interval: monthly
 
   - repo: fedora-coreos-stream-generator
     path: .github/dependabot.yml
@@ -72,6 +75,7 @@ files:
     path: .github/dependabot.yml
     vars:
       dependabot_labels: [dependency, skip-notes]
+      dependabot_interval: monthly
 
   - repo: openat-ext
     path: .github/dependabot.yml
@@ -82,6 +86,7 @@ files:
     path: .github/dependabot.yml
     vars:
       dependabot_labels: [dependency, skip-notes]
+      dependabot_interval: monthly
 
   - repo: repo-templates
     path: .github/dependabot.yml
@@ -97,6 +102,7 @@ files:
     path: .github/dependabot.yml
     vars:
       dependabot_labels: [dependency, skip-notes]
+      dependabot_interval: monthly
 
   - repo: stream-metadata-go
     path: .github/dependabot.yml
@@ -107,6 +113,7 @@ files:
     path: .github/dependabot.yml
     vars:
       dependabot_labels: [dependency, skip-notes]
+      dependabot_interval: monthly
 
   - repo: vcontext
     path: .github/dependabot.yml
@@ -115,9 +122,10 @@ files:
     path: .github/dependabot.yml
     vars:
       dependabot_labels: [dependency, skip-notes]
+      dependabot_interval: monthly
 
   - repo: zincati
     path: .github/dependabot.yml
     vars:
       dependabot_labels: [area/dependencies]
-      dependabot_interval: daily
+      dependabot_interval: monthly

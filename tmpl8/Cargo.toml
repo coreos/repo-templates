@@ -13,7 +13,7 @@ publish = false
 anyhow = "1"
 clap = { version = "4", default-features = false, features = ["std", "derive", "error-context", "help", "usage"] }
 filetime = "0.2"
-nix = { version = "0.26", default-features = false, features = ["fs"] }
+nix = { version = "0.27", default-features = false, features = ["fs"] }
 regex = "1.9"
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"

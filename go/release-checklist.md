@@ -100,6 +100,7 @@ RHCOS packaging for the current RHCOS development release:
  - [ ] Update your local repo and run `rhpkg build`
 {%- if do_ocp_mirror %}
  - [ ] File ticket similar to [this one](https://issues.redhat.com/browse/ART-3711) to sync the new version to mirror.openshift.com
+ - [ ] Wait until mirror.openshift.com is updated and confirm the new version is correct
 {%- endif %}
 {% endif %}
 

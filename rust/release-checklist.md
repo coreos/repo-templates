@@ -186,6 +186,7 @@ Push access to the upstream repository is required in order to publish the new t
   - [ ] update your local repo and run `rhpkg build`
 {%- if do_ocp_mirror %}
   - [ ] file ticket similar to [this one](https://issues.redhat.com/browse/ART-3772) to sync the new version to mirror.openshift.com
+  - [ ] wait until mirror.openshift.com is updated and confirm the new version is correct
 {% endif %}
 {% endif %}
 

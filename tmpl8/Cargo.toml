@@ -13,11 +13,11 @@ publish = false
 anyhow = "1"
 clap = { version = "4", default-features = false, features = ["std", "derive", "error-context", "help", "usage"] }
 filetime = "0.2"
-nix = { version = "0.27", default-features = false, features = ["fs"] }
+nix = { version = "0.28", default-features = false, features = ["fs"] }
 regex = "1.10"
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
 serde_yaml = "0.9"
 similar = "2"
 tera = "1"
-yansi = "0.5"
+yansi = "1.0"

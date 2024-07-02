@@ -12,6 +12,7 @@ Edit the issue title to include today's date. Once the pipeline spits out the ne
 
 - [ ] Add the `ok-to-promote` label to the issue
 - [ ] Review the promotion PR against the `{{ stream }}` branch on https://github.com/coreos/fedora-coreos-config
+- [ ] Post a link to the PR as a comment to this issue
 - [ ] Once CI has passed, merge it
 
 <details>

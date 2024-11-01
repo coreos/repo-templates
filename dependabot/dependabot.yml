@@ -3,6 +3,11 @@
 
 version: 2
 updates:
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 3
   - package-ecosystem: {% if dependabot_ecosystem != "auto" -%}
 {{ dependabot_ecosystem }}
 {%- elif crate -%}

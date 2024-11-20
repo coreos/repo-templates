@@ -34,7 +34,7 @@ jobs:
 {%- endif %}
     steps:
     - name: Set up Go 1.x
-      uses: actions/setup-go@v4
+      uses: actions/setup-go@v5
       with:
         go-version: {% raw %}${{ matrix.go-version }}{% endraw %}
     - name: Check out repository
@@ -91,7 +91,7 @@ jobs:
     - name: Check out repository
       uses: actions/checkout@v4
     - name: Set up Go 1.x
-      uses: actions/setup-go@v4
+      uses: actions/setup-go@v5
       with:
         go-version: {{ go_versions | last }}
 {%- if go_generate_with_schematyper %}

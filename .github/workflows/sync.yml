@@ -95,6 +95,7 @@ jobs:
           path: output/${{ env.REPO_NAME }}
           push-to-fork: coreosbot-releng/${{ env.REPO_NAME }}
           branch: repo-templates
+          labels: skip-notes
           commit-message: |
             Sync repo templates ⚙
 

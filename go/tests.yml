@@ -34,7 +34,7 @@ jobs:
 {%- endif %}
     steps:
     - name: Set up Go 1.x
-      uses: actions/setup-go@v4
+      uses: actions/setup-go@v5
       with:
         go-version: {% raw %}${{ matrix.go-version }}{% endraw %}
     - name: Check out repository
@@ -74,7 +74,7 @@ jobs:
       run: {{ go_test_cmd }}
 {%- if do_go_lint %}
     - name: Run linter
-      uses: golangci/golangci-lint-action@v3
+      uses: golangci/golangci-lint-action@v6
 {%- if do_multi_os %}
       if: runner.os == 'Linux'
 {%- endif %}
@@ -91,7 +91,7 @@ jobs:
     - name: Check out repository
       uses: actions/checkout@v4
     - name: Set up Go 1.x
-      uses: actions/setup-go@v4
+      uses: actions/setup-go@v5
       with:
         go-version: {{ go_versions | last }}
 {%- if go_generate_with_schematyper %}

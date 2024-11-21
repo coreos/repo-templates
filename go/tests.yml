@@ -74,7 +74,7 @@ jobs:
       run: {{ go_test_cmd }}
 {%- if do_go_lint %}
     - name: Run linter
-      uses: golangci/golangci-lint-action@v3
+      uses: golangci/golangci-lint-action@v6
 {%- if do_multi_os %}
       if: runner.os == 'Linux'
 {%- endif %}

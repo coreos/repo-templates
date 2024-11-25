@@ -52,7 +52,7 @@ jobs:
       matrix: ${{ fromJSON(needs.init.outputs.matrix) }}
     steps:
       - name: Fork target repo
-        uses: actions/github-script@v6
+        uses: actions/github-script@v7
         with:
           github-token: ${{ secrets.COREOSBOT_RELENG_TOKEN }}
           script: |

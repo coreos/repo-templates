@@ -168,6 +168,7 @@ Push access to the upstream repository is required in order to publish the new t
 {%- if do_fast_track %}
   - [ ] [submit a fast-track](https://github.com/coreos/fedora-coreos-config/actions/workflows/add-override.yml) for FCOS testing-devel
   - [ ] [submit a fast-track](https://github.com/coreos/fedora-coreos-config/actions/workflows/add-override.yml) for FCOS next-devel if it is [open](https://github.com/coreos/fedora-coreos-pipeline/blob/main/next-devel/README.md)
+  - [ ] Get the fast-track [Pr(s)](https://github.com/coreos/fedora-coreos-config/pulls) reviewed, approved and then merged
 {% endif %}
 {% endif %}
 

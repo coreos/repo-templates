@@ -1,20 +1,20 @@
 files:
   - repo: fedora-coreos-streams
-    path: ISSUE_TEMPLATE/next.md
+    path: .github/ISSUE_TEMPLATE/next.md
     vars:
       stream: next
       z_version: 1
       source_stream: next-devel
 
   - repo: fedora-coreos-streams
-    path: ISSUE_TEMPLATE/testing.md
+    path: .github/ISSUE_TEMPLATE/testing.md
     vars:
       stream: testing
       z_version: 2
       source_stream: testing-devel
 
   - repo: fedora-coreos-streams
-    path: ISSUE_TEMPLATE/stable.md
+    path: .github/ISSUE_TEMPLATE/stable.md
     vars:
       stream: stable
       z_version: 3

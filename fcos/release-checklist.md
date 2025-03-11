@@ -1,6 +1,6 @@
 ---
 name: {{ stream }} release checklist
-about:  {{ stream }} release checlist template
+about:  {{ stream }} release checklist template
 title: "{{ stream }}: new release on <YYYY-MM-DD>"
 labels: jira,kind/release
 warning: |

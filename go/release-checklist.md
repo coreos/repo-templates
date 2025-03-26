@@ -89,26 +89,6 @@ Quay release:
 {%- endfor %}
 {% endif %}
 
-{% if rhel8_package %}
-RHCOS packaging for the current RHCOS development release:
- - [ ] Update the [spec file](https://gitlab.com/redhat/rhel/rpms/{{ rhel8_package }})
-   - Bump the `Version`
-   - Switch the `Release` back to `1%{?dist}`
-   - Remove any patches obsoleted by the new release
-   - Run `go-mods-to-bundled-provides.py | sort` while inside of the `{{ git_repo }}` directory you ran `./tag_release` from & copy output into spec file in `# Main package provides` section
-   - Update changelog
- - [ ] Run `spectool -g -S {{ rhel8_package }}.spec`
- - [ ] Run `kinit your_account@IPA.REDHAT.COM`
- - [ ] Run `rhpkg new-sources $(spectool -S {{ rhel8_package }}.spec | sed 's:.*/::')`
- - [ ] PR the changes
- - [ ] Get the PR reviewed and merge it
- - [ ] Update your local repo and run `rhpkg build`
-{%- if do_ocp_mirror %}
- - [ ] File ticket similar to [this one](https://issues.redhat.com/browse/ART-3711) to sync the new version to mirror.openshift.com
- - [ ] Wait until mirror.openshift.com is updated and confirm the new version is correct
-{%- endif %}
-{% endif %}
-
 {% if rhel9_package %}
 CentOS Stream 9 packaging:
   - [ ] Create a `rebase-c9s-{{ git_repo }}` issue in the internal team-operations repo and follow the steps there

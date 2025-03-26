@@ -4,7 +4,7 @@ vars:
   current_fedora: 41
   # Key ID from https://fedoraproject.org/security/
   current_fedora_signing_key: e99d6ad1
-  go_versions: [1.22.x, 1.23.x]
+  go_versions: [1.23.x, 1.24.x]
 
 repos:
   11bot:

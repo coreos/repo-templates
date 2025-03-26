@@ -27,6 +27,7 @@ repos:
       fedora_package: rust-afterburn
       rhel8_package: rust-afterburn
       rhel9_package: rust-afterburn
+      rhel10_package: rust-afterburn
       pretty_name: Afterburn
 
   bootupd:
@@ -37,6 +38,7 @@ repos:
       fedora_package: rust-bootupd
       rhel8_package: rust-bootupd
       rhel9_package: rust-bootupd
+      rhel10_package: rust-bootupd
 
   butane:
     url: https://github.com/coreos/butane
@@ -49,6 +51,7 @@ repos:
       fedora_package: butane
       rhel8_package: butane
       rhel9_package: butane
+      rhel10_package: butane
       pretty_name: Butane
 
   cap-std-ext:
@@ -78,6 +81,7 @@ repos:
       fedora_package: rust-coreos-installer
       rhel8_package: coreos-installer
       rhel9_package: rust-coreos-installer
+      rhel10_package: rust-coreos-installer
       pretty_name: CoreOS Installer
 
   coreos-installer-dracut:
@@ -147,6 +151,7 @@ repos:
       fedora_package: ignition
       rhel8_package: ignition
       rhel9_package: ignition
+      rhel10_package: ignition
       pretty_name: Ignition
 
   ignition-config-rs:
@@ -209,6 +214,7 @@ repos:
       crate: ssh-key-dir
       fedora_package: rust-ssh-key-dir
       rhel9_package: rust-ssh-key-dir
+      rhel10_package: rust-ssh-key-dir
 
   stream-metadata-go:
     url: https://github.com/coreos/stream-metadata-go

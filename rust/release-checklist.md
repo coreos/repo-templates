@@ -176,28 +176,15 @@ Push access to the upstream repository is required in order to publish the new t
 {% endif %}
 {% endif %}
 
-{% if rhel8_package %}
-- RHCOS packaging:
-  - [ ] update the [spec file](https://gitlab.com/redhat/rhel/rpms/{{ rhel8_package }})
-    - bump the `Version`
-    - switch the `Release` back to `1%{?dist}`
-    - remove any patches obsoleted by the new release
-    - update changelog
-  - [ ] run `spectool -g -S {{ rhel8_package }}.spec`
-  - [ ] run `kinit your_account@IPA.REDHAT.COM`
-  - [ ] run `rhpkg new-sources $(spectool -S {{ rhel8_package }}.spec | sed 's:.*/::')`
-  - [ ] PR the changes
-  - [ ] get the PR reviewed and merge it
-  - [ ] update your local repo and run `rhpkg build`
-{%- if do_ocp_mirror %}
-  - [ ] file ticket similar to [this one](https://issues.redhat.com/browse/ART-3772) to sync the new version to mirror.openshift.com
-  - [ ] wait until mirror.openshift.com is updated and confirm the new version is correct
-{% endif %}
-{% endif %}
 
 {% if rhel9_package %}
 CentOS Stream 9 packaging:
   - [ ] Create a `rebase-c9s-{{ git_repo }}` issue in the internal team-operations repo and follow the steps there
+{% endif %}
+
+{% if rhel10_package %}
+CentOS Stream 10 packaging:
+  - [ ] Create a `rebase-c10s-{{ git_repo }}` issue in the internal team-operations repo and follow the steps there
 {% endif %}
 
 [cargo-release]: https://github.com/sunng87/cargo-release

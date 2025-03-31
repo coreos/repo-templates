@@ -25,7 +25,6 @@ repos:
       git_repo: afterburn
       crate: afterburn
       fedora_package: rust-afterburn
-      rhel8_package: rust-afterburn
       rhel9_package: rust-afterburn
       rhel10_package: rust-afterburn
       pretty_name: Afterburn
@@ -36,7 +35,6 @@ repos:
       git_repo: bootupd
       crate: bootupd
       fedora_package: rust-bootupd
-      rhel8_package: rust-bootupd
       rhel9_package: rust-bootupd
       rhel10_package: rust-bootupd
 
@@ -149,7 +147,6 @@ repos:
       git_repo: ignition
       quay_repo: coreos/ignition-validate
       fedora_package: ignition
-      rhel8_package: ignition
       rhel9_package: ignition
       rhel10_package: ignition
       pretty_name: Ignition

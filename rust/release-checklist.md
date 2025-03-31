@@ -176,16 +176,16 @@ Push access to the upstream repository is required in order to publish the new t
 {% endif %}
 {% endif %}
 
-{% if rhel8_package %}
+{% if rhaos_package %}
 - RHCOS packaging:
-  - [ ] update the [spec file](https://gitlab.com/redhat/rhel/rpms/{{ rhel8_package }})
+  - [ ] update the [spec file](https://gitlab.com/redhat/rhel/rpms/{{ rhaos_package }})
     - bump the `Version`
     - switch the `Release` back to `1%{?dist}`
     - remove any patches obsoleted by the new release
     - update changelog
-  - [ ] run `spectool -g -S {{ rhel8_package }}.spec`
+  - [ ] run `spectool -g -S {{ rhaos_package }}.spec`
   - [ ] run `kinit your_account@IPA.REDHAT.COM`
-  - [ ] run `rhpkg new-sources $(spectool -S {{ rhel8_package }}.spec | sed 's:.*/::')`
+  - [ ] run `rhpkg new-sources $(spectool -S {{ rhaos_package }}.spec | sed 's:.*/::')`
   - [ ] PR the changes
   - [ ] get the PR reviewed and merge it
   - [ ] update your local repo and run `rhpkg build`

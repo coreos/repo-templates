@@ -89,17 +89,17 @@ Quay release:
 {%- endfor %}
 {% endif %}
 
-{% if rhel8_package %}
+{% if rhaos_package %}
 RHCOS packaging for the current RHCOS development release:
- - [ ] Update the [spec file](https://gitlab.com/redhat/rhel/rpms/{{ rhel8_package }})
+ - [ ] Update the [spec file](https://gitlab.com/redhat/rhel/rpms/{{ rhaos_package }})
    - Bump the `Version`
    - Switch the `Release` back to `1%{?dist}`
    - Remove any patches obsoleted by the new release
    - Run `go-mods-to-bundled-provides.py | sort` while inside of the `{{ git_repo }}` directory you ran `./tag_release` from & copy output into spec file in `# Main package provides` section
    - Update changelog
- - [ ] Run `spectool -g -S {{ rhel8_package }}.spec`
+ - [ ] Run `spectool -g -S {{ rhaos_package }}.spec`
  - [ ] Run `kinit your_account@IPA.REDHAT.COM`
- - [ ] Run `rhpkg new-sources $(spectool -S {{ rhel8_package }}.spec | sed 's:.*/::')`
+ - [ ] Run `rhpkg new-sources $(spectool -S {{ rhaos_package }}.spec | sed 's:.*/::')`
  - [ ] PR the changes
  - [ ] Get the PR reviewed and merge it
  - [ ] Update your local repo and run `rhpkg build`

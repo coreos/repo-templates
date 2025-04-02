@@ -200,6 +200,11 @@ CentOS Stream 9 packaging:
   - [ ] Create a `rebase-c9s-{{ git_repo }}` issue in the internal team-operations repo and follow the steps there
 {% endif %}
 
+{% if rhel10_package %}
+CentOS Stream 10 packaging:
+  - [ ] Create a `rebase-c10s-{{ git_repo }}` issue in the internal team-operations repo and follow the steps there
+{% endif %}
+
 [cargo-release]: https://github.com/sunng87/cargo-release
 [rustup]: https://rustup.rs/
 [crates-io]: https://crates.io/

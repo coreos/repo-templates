@@ -1,9 +1,9 @@
 vars:
   container_arches: [amd64, arm64]
   container_needs_git_tags: false
-  current_fedora: 41
+  current_fedora: 42
   # Key ID from https://fedoraproject.org/security/
-  current_fedora_signing_key: e99d6ad1
+  current_fedora_signing_key: 105ef944
   go_versions: [1.23.x, 1.24.x]
 
 repos:

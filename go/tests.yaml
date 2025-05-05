@@ -2,7 +2,7 @@ vars:
   do_go_lint: true
   do_go_mod: true
   # go_versions defined in ../config.yaml
-  golangci_lint_version: v1.64.4
+  golangci_lint_version: v2.1.6
   go_build_cmd: go build
   go_test_cmd: go test -v ./...
 

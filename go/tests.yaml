@@ -19,6 +19,8 @@ files:
       go_build_cmd: ~
       go_test_cmd: ./test
       go_generated_dirs: [docs]
+      go_format: test -z "$(gofmt -l .)" || (echo 'Run gofmt to format your code' && exit 1)
+
 
   - repo: fedora-coreos-stream-generator
     path: .github/workflows/go.yml
@@ -61,6 +63,7 @@ files:
       go_test_cmd: ./test
       go_generated_dirs: [config, docs]
       go_generate_with_schematyper: true
+      go_format: test -z "$(gofmt -l .)" || (echo 'Run gofmt to format your code' && exit 1)
 
   - repo: pkg
     path: .github/workflows/go.yml

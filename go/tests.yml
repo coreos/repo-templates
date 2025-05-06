@@ -80,7 +80,7 @@ jobs:
 {%- endif %}
       with:
         version: {{ golangci_lint_version }}
-        args: -E=gofmt --timeout=30m0s
+        args: --timeout=30m0s
 {%- endif %}
 
 {%- if go_generated_dirs %}

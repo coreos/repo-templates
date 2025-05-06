@@ -145,15 +145,7 @@ Push access to the upstream repository is required in order to publish the new t
 
 {% if fedora_package %}
 - Fedora packaging:
-  - [ ] update the `{{ fedora_package }}` spec file in [Fedora](https://src.fedoraproject.org/rpms/{{ fedora_package }})
-    - bump the `Version`
-    - switch the `Release` back to `1%{?dist}`
-    - remove any patches obsoleted by the new release
-    - update changelog
-  - [ ] run `spectool -g -S {{ fedora_package }}.spec`
-  - [ ] run `kinit your_fas_account@FEDORAPROJECT.ORG`
-  - [ ] run `fedpkg new-sources $(spectool -S {{ fedora_package }}.spec | sed 's:.*/::')`
-  - [ ] PR the changes in [Fedora](https://src.fedoraproject.org/rpms/{{ fedora_package }})
+  - [ ] Review the proposed changes in the PR submitted by Packit in [Fedora](https://src.fedoraproject.org/rpms/{{ fedora_package }})/pull-requests.
   - [ ] once the PR merges to rawhide, merge rawhide into the other relevant branches (e.g. f{{ current_fedora }}) then push those, for example:
     ```bash
     git checkout rawhide

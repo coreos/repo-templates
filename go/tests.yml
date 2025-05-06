@@ -82,6 +82,13 @@ jobs:
         version: {{ golangci_lint_version }}
         args: --timeout=30m0s
 {%- endif %}
+{%- if do_go_format %}
+    - name: Run gofmt formatting
+{%- if do_multi_os %}
+      if: runner.os == 'Linux'
+{%- endif %}
+      run: {{ go_format }}
+{%- endif %}
 
 {%- if go_generated_dirs %}
   regenerate:

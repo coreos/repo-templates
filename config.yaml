@@ -265,6 +265,7 @@ templates:
   - docs/_config.yml
   - docs/coreos.scss
   - fcos/release-checklist.md
+  - gemini/config.yaml
   - go/release-checklist.md
   - go/signing-ticket.sh
   - go/tag_release.sh

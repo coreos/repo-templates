@@ -3,25 +3,25 @@ vars:
 
 files:
   - repo: butane
-    path: .gemini/config.yml
+    path: .gemini/config.yaml
   
   - repo: ignition
-    path: .gemini/config.yml
+    path: .gemini/config.yaml
 
   - repo: coreos-installer
-    path: .gemini/config.yml
+    path: .gemini/config.yaml
 
   - repo: afterburn
-    path: .gemini/config.yml
+    path: .gemini/config.yaml
   
   - repo: zincati
-    path: .gemini/config.yml
+    path: .gemini/config.yaml
   
   - repo: bootupd
-    path: .gemini/config.yml
+    path: .gemini/config.yaml
   
   - repo: coreos-assembler
-    path: .gemini/config.yml
+    path: .gemini/config.yaml
 
   - repo: rpm-ostree
-    path: .gemini/config.yml
+    path: .gemini/config.yaml

@@ -72,6 +72,17 @@ jobs:
       shell: bash
 {%- endif %}
       run: {{ go_test_cmd }}
+{%- if do_go_format %}
+    - name: Check Go formatting (gofmt)
+      shell: bash
+      run: |
+        if [ "$(gofmt -l . | wc -l)" -gt 0 ]; then
+          echo "Go files are not formatted. Please run 'gofmt -w .' on your code."
+          gofmt -d .
+          exit 1
+        fi
+        echo "All Go files are correctly formatted."
+{%- endif %}
 {%- if do_go_lint %}
     - name: Run linter
       uses: golangci/golangci-lint-action@v8
@@ -80,9 +91,7 @@ jobs:
 {%- endif %}
       with:
         version: {{ golangci_lint_version }}
-        args: -E=gofmt --timeout=30m0s
 {%- endif %}
-
 {%- if go_generated_dirs %}
   regenerate:
     name: Regenerate

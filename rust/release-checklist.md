@@ -145,7 +145,7 @@ Push access to the upstream repository is required in order to publish the new t
 
 {% if fedora_package %}
 - Fedora packaging:
-  - [ ] Review the proposed changes in the PR submitted by Packit in [Fedora](https://src.fedoraproject.org/rpms/{{ fedora_package }})/pull-requests.
+  - [ ] Review the proposed changes in the PR submitted by Packit in [Fedora](https://src.fedoraproject.org/rpms/{{ fedora_package }}/pull-requests).
   - [ ] once the PR merges to rawhide, merge rawhide into the other relevant branches (e.g. f{{ current_fedora }}) then push those, for example:
     ```bash
     git checkout rawhide

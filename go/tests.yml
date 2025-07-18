@@ -74,6 +74,9 @@ jobs:
       run: {{ go_test_cmd }}
 {%- if do_go_lint %}
     - name: Check Go formatting (gofmt)
+{%- if do_multi_os %}
+      if: runner.os == 'Linux'
+{%- endif %}
       shell: bash
       run: |
         GO_FILES=$(find . -name '*.go' -not -path "./vendor/*")

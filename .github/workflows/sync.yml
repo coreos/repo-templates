@@ -83,7 +83,7 @@ jobs:
           mkdir output
           mv dest "output/$reponame"
       - name: Download rendered output
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v6
         with:
           name: rendered
       - name: Unpack rendered output

@@ -37,7 +37,7 @@ jobs:
         id: get
         run: tmpl8/target/debug/tmpl8 github-matrix >> $GITHUB_OUTPUT
       - name: Upload rendered output
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: rendered
           path: output.tar

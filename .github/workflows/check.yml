@@ -21,7 +21,7 @@ jobs:
     container: registry.fedoraproject.org/fedora:latest
     steps:
       - name: Check out repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
       - name: Install dependencies
         run: dnf install -y cargo git-core python3-pyyaml
       - name: Check for unreferenced templates

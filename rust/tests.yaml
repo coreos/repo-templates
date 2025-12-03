@@ -21,7 +21,7 @@ files:
     path: .github/workflows/rust.yml
     vars:
       # not in Cargo.toml
-      msrv: 1.61.0
+      msrv: 1.84.0
 
   # ignition-config-rs is custom
 

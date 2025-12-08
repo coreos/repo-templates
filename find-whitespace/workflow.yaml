@@ -1,0 +1,12 @@
+files:
+  - repo: fedora-coreos-config
+    path: .github/workflows/find-whitespace.yml
+    vars:
+      branches:
+        - testing-devel
+
+  - repo: rhel-coreos-config
+    path: .github/workflows/find-whitespace.yml
+    vars:
+      branches:
+        - main

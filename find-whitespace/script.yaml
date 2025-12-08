@@ -1,0 +1,6 @@
+files:
+  - repo: fedora-coreos-config
+    path: ci/find-whitespace
+
+  - repo: rhel-coreos-config
+    path: ci/find-whitespace

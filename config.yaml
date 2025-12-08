@@ -270,6 +270,8 @@ templates:
   - docs/_config.yml
   - docs/coreos.scss
   - fcos/release-checklist.md
+  - find-whitespace/script.sh
+  - find-whitespace/workflow.yml
   - gemini/config.yml
   - go/release-checklist.md
   - go/signing-ticket.sh

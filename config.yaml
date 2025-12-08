@@ -198,6 +198,11 @@ repos:
       container_arches: [amd64]
       containers: [quay.io/coreos/rhcosbot]
 
+  rhel-coreos-config:
+    url: https://github.com/coreos/rhel-coreos-config
+    vars:
+      git_repo: rhel-coreos-config
+
   rpm-ostree:
     url: https://github.com/coreos/rpm-ostree
     vars:

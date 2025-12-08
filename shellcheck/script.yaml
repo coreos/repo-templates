@@ -14,5 +14,8 @@ files:
   - repo: ignition
     path: ci/shellcheck
 
+  - repo: rhel-coreos-config
+    path: ci/shellcheck
+
   - repo: toolbox
     path: ci/shellcheck

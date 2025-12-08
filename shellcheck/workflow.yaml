@@ -29,6 +29,12 @@ files:
       branches:
         - main
 
+  - repo: rhel-coreos-config
+    path: .github/workflows/shellcheck.yml
+    vars:
+      branches:
+        - main
+
   - repo: toolbox
     path: .github/workflows/shellcheck.yml
     vars:

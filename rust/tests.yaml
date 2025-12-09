@@ -1,5 +1,5 @@
 vars:
-  lint_toolchain: 1.84.1
+  lint_toolchain: 1.90.0
   msrv: auto
 
 files:

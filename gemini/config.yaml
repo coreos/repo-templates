@@ -17,7 +17,13 @@ files:
   - repo: coreos-installer
     path: .gemini/config.yaml
 
+  - repo: fedora-coreos-config
+    path: .gemini/config.yaml
+
   - repo: ignition
+    path: .gemini/config.yaml
+
+  - repo: rhel-coreos-config
     path: .gemini/config.yaml
 
   - repo: rpm-ostree

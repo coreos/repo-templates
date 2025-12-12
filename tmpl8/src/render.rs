@@ -22,7 +22,7 @@ use anyhow::{bail, Context, Result};
 use regex::Regex;
 use similar::TextDiff;
 use tera::Tera;
-use yansi::Paint;
+use yansi::{Paint, Color};
 
 use super::cache::*;
 use super::schema::*;
@@ -58,7 +58,7 @@ pub(super) fn diff(args: DiffArgs) -> Result<()> {
     do_update_cache(&cfg, &cache_dir, &args.fork, false)?;
 
     if args.no_color {
-        Paint::disable();
+        yansi::disable();
     }
     for (path, new_contents) in &rendered {
         let cache_path = cache_dir.join(path);
@@ -79,14 +79,13 @@ pub(super) fn diff(args: DiffArgs) -> Result<()> {
             continue;
         }
         for (i, line) in diff.trim_end_matches('\n').split('\n').enumerate() {
-            let painted = match line.chars().next() {
-                _ if i < 2 => Paint::new(line).bold(),
-                Some('-') => Paint::red(line),
-                Some('+') => Paint::green(line),
-                Some('@') => Paint::cyan(line),
-                _ => Paint::new(line),
-            };
-            println!("{}", painted);
+            match line.chars().next() {
+                _ if i < 2 => println!("{}", line.bold()),
+                Some('-') => println!("{}", line.red()),
+                Some('+') => println!("{}", line.green()),
+                Some('@') => println!("{}", line.cyan()),
+                _ => println!("{}", line),
+            }
         }
     }
 

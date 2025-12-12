@@ -14,7 +14,8 @@
 
 use std::fs;
 use std::io;
-use std::os::unix::io::{AsRawFd, FromRawFd};
+use std::os::fd::{AsFd, IntoRawFd};
+use std::os::unix::io::FromRawFd;
 use std::path::Path;
 use std::process::{Command, Stdio};
 
@@ -166,6 +167,6 @@ fn run_command(cmd: &mut Command) -> Result<()> {
 }
 
 fn stderr() -> Result<Stdio> {
-    let stderr_fd = nix::unistd::dup(2_i32.as_raw_fd()).context("duplicating stderr")?;
-    Ok(unsafe { Stdio::from_raw_fd(stderr_fd) })
+    let stderr_fd = nix::unistd::dup(io::stderr().as_fd()).context("duplicating stderr")?;
+    Ok(unsafe { Stdio::from_raw_fd(stderr_fd.into_raw_fd()) })
 }

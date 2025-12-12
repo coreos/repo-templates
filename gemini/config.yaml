@@ -2,26 +2,32 @@ vars:
   branches: [main]
 
 files:
+  - repo: afterburn
+    path: .gemini/config.yaml
+
+  - repo: bootupd
+    path: .gemini/config.yaml
+
   - repo: butane
     path: .gemini/config.yaml
-  
-  - repo: ignition
+
+  - repo: coreos-assembler
     path: .gemini/config.yaml
 
   - repo: coreos-installer
     path: .gemini/config.yaml
 
-  - repo: afterburn
+  - repo: fedora-coreos-config
     path: .gemini/config.yaml
-  
-  - repo: zincati
+
+  - repo: ignition
     path: .gemini/config.yaml
-  
-  - repo: bootupd
-    path: .gemini/config.yaml
-  
-  - repo: coreos-assembler
+
+  - repo: rhel-coreos-config
     path: .gemini/config.yaml
 
   - repo: rpm-ostree
+    path: .gemini/config.yaml
+
+  - repo: zincati
     path: .gemini/config.yaml

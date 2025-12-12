@@ -278,6 +278,7 @@ templates:
   - go/tag_release.sh
   - go/tests.yml
   - go/tests-ignition.yml
+  - owners-file-action/owners-file-action.yml
   - release-notes/require-release-note.yml
   - rust/release-checklist.md
   - rust/rpm-test.yml

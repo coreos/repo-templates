@@ -37,7 +37,7 @@ jobs:
         id: get
         run: tmpl8/target/debug/tmpl8 github-matrix >> $GITHUB_OUTPUT
       - name: Upload rendered output
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: rendered
           path: output.tar
@@ -83,7 +83,7 @@ jobs:
           mkdir output
           mv dest "output/$reponame"
       - name: Download rendered output
-        uses: actions/download-artifact@v6
+        uses: actions/download-artifact@v7
         with:
           name: rendered
       - name: Unpack rendered output

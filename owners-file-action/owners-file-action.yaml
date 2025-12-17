@@ -1,0 +1,9 @@
+vars:
+  auto_merge: false
+  merge_strategy: "merge"
+  auto_assigned_reviewers: "2"
+  auto_assigned_approvers: "1"
+
+files:
+  - repo: ignition
+    path: .github/workflows/owners-file-action.yml

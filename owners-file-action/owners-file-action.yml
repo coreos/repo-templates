@@ -24,7 +24,7 @@ jobs:
         uses: actions/checkout@v6
 
       - name: Run Owners Action
-        uses: coreos/owners-bot-action@v2.1
+        uses: coreos/owners-file-action@v2.1
         with:
           github-token: {% raw %}${{ secrets.GITHUB_TOKEN }}{% endraw %}
           owners-file: "OWNERS"

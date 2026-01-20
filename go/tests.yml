@@ -38,7 +38,7 @@ jobs:
       with:
         go-version: {% raw %}${{ matrix.go-version }}{% endraw %}
     - name: Check out repository
-      uses: actions/checkout@v5
+      uses: actions/checkout@v6
 {%- if go_dependencies %}
     - name: Install Go dependencies
       run: go get {{ go_dependencies | join(sep=" ") }}
@@ -101,7 +101,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Check out repository
-      uses: actions/checkout@v5
+      uses: actions/checkout@v6
     - name: Set up Go 1.x
       uses: actions/setup-go@v5
       with:

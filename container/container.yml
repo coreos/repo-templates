@@ -25,7 +25,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 {%- if container_needs_git_tags %}
         with:
           # fetch tags so the compiled-in version number is useful

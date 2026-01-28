@@ -35,9 +35,6 @@ files:
       do_fast_track: false
       do_release_digests: false
 
-  - repo: ssh-key-dir
-    path: .github/ISSUE_TEMPLATE/release-checklist.md
-
   - repo: stream-metadata-rust
     path: .github/ISSUE_TEMPLATE/release-checklist.md
     vars:

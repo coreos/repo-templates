@@ -98,12 +98,6 @@ files:
   # rpm-ostree has some extra rules that aren't yet supported by the
   # template
 
-  - repo: ssh-key-dir
-    path: .github/dependabot.yml
-    vars:
-      dependabot_labels: [dependency, skip-notes]
-      dependabot_interval: monthly
-
   - repo: stream-metadata-go
     path: .github/dependabot.yml
     vars:

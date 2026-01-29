@@ -37,9 +37,6 @@ files:
   - repo: openssh-keys
     path: .github/workflows/rust.yml
 
-  - repo: ssh-key-dir
-    path: .github/workflows/rust.yml
-
   - repo: stream-metadata-rust
     path: .github/workflows/rust.yml
 

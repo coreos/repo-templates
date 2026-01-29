@@ -209,15 +209,6 @@ repos:
       git_repo: rpm-ostree
       pretty_name: rpm-ostree
 
-  ssh-key-dir:
-    url: https://github.com/coreos/ssh-key-dir
-    vars:
-      git_repo: ssh-key-dir
-      crate: ssh-key-dir
-      fedora_package: rust-ssh-key-dir
-      rhel9_package: rust-ssh-key-dir
-      rhel10_package: rust-ssh-key-dir
-
   stream-metadata-go:
     url: https://github.com/coreos/stream-metadata-go
     vars:

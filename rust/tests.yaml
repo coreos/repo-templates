@@ -30,9 +30,6 @@ files:
 
   - repo: openat-ext
     path: .github/workflows/rust.yml
-    vars:
-      # MSRV in Cargo.toml requires >= 1.56.0
-      msrv: 1.49.0
 
   - repo: openssh-keys
     path: .github/workflows/rust.yml

@@ -20,6 +20,9 @@ files:
   - repo: fedora-coreos-config
     path: .gemini/config.yaml
 
+  - repo: fedora-coreos-pipeline
+    path: .gemini/config.yaml
+
   - repo: ignition
     path: .gemini/config.yaml
 

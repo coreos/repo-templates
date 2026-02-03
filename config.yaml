@@ -105,6 +105,11 @@ repos:
     vars:
       git_repo: fedora-coreos-config
 
+  fedora-coreos-pipeline:
+    url: https://github.com/coreos/fedora-coreos-pipeline
+    vars:
+      git_repo: fedora-coreos-pipeline
+
   fedora-coreos-stream-generator:
     url: https://github.com/coreos/fedora-coreos-stream-generator
     vars:

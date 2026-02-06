@@ -14,6 +14,12 @@ files:
 
   # coreos-installer is custom
 
+  - repo: clevis-pin-trustee
+    path: .github/workflows/rust.yml
+
+  - repo: compute-pcrs
+    path: .github/workflows/rust.yml
+
   - repo: envsubst-rs
     path: .github/workflows/rust.yml
 

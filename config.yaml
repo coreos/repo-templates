@@ -58,6 +58,12 @@ repos:
       git_repo: cap-std-ext
       crate: cap-std-ext
 
+  clevis-pin-trustee:
+    url: https://github.com/latchset/clevis-pin-trustee
+
+  compute-pcrs:
+    url: https://github.com/trusted-execution-clusters/compute-pcrs
+
   console-login-helper-messages:
     url: https://github.com/coreos/console-login-helper-messages
     vars:

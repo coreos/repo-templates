@@ -38,6 +38,12 @@ files:
     vars:
       dependabot_labels: [dependency, skip-notes]
 
+  - repo: clevis-pin-trustee
+    path: .github/dependabot.yml
+
+  - repo: compute-pcrs
+    path: .github/dependabot.yml
+
   - repo: envsubst-rs
     path: .github/dependabot.yml
     vars:

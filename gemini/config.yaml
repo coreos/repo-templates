@@ -11,6 +11,9 @@ files:
   - repo: butane
     path: .gemini/config.yaml
 
+  - repo: chunkah
+    path: .gemini/config.yaml
+
   - repo: coreos-assembler
     path: .gemini/config.yaml
 

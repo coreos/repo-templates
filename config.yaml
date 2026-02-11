@@ -58,6 +58,11 @@ repos:
       git_repo: cap-std-ext
       crate: cap-std-ext
 
+  chunkah:
+    url: https://github.com/coreos/chunkah
+    vars:
+      git_repo: chunkah
+
   console-login-helper-messages:
     url: https://github.com/coreos/console-login-helper-messages
     vars:

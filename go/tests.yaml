@@ -83,3 +83,11 @@ files:
     vars:
       go_build_cmd: ~
       go_test_cmd: ./test
+
+  # Run just the lints on COSA
+  - repo: coreos-assembler
+    path: .github/workflows/go.yml
+    vars:
+      go_build_cmd: ~
+      do_go_test: false
+      do_go_mod: false

@@ -40,3 +40,11 @@ files:
     vars:
       branches:
         - main
+
+  - repo: coreos-assembler
+    path: .github/workflows/shellcheck.yml
+    vars:
+      branches:
+        - main
+        - rhel-*
+        - rhcos-*

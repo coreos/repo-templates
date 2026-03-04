@@ -67,11 +67,13 @@ jobs:
 {%- endif %}
       run: {{ go_build_cmd }}
 {%- endif %}
+{%- if do_go_test %}
     - name: Test
 {%- if do_multi_os %}
       shell: bash
 {%- endif %}
       run: {{ go_test_cmd }}
+{%- endif %}
 {%- if do_go_lint %}
     - name: Check Go formatting (gofmt)
 {%- if do_multi_os %}

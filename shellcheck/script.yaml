@@ -19,3 +19,6 @@ files:
 
   - repo: toolbox
     path: ci/shellcheck
+
+  - repo: coreos-assembler
+    path: ci/shellcheck

@@ -3,6 +3,10 @@
 name: Find Whitespace
 
 on:
+{%- if mintmaker %}
+  push:
+    branches: ['mintmaker/**']
+{%- endif %}
   pull_request:
     branches: {{ branches }}
 

@@ -10,3 +10,4 @@ files:
     vars:
       branches:
         - main
+      mintmaker: true

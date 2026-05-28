@@ -5,7 +5,7 @@ name: ShellCheck
 on:
 {%- if mintmaker %}
   push:
-    branches: ['mintmaker/**']
+    branches: ['mintmaker-**']
 {%- endif %}
   pull_request:
     branches: {{ branches }}

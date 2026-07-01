@@ -236,12 +236,6 @@ repos:
     vars:
       git_repo: toolbox
 
-  triagebot:
-    url: https://github.com/coreos/triagebot
-    vars:
-      container_arches: [amd64]
-      containers: [quay.io/coreos/triagebot]
-
   vcontext:
     url: https://github.com/coreos/vcontext
     vars:

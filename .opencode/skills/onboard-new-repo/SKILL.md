@@ -89,7 +89,7 @@ Read `config.yaml` to understand the existing patterns. Ask the user what type o
       rhel10_package: rust-repo-name
 ```
 
-**Container project** (e.g., `11bot`, `rhcosbot`, `triagebot`):
+**Container project** (e.g., `11bot`, `rhcosbot`):
 ```yaml
   repo-name:
     url: https://github.com/coreos/repo-name

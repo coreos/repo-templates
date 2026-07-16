@@ -7,6 +7,11 @@ srpm:
 	# similar to https://github.com/actions/checkout/issues/760, but for COPR
 	git config --global --add safe.directory '*'
 	curl -LOf https://src.fedoraproject.org/rpms/{{ fedora_package }}/raw/rawhide/f/{{ fedora_package }}.spec
+{%- if copr_extra_sources is defined %}
+{%- for source in copr_extra_sources %}
+	curl -LOf https://src.fedoraproject.org/rpms/{{ fedora_package }}/raw/rawhide/f/{{ source }}
+{%- endfor %}
+{%- endif %}
 	version=$$(git describe --always --tags | sed -e 's,-,\.,g' -e 's,^v,,'); \
 	git archive --format=tar --prefix={{ git_repo }}-$$version/ HEAD | gzip > {{ git_repo }}-$$version.{% if crate %}crate{% else %}tar.gz{% endif %}; \
 	sed -ie "s,^Version:.*,Version: $$version," {{ fedora_package }}.spec

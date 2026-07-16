@@ -28,6 +28,8 @@ repos:
       rhel9_package: rust-afterburn
       rhel10_package: rust-afterburn
       pretty_name: Afterburn
+      copr_extra_sources:
+        - 90-afterburn-authorized-keys-file.conf
 
   bootupd:
     url: https://github.com/coreos/bootupd

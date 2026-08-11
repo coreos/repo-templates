@@ -8,9 +8,6 @@ files:
   - repo: bootupd
     path: .gemini/config.yaml
 
-  - repo: butane
-    path: .gemini/config.yaml
-
   - repo: chunkah
     path: .gemini/config.yaml
 

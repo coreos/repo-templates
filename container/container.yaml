@@ -8,9 +8,6 @@ files:
   - repo: airlock
     path: .github/workflows/container.yml
 
-  - repo: butane
-    path: .github/workflows/container.yml
-
   - repo: coreos-installer
     # legacy path
     path: .github/workflows/containers.yml

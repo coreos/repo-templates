@@ -2,9 +2,6 @@ files:
   - repo: afterburn
     path: docs/_sass/color_schemes/coreos.scss
 
-  - repo: butane
-    path: docs/_sass/color_schemes/coreos.scss
-
   - repo: coreos-assembler
     path: docs/_sass/color_schemes/coreos.scss
 

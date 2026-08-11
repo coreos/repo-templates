@@ -7,9 +7,6 @@
 # Don't list repos that solely ship the main branch, since those can force a
 # rebuild by just pushing a commit.
 files:
-  - repo: butane
-    path: .github/workflows/container-rebuild.yml
-
   - repo: coreos-installer
     path: .github/workflows/container-rebuild.yml
 

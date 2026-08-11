@@ -29,27 +29,35 @@ do_sign() {
         echo INVALID > "$1.asc"
     fi
 }
+{% for target in signing_targets %}
 
-# Grab the binaries out of the redistributable rpm
-rpm="{{ signing_base }}-redistributable-${VR}.noarch.rpm"
+# Grab the {{ target.base }} binaries out of the redistributable rpm
+rpm="{{ target.base }}-redistributable-${VR}.noarch.rpm"
 koji download-build --key $RPMKEY --rpm $rpm
 rpm -Kv "$rpm" 2>&1 | grep -qi "${RPMKEY}" # Verify the output has the key in it
-rpm2cpio $rpm | cpio -idv './usr/share/{{ fedora_package }}/{{ signing_base }}-*'
+rpm2cpio $rpm | cpio -idv './usr/share/{{ target.package }}/{{ target.base }}-*'
 
-# Rename the binaries
-{%- for packaged_variant, variant in signing_variants %}
-mv usr/share/{{ fedora_package }}/{{ signing_base }}-{{ packaged_variant }} \
-    {{ signing_base }}-{{ variant }}
+# Rename the {{ target.base }} binaries
+{%- for packaged_variant, variant in target.variants %}
+mv usr/share/{{ target.package }}/{{ target.base }}-{{ packaged_variant }} \
+    {{ target.base }}-{{ variant }}
 {%- endfor %}
 
-# Sign them
-{%- for _, variant in signing_variants %}
-do_sign {{ signing_base }}-{{ variant }}
+# Sign the {{ target.base }} binaries
+{%- for _, variant in target.variants %}
+do_sign {{ target.base }}-{{ variant }}
 {%- endfor %}
+{% endfor %}
 
 # Fix permissions and clean up
 chmod go+r *.asc
-rm $rpm; rmdir ./usr/share/{{ fedora_package }}; rmdir ./usr/share; rmdir ./usr
+{%- for target in signing_targets %}
+rm {{ target.base }}-redistributable-*.rpm
+{%- endfor %}
+{%- for target in signing_targets %}
+rmdir ./usr/share/{{ target.package }}
+{%- endfor %}
+rmdir ./usr/share ./usr
 EOF
 }
 
@@ -69,17 +77,19 @@ EOF
 
 After running this you should end up with a directory with files in it like:
 
-{# create array of map values for sorting #}
-{% set_global variant_values = [] %}
-{% for _, variant in signing_variants %}
-{% set_global variant_values = variant_values | concat(with=variant) %}
+{# create array of all variant values for sorting #}
+{% set_global all_variants = [] %}
+{% for target in signing_targets %}
+{% for _, variant in target.variants %}
+{% set_global all_variants = all_variants | concat(with=target.base ~ "-" ~ variant) %}
+{% endfor %}
 {% endfor %}
 
 ```
 $ ls -1
-{%- for variant in variant_values | sort %}
-{{ signing_base }}-{{ variant }}
-{{ signing_base }}-{{ variant }}.asc
+{%- for variant in all_variants | sort %}
+{{ variant }}
+{{ variant }}.asc
 {%- endfor %}
 ```
 EOF

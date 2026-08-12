@@ -51,3 +51,30 @@ jobs:
           # Speed up PR CI by skipping non-amd64
           pr-arches: amd64
 {%- endif %}
+{% for extra in additional_containers | default(value=[]) %}
+
+  build-container-{{ extra.name }}:
+    name: Build {{ extra.name }} container image
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v6
+{%- if container_needs_git_tags %}
+        with:
+          # fetch tags so the compiled-in version number is useful
+          fetch-depth: 0
+      - name: Fix actions/checkout synthetic tag
+        run: git fetch --tags --force
+{%- endif %}
+      - name: Build and push container
+        uses: coreos/actions-lib/build-container@main
+        with:
+          credentials: {% raw %}${{ secrets.QUAY_AUTH }}{% endraw %}
+          file: {{ extra.file }}
+          push: {{ extra.push | join(sep=" ") }}
+          arches: {{ container_arches | join(sep=" ") }}
+{%-if container_arches.0 != 'amd64' or container_arches.1 %}
+          # Speed up PR CI by skipping non-amd64
+          pr-arches: amd64
+{%- endif %}
+{%- endfor %}

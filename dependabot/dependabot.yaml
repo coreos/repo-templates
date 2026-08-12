@@ -22,11 +22,6 @@ files:
     vars:
       dependabot_labels: [area/dependencies]
 
-  - repo: butane
-    path: .github/dependabot.yml
-    vars:
-      dependabot_labels: [dependency, skip-notes]
-
   - repo: cap-std-ext
     path: .github/dependabot.yml
 

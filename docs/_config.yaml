@@ -2,9 +2,6 @@ files:
   - repo: afterburn
     path: docs/_config.yml
 
-  - repo: butane
-    path: docs/_config.yml
-
   - repo: coreos-assembler
     path: docs/_config.yml
 

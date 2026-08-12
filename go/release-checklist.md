@@ -74,7 +74,7 @@ GitHub release:
  - [ ] Write release notes
 {%- endif %}
 {%- if sample_signing_key_update_tag %}
- - [ ] Upload all the release artifacts and their signatures
+ - [ ] Upload all the release artifacts and their signatures{% if additional_quay_repos %} (including {{ additional_quay_repos | map(attribute="name") | join(sep=", ") }} binaries){% endif %}
 {%- endif %}
  - [ ] Publish the release
 {% endif %}
@@ -85,6 +85,10 @@ Quay release:
  - [ ] Click the gear next to the tag, select "Add New Tag", enter `release`, and confirm
 {%- for repo in quay_legacy_repos|default(value=[]) %}
  - [ ] Visit the [Quay tags page](https://quay.io/repository/{{ repo }}?tab=tags) for the legacy `{{ repo }}` repo and wait for a versioned tag to appear
+ - [ ] Click the gear next to the tag, select "Add New Tag", enter `release`, and confirm
+{%- endfor %}
+{%- for extra in additional_quay_repos|default(value=[]) %}
+ - [ ] Visit the {{ extra.name }} [Quay tags page](https://quay.io/repository/{{ extra.repo }}?tab=tags) and wait for a versioned tag to appear
  - [ ] Click the gear next to the tag, select "Add New Tag", enter `release`, and confirm
 {%- endfor %}
 {% endif %}

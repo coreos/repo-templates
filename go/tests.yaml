@@ -11,15 +11,6 @@ files:
   - repo: airlock
     path: .github/workflows/go.yml
 
-  - repo: butane
-    path: .github/workflows/go.yml
-    vars:
-      do_multi_os: true
-      brew_dependencies: [coreutils]
-      go_build_cmd: ~
-      go_test_cmd: ./test
-      go_generated_dirs: [docs]
-
   - repo: fedora-coreos-stream-generator
     path: .github/workflows/go.yml
     vars:

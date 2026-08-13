@@ -51,3 +51,28 @@ jobs:
           push: {{ containers | join(sep=" ") }}
           arches: {{ container_arches | join(sep=" ") }}
           tags: {% raw %}${{ github.event.inputs.docker-tag }}{% endraw %} release
+{% for extra in additional_containers | default(value=[]) %}
+
+  build-container-{{ extra.name }}:
+    name: Build {{ extra.name }} container image
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v6
+        with:
+          ref: {% raw %}${{ github.event.inputs.git-tag }}{% endraw %}
+{%- if container_needs_git_tags %}
+          # fetch tags so the compiled-in version number is useful
+          fetch-depth: 0
+      - name: Fix actions/checkout synthetic tag
+        run: git fetch --tags --force
+{%- endif %}
+      - name: Build and push container
+        uses: coreos/actions-lib/build-container@main
+        with:
+          credentials: {% raw %}${{ secrets.QUAY_AUTH }}{% endraw %}
+          file: {{ extra.file }}
+          push: {{ extra.push | join(sep=" ") }}
+          arches: {{ container_arches | join(sep=" ") }}
+          tags: {% raw %}${{ github.event.inputs.docker-tag }}{% endraw %} release
+{%- endfor %}

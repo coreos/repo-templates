@@ -48,7 +48,7 @@ files:
     path: .github/workflows/go.yml
     vars:
       apt_dependencies: [libblkid-dev]
-      go_build_cmd: ./build
+      go_build_cmd: make
       go_test_cmd: ./test
       go_generated_dirs: [config, docs]
       go_generate_with_schematyper: true

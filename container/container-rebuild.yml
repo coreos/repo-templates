@@ -70,7 +70,7 @@ jobs:
       - name: Build and push container
         uses: coreos/actions-lib/build-container@main
         with:
-          credentials: {% raw %}${{ secrets.QUAY_AUTH }}{% endraw %}
+          credentials: {% raw %}${{ secrets.{% endraw %}{{ extra.credentials_secret | default(value="QUAY_AUTH") }}{% raw %} }}{% endraw %}
           file: {{ extra.file }}
           push: {{ extra.push | join(sep=" ") }}
           arches: {{ container_arches | join(sep=" ") }}

@@ -34,7 +34,14 @@ do_sign() {
 # Grab the {{ target.base }} binaries out of the redistributable rpm
 rpm="{{ target.base }}-redistributable-${VR}.noarch.rpm"
 koji download-build --key $RPMKEY --rpm $rpm
-rpm -Kv "$rpm" 2>&1 | grep -qi "${RPMKEY}" # Verify the output has the key in it
+# rpm -Kv may exit non-zero (e.g. NOKEY) if the public key is not
+# installed locally, so inspect its output instead of its exit code.
+verify_output=$(rpm -Kv "$rpm" 2>&1 || true)
+if ! grep -qi "key ID .*${RPMKEY}" <<< "$verify_output"; then
+    echo "ERROR: $rpm is not signed with expected key ${RPMKEY}"
+    echo "$verify_output"
+    exit 1
+fi
 rpm2cpio $rpm | cpio -idv './usr/share/{{ target.package }}/{{ target.base }}-*'
 
 # Rename the {{ target.base }} binaries

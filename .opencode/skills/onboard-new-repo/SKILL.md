@@ -107,7 +107,7 @@ Read `config.yaml` to understand the existing patterns. Ask the user what type o
 | `crate` | Rust crate name on crates.io | `afterburn` |
 | `library_crate` | Set `true` for library crates (affects release checklist) | `true` |
 | `fedora_package` | Fedora package name | `rust-afterburn` |
-| `rhaos_package` | RHAOS package name | `butane` |
+| `rhaos_package` | RHAOS package name | `coreos-installer` |
 | `rhel9_package` | RHEL 9 / CentOS Stream 9 package name | `rust-afterburn` |
 | `rhel10_package` | RHEL 10 / CentOS Stream 10 package name | `rust-afterburn` |
 | `pretty_name` | Human-readable name for release checklists | `Afterburn` |
@@ -182,22 +182,24 @@ After onboarding, tell the user:
 
 ### Full Go project with containers and packaging:
 ```yaml
-  butane:
+  ignition:
     url: https://github.com/coreos/ignition
     vars:
+      container_file: Dockerfile.validate
       container_needs_git_tags: true
-      containers: [quay.io/coreos/butane, quay.io/coreos/fcct]
-      git_repo: butane
-      repo_subdirectory: butane
-      tag_prefix: butane/
-      quay_repo: coreos/butane
-      quay_legacy_repos: [coreos/fcct]
-      fedora_package: butane
-      rhaos_package: butane
-      rhel9_package: butane
-      rhel10_package: butane
-      pretty_name: Butane
-      vendored_ignition_note: true
+      containers: [quay.io/coreos/ignition-validate]
+      additional_containers:
+        - name: butane
+          file: butane/Dockerfile
+          push: [quay.io/coreos/butane]
+          credentials_secret: QUAY_AUTH_BUTANE
+      git_repo: ignition
+      quay_repo: coreos/ignition-validate
+      fedora_package: ignition
+      rhaos_package: ignition
+      rhel9_package: ignition
+      rhel10_package: ignition
+      pretty_name: Ignition
 ```
 
 ## Checklist Coverage

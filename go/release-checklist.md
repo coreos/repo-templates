@@ -107,9 +107,17 @@ RHCOS packaging for the current RHCOS development release:
  - [ ] PR the changes
  - [ ] Get the PR reviewed and merge it
  - [ ] Update your local repo and run `rhpkg build`
+{%- if rhaos_required_packages %}
+ - [ ] Confirm the build contains the required binary packages: `{{ rhaos_required_packages | join(sep="`, `") }}`
+{%- endif %}
 {%- if do_ocp_mirror %}
+{%- if ocp_mirror_artifact %}
+ - [ ] File a ticket similar to [this one](https://issues.redhat.com/browse/ART-3711) to sync {{ ocp_mirror_artifact }} from the `{{ rhaos_package }}` Brew NVR to mirror.openshift.com
+ - [ ] Wait until mirror.openshift.com publishes {{ ocp_mirror_artifact }} under `v<x.y.z-r>` using the {{ pretty_name }} version and updates `latest`; confirm the binaries and checksums are correct
+{%- else %}
  - [ ] File ticket similar to [this one](https://issues.redhat.com/browse/ART-3711) to sync the new version to mirror.openshift.com
  - [ ] Wait until mirror.openshift.com is updated and confirm the new version is correct
+{%- endif %}
 {%- endif %}
 {% endif %}
 

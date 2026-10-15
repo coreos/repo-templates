@@ -14,6 +14,11 @@ files:
     path: .github/ISSUE_TEMPLATE/release-checklist.md
     vars:
       sample_signing_key_update_tag: v2.10.1
+      do_ocp_mirror: true
+      ocp_mirror_artifact: Butane
+      rhaos_required_packages:
+        - butane
+        - butane-redistributable
       additional_quay_repos:
         - name: butane
           repo: coreos/butane

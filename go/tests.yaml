@@ -53,6 +53,12 @@ files:
       go_generated_dirs: [config, docs]
       go_generate_with_schematyper: true
 
+  - repo: newsletter
+    path: .github/workflows/go.yml
+    vars:
+      go_build_cmd: ~
+      go_test_cmd: ./test
+
   - repo: pkg
     path: .github/workflows/go.yml
     vars:

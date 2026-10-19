@@ -171,6 +171,11 @@ repos:
       library_crate: true
       fedora_package: rust-liboverdrop
 
+  newsletter:
+    url: https://github.com/coreos/newsletter
+    vars:
+      git_repo: newsletter
+
   openat-ext:
     url: https://github.com/coreos/openat-ext
     vars:

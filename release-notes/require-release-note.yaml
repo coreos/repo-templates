@@ -1,5 +1,8 @@
 vars:
   release_notes_path: docs/release-notes.md
+  release_notes_path_regex: ~
+  release_notes_status: ~
+  release_notes_validation_command: ~
   release_notes_skip_label: skip-notes
 
 files:
@@ -14,6 +17,10 @@ files:
 
   - repo: ignition
     path: .github/workflows/require-release-note.yml
+    vars:
+      release_notes_path_regex: '^docs/release-notes\.d/[a-z0-9]+(-[a-z0-9]+)*\.(breaking|feature|change|bugfix)\.md$'
+      release_notes_status: added
+      release_notes_validation_command: go run ./internal/util/tools/release-notes validate
 
   - repo: ignition-config-rs
     path: .github/workflows/require-release-note.yml

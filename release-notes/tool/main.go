@@ -100,7 +100,7 @@ func run(args []string, stdout io.Writer) error {
 		if err != nil {
 			return err
 		}
-		fmt.Fprintf(stdout, "Validated %d release-note fragment(s).\n", len(fragments))
+		_, _ = fmt.Fprintf(stdout, "Validated %d release-note fragment(s).\n", len(fragments))
 		return nil
 	case "preview":
 		if len(args) != 1 {
@@ -123,7 +123,7 @@ func run(args []string, stdout io.Writer) error {
 		if err := finalize(releaseNotesPath, fragments, args[1], args[2]); err != nil {
 			return err
 		}
-		fmt.Fprintf(stdout, "Finalized Ignition %s (%s) with %d release-note fragment(s).\n", args[1], args[2], len(fragments))
+		_, _ = fmt.Fprintf(stdout, "Finalized Ignition %s (%s) with %d release-note fragment(s).\n", args[1], args[2], len(fragments))
 		return nil
 	default:
 		return usageError()
@@ -305,7 +305,7 @@ func finalizeWithOps(notesPath string, fragments []fragment, version, date strin
 	if err != nil {
 		return err
 	}
-	defer os.Remove(temporaryPath)
+	defer func() { _ = os.Remove(temporaryPath) }()
 	if err := ops.beforeMutation(); err != nil {
 		return fmt.Errorf("preparing to update release notes: %w", err)
 	}
@@ -419,7 +419,7 @@ func readFileSnapshot(path string) ([]byte, os.FileMode, error) {
 	if err != nil {
 		return nil, 0, err
 	}
-	defer file.Close()
+	defer func() { _ = file.Close() }()
 	info, err := file.Stat()
 	if err != nil {
 		return nil, 0, err
@@ -439,8 +439,8 @@ func writeTemporaryFile(path string, data []byte, mode os.FileMode) (temporaryPa
 	temporaryPath = temporary.Name()
 	defer func() {
 		if retErr != nil {
-			temporary.Close()
-			os.Remove(temporaryPath)
+			_ = temporary.Close()
+			_ = os.Remove(temporaryPath)
 		}
 	}()
 	if err := temporary.Chmod(mode); err != nil {
@@ -529,7 +529,7 @@ func atomicReplace(path string, data []byte, mode os.FileMode) error {
 	if err != nil {
 		return err
 	}
-	defer os.Remove(temporaryPath)
+	defer func() { _ = os.Remove(temporaryPath) }()
 	if err := os.Rename(temporaryPath, path); err != nil {
 		return fmt.Errorf("replacing %q: %w", path, err)
 	}

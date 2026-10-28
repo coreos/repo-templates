@@ -20,8 +20,21 @@ jobs:
     name: Require release note
     runs-on: ubuntu-latest
     steps:
-      - name: Require release-notes.md update
+      - name: Require release note
         uses: coreos/actions-lib/require-file-change@main
         with:
+{%- if release_notes_path_regex %}
+          path-regex: '{{ release_notes_path_regex }}'
+{%- else %}
           path: {{ release_notes_path }}
+{%- endif %}
+{%- if release_notes_status %}
+          status: {{ release_notes_status }}
+{%- endif %}
           override-label: {{ release_notes_skip_label }}
+{%- if release_notes_validation_command %}
+      - name: Check out repository
+        uses: actions/checkout@v6
+      - name: Validate release-note fragments
+        run: {{ release_notes_validation_command }}
+{%- endif %}

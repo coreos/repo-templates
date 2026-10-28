@@ -273,7 +273,12 @@ templates:
   - go/tests.yml
   - go/tests-ignition.yml
   - owners-file-action/owners-file-action.yml
+  - release-notes/fragments/README.md
   - release-notes/require-release-note.yml
+  - release-notes/skill/SKILL.md
+  - release-notes/skill/run.sh
+  - release-notes/tool/main.go
+  - release-notes/tool/main_test.go
   - rust/release-checklist.md
   - rust/rpm-test.yml
   - rust/tests.yml

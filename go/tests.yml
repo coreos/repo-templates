@@ -39,6 +39,8 @@ jobs:
         go-version: {% raw %}${{ matrix.go-version }}{% endraw %}
     - name: Check out repository
       uses: actions/checkout@v7
+      with:
+        persist-credentials: false
 {%- if go_dependencies %}
     - name: Install Go dependencies
       run: go get {{ go_dependencies | join(sep=" ") }}
@@ -104,6 +106,8 @@ jobs:
     steps:
     - name: Check out repository
       uses: actions/checkout@v7
+      with:
+        persist-credentials: false
     - name: Set up Go 1.x
       uses: actions/setup-go@v5
       with:

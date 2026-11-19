@@ -21,6 +21,8 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v7
+        with:
+          persist-credentials: false
       - name: Install dependencies
         run: dnf install -y cargo
       - name: Cache build artifacts
@@ -68,6 +70,7 @@ jobs:
       - name: Check out target repo
         uses: actions/checkout@v7
         with:
+          persist-credentials: false
           repository: ${{ matrix.repo }}
           path: dest
           # We need an unbroken commit chain when pushing to the fork.  Don't

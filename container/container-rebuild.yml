@@ -30,6 +30,7 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v7
         with:
+          persist-credentials: false
           ref: {% raw %}${{ github.event.inputs.git-tag }}{% endraw %}
 {%- if container_needs_git_tags %}
           # fetch tags so the compiled-in version number is useful
@@ -60,6 +61,7 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v7
         with:
+          persist-credentials: false
           ref: {% raw %}${{ github.event.inputs.git-tag }}{% endraw %}
 {%- if container_needs_git_tags %}
           # fetch tags so the compiled-in version number is useful

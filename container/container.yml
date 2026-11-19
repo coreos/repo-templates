@@ -26,8 +26,9 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v7
-{%- if container_needs_git_tags %}
         with:
+          persist-credentials: false
+{%- if container_needs_git_tags %}
           # fetch tags so the compiled-in version number is useful
           fetch-depth: 0
       # If we're running on a signed tag, actions/checkout rewrites it into
@@ -59,8 +60,9 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v7
-{%- if container_needs_git_tags %}
         with:
+          persist-credentials: false
+{%- if container_needs_git_tags %}
           # fetch tags so the compiled-in version number is useful
           fetch-depth: 0
       - name: Fix actions/checkout synthetic tag

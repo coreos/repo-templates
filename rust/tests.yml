@@ -170,3 +170,16 @@ jobs:
         run: cargo build --all-targets
       - name: cargo test
         run: cargo test --all-targets
+
+  # SENTINEL JOB
+  # Require this name in branch protection instead of every
+  # matrix-expanded job name (e.g. "Tests, unstable toolchain (beta)").
+  required-checks:
+    name: required-checks (rust)
+    if: always()
+    needs: [tests-stable, tests-release-stable, tests-release-msrv, linting, check-lockfile-downgrades]
+    runs-on: ubuntu-slim
+    steps:
+      - uses: bootc-dev/actions/required-checks@main
+        with:
+          needs: {% raw %}${{ toJson(needs) }}{% endraw %}

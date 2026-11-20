@@ -40,3 +40,16 @@ jobs:
       run: |
         go test -timeout 60s -cover \
             $(go list ./config/... ./validate/...) --race
+
+  # SENTINEL JOB
+  # Require this name in branch protection instead of every
+  # matrix-expanded job name (e.g. "Test ignition-validate (1.26.x, macos-latest)").
+  required-checks:
+    name: required-checks (ignition-validate)
+    if: always()
+    needs: [test-validate]
+    runs-on: ubuntu-slim
+    steps:
+      - uses: bootc-dev/actions/required-checks@main
+        with:
+          needs: {% raw %}${{ toJson(needs) }}{% endraw %}

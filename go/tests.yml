@@ -134,3 +134,16 @@ jobs:
           exit 1
         fi
 {% endif %}
+
+  # SENTINEL JOB
+  # Require this name in branch protection instead of every
+  # matrix-expanded job name (e.g. "Test (1.26.x)").
+  required-checks:
+    name: required-checks (go)
+    if: always()
+    needs: [test{% if go_generated_dirs %}, regenerate{% endif %}]
+    runs-on: ubuntu-slim
+    steps:
+      - uses: bootc-dev/actions/required-checks@main
+        with:
+          needs: {% raw %}${{ toJson(needs) }}{% endraw %}
